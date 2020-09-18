@@ -13,45 +13,54 @@ import SettingsView from 'src/views/settings/SettingsView';
 import PortfolioView from 'src/views/PortfolioView';
 import FollowerDashboard from './views/FollowerDashboard';
 import FollowerSocialView from './views/social/FollowerSocialView';
+import SignUpLoginForm from 'src/views/auth/SignupLoginForm';
 
-const routes = [
-  {
-    path: 'leader',
-    element: <DashboardLayout />,
-    children: [
-      { path: 'account', element: <AccountView /> },
-      { path: 'social', element: <LeaderListView /> },
-      { path: 'dashboard', element: <LeaderDashboard /> },
-      { path: 'automations', element: <AutomationStepper /> },
-      { path: 'settings', element: <SettingsView /> },
-      { path: 'portfolio', element: <PortfolioView /> },
-      { path: '*', element: <Navigate to="/404" /> }
-    ]
-  },
+let user = { name: 'me', type: false }; //
+let routes = [
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: 'login', element: <LoginView /> },
+      { path: 'login', element: <SignUpLoginForm /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <Navigate to="/leader/dashboard" /> }, //NEEDS TO BE CHANGED!
       { path: '*', element: <Navigate to="/404" /> }
     ]
-  },
-  {
-    path: 'follower',
-    element: <DashboardLayout />,
-    children: [
-      { path: 'account', element: <AccountView /> },
-      { path: 'social', element: <FollowerSocialView  /> },
-      { path: 'dashboard', element: <FollowerDashboard /> },
-      { path: 'automations', element: <AutomationStepper /> },
-      { path: 'settings', element: <SettingsView /> },
-      { path: 'portfolio', element: <PortfolioView /> },
-      { path: '*', element: <Navigate to="/404" /> }
-    ]
   }
 ];
+
+const setRoutes = u => {
+  if (u.type === true) {
+    routes.push({
+      path: 'user',
+      element: <DashboardLayout />,
+      children: [
+        { path: 'account', element: <AccountView /> },
+        { path: 'social', element: <LeaderListView /> },
+        { path: 'dashboard', element: <LeaderDashboard /> },
+        { path: 'automations', element: <AutomationStepper /> },
+        { path: 'settings', element: <SettingsView /> },
+        { path: 'portfolio', element: <PortfolioView /> },
+        { path: '*', element: <Navigate to="/404" /> }
+      ]
+    });
+  } else {
+    routes.push({
+      path: 'user',
+      element: <DashboardLayout />,
+      children: [
+        { path: 'account', element: <AccountView /> },
+        { path: 'social', element: <FollowerSocialView /> },
+        { path: 'dashboard', element: <FollowerDashboard /> },
+        { path: 'automations', element: <AutomationStepper /> },
+        { path: 'settings', element: <SettingsView /> },
+        { path: 'portfolio', element: <PortfolioView /> },
+        { path: '*', element: <Navigate to="/404" /> }
+      ]
+    });
+  }
+};
+setRoutes(user)
 
 export default routes;

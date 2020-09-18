@@ -16,6 +16,7 @@ import {
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import PhoneIcon from '@material-ui/icons/Phone';
 import TabletIcon from '@material-ui/icons/Tablet';
+import Axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,10 +28,11 @@ const OverviewDonut = ({ className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
+  
   const data = {
     datasets: [
       {
-        //MAP VALUES OF ALL PORTFOLIOS (automatically divides)
+        //MAP VALUES OF ALL PORTFOLIOS (automatically %)
         data: [63, 15, 22],
         backgroundColor: [
           colors.indigo[500],

@@ -5,7 +5,6 @@ let userSchema = new mongoose.Schema(
     {
     name: {
         type: String,
-        required: true,
         unique: true
     },
     email: {
@@ -19,19 +18,15 @@ let userSchema = new mongoose.Schema(
     },
     leader: {
         type: Boolean,
-        required: true,
     },
     followers: {
         type: Number,
-        required: true,
     },
     totalFunds: {
         type: Number,
-        required: true
     },
     portfolios: {
       type: Array,
-      required: true 
     },
     }, { timestamps: true },
     );

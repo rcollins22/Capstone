@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
+const passport = require("../../config/passport_local_strategy");
+
 
 router.post("/register_login", (req, res, next) => {
-    passport.authenticate("local",(err, user, info) => {
+    console.log(req.body)
+    passport.authenticate('local',(err, user, info) => {
+        console.log(err, user)
         if (err) {
             return res.status(400).json({ errors: err });
         }
@@ -14,7 +17,7 @@ router.post("/register_login", (req, res, next) => {
             if (err) {
                 return res.status(400).json({ errors: err });
             }
-            return res.status(200).json({ success: `logged in ${user.id}` });
+            return res.status(200).json({ success: `${user.id}, ${user.leader}` });
         });
     })(req, res, next);
 });

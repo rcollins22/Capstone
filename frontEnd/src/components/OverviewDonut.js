@@ -30,6 +30,7 @@ const OverviewDonut = ({ className, ...rest }) => {
   const data = {
     datasets: [
       {
+        //MAP VALUES OF ALL PORTFOLIOS (automatically divides)
         data: [63, 15, 22],
         backgroundColor: [
           colors.indigo[500],
@@ -66,7 +67,8 @@ const OverviewDonut = ({ className, ...rest }) => {
     }
   };
 
-  const devices = [
+  // should be porfolio objects
+  const portfolios = [
     {
       title: 'Portfolio 1',
       value: 63,
@@ -96,7 +98,7 @@ const OverviewDonut = ({ className, ...rest }) => {
           <DonutChart data={data} options={options} height="100%" />
         </Box>
         <Box display="flex" justifyContent="center" mt={2}>
-          {devices.map(({ color, title, value }) => (
+          {portfolios.map(({ color, title, value }) => (
             <Box key={title} p={1} textAlign="center">
               <Typography color="textPrimary" variant="body1">
                 {title}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import axios from "axios";
 import { Formik } from 'formik';
 import {
   Box,
@@ -14,7 +15,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -28,10 +29,7 @@ const LoginView = () => {
   const navigate = useNavigate();
 
   return (
-    <Page
-      className={classes.root}
-      title="Login"
-    >
+    <Page className={classes.root} title="Login">
       <Box
         display="flex"
         flexDirection="column"
@@ -45,13 +43,31 @@ const LoginView = () => {
               password: 'Password123'
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-              password: Yup.string().max(255).required('Password is required')
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              password: Yup.string()
+                .max(255)
+                .required('Password is required')
             })}
 
             //HERE IS WHERE YOU WOULD SET THE AXIOS
             onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+              // navigate('/leader/social', { replace: true });
+              const userData = {
+                email,
+                password
+            };
+              axios
+                .post("localhost:8000/auth/register_login", userData)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                    console.log(err.response);
+                });
             }}
           >
             {({
@@ -65,10 +81,7 @@ const LoginView = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+                  <Typography color="textPrimary" variant="h2">
                     Sign in
                   </Typography>
                   <Typography
@@ -117,17 +130,9 @@ const LoginView = () => {
                     Sign in now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don&apos;t have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
+                <Typography color="textSecondary" variant="body1">
+                  Don&apos;t have an account?{' '}
+                  <Link component={RouterLink} to="/register" variant="h6">
                     Sign up
                   </Link>
                 </Typography>

@@ -5,7 +5,7 @@ import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
 import LeaderListView from 'src/views/social/LeaderListView';
 import LeaderDashboard from 'src/views/LeaderDashboard';
-import LoginView from 'src/views/auth/LoginView';
+import LoginView from 'src/views/auth/SignupLoginForm';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import AutomationStepper from 'src/views/automation';
 import RegisterView from 'src/views/auth/RegisterView';

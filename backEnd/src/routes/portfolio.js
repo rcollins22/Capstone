@@ -53,7 +53,7 @@ router.put('/update/:portfolioId', async (req, res) => {
     //   last_rebalance: new Date(), 
     });
 
-    return res.jsonp(portfolio);
+    return res.json(portfolio);
 });
 
 // do a fetch and use the method from API. have express.json

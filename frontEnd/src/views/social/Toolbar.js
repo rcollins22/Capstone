@@ -28,46 +28,29 @@ const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <div
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
-        <Typography
-              color="textSecondary"
-              gutterBottom
-              variant="h2"
-            >
-              Search below to find other leaders
-            </Typography>
+    <div className={clsx(classes.root, className)} {...rest}>
+      <Box display="flex" justifyContent="flex-end">
+        <Typography color="textSecondary" gutterBottom variant="h2">
+          Search below to find leaders
+        </Typography>
       </Box>
       <Box mt={3}>
-        <Card>
-          <CardContent>
-            <Box maxWidth={500}>
-              <TextField
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  )
-                }}
-                placeholder="Enter Leader Name"
-                variant="outlined"
-              />
-            </Box>
-          </CardContent>
-        </Card>
+        <Box maxWidth={500}>
+          <TextField
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SvgIcon fontSize="small" color="action">
+                    <SearchIcon />
+                  </SvgIcon>
+                </InputAdornment>
+              )
+            }}
+            placeholder="Enter Leader Name"
+            variant="outlined"
+          />
+        </Box>
       </Box>
     </div>
   );

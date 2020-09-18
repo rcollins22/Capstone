@@ -38,7 +38,7 @@ const ProfileDetails = ({ className, ...rest }) => {
     firstName: 'Rashad',
     lastName: 'Collins',
     email: 'demo@devias.io',
-    phone: '',
+    phone: '8675309',
     state: 'Georgia',
     country: 'USA'
   });

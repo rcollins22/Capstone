@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { Button } from '@material-ui/core';
+import url from '../../url';
 
 
 const SignUpLoginForm = () => {
@@ -17,10 +18,11 @@ const SignUpLoginForm = () => {
         };
         console.log(email, password)
         axios
-            .post("http://localhost:8000/auth/register_login", userData)
+            .post(`${url}/auth/register_login`, userData)
             .then(res => {
-                console.log(res);
-                console.log(res.data.type)
+                localStorage.setItem("id", res.data.success.id) //save id to local storage
+                localStorage.setItem("leader", res.data.success.leader) // save leader boolean to local storage
+                // var aValue = localStorage.getItem("id") exemplar call to local storage
             })
             .catch(err => {
                 console.log(err);

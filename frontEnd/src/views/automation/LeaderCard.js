@@ -11,7 +11,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-
 import AreaChart from '../../mixins/AreaChart';
 
 // const useStyles = makeStyles(theme => ({
@@ -32,9 +31,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     maxHeight: 200,
-    width: '30%',
+    minWidth: '30%',
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    margin:7
   }
 }));
 
@@ -43,7 +42,7 @@ export default function LeaderCard({ name, chg, ...rest }) {
   const classes = useStyles();
   const series = [
     {
-      name: 'XYZ MOTORS',
+      name: 'Overall Performance',
       data: [
         [1, 34],
         [3.8, 43],
@@ -83,7 +82,7 @@ export default function LeaderCard({ name, chg, ...rest }) {
       }
     },
     subtitle: {
-      text: `${chg}`,
+      text: `${chg}%`,
       offsetX: 0,
       style: {
         fontSize: '14px'

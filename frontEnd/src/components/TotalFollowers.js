@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TotalFollowers = ({ className, ...rest }) => {
+const TotalFollowers = ({ className, followers, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -58,7 +58,7 @@ const TotalFollowers = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              1,600
+              {followers ? `${followers}%` : 'loading'}
             </Typography>
           </Grid>
           <Grid item>

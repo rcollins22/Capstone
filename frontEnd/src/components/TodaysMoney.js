@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TodaysChange = ({ className, ...rest }) => {
+const TodaysChange = ({ className, money, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -58,7 +58,7 @@ const TodaysChange = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              $4,100.25
+              {money ? `$${money}` : 'Loading'}
             </Typography>
           </Grid>
           <Grid item>

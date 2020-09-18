@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TotalBalance = ({ className, ...rest }) => {
+const TotalBalance = ({ className, balance, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -49,7 +49,7 @@ const TotalBalance = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              $23,200
+              {balance ? `$${balance}` : 'Loading'}
             </Typography>
           </Grid>
           <Grid item>

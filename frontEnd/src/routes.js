@@ -15,7 +15,9 @@ import FollowerDashboard from './views/FollowerDashboard';
 import FollowerSocialView from './views/social/FollowerSocialView';
 import SignUpLoginForm from 'src/views/auth/SignupLoginForm';
 
-let user = { name: 'me', type: false }; //
+ //
+// 
+
 let routes = [
   {
     path: '/',
@@ -30,8 +32,13 @@ let routes = [
   }
 ];
 
+let userID = localStorage.getItem('id');
+//
+let isLeader = localStorage.getItem('leader');
+
 const setRoutes = u => {
-  if (u.type === true) {
+  if (u === true) {
+    
     routes.push({
       path: 'user',
       element: <DashboardLayout />,
@@ -61,6 +68,6 @@ const setRoutes = u => {
     });
   }
 };
-setRoutes(user)
+setRoutes(isLeader);
 
 export default routes;

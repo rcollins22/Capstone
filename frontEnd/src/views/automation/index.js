@@ -7,7 +7,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import ProductCard from './ProductCard';
+import ProductCard from './LeaderCard';
 import data from './data';
 
 

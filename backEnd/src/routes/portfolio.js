@@ -25,6 +25,28 @@ router.get('/history/:portfolioId', async (req, res) => {
   return res.send(rv)
 })
 
+router.get('/portfolio-allocations', async (req, res) => {
+  // returns each portfolio's name and amount of funds in the portfolio
+  try {
+   const user = await req.context.models.User.find() // get current user
+   var portfolioInfo = []
+
+   user[0].portfolios.forEach(async port => {
+       let portfolio = await req.context.models.Portfolio.findById(port._id);
+       const pf = {name: portfolio.name, startingValue: portfolio.startingValue} //
+       portfolioInfo.push(pf)
+
+       if (port == user[0].portfolios.slice(-1)[0]) {
+           // last portfolio finished calculating
+           return res.send(portfolioInfo) // send all porfolio infos.
+       }
+   });
+ } catch (err) {
+     // user can't be found
+     return res.send(err)
+ }
+});
+
 //  create a new portfolio
 router.post('/', async (req, res) => {
   // needs to be updated

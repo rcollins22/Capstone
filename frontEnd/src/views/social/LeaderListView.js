@@ -34,7 +34,7 @@ const LeaderListView = () => {
         </Box>
       </Container>
     </Page>
-  );
+  )
 };
 
 export default LeaderListView;

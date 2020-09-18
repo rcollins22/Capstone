@@ -19,8 +19,9 @@ const SignUpLoginForm = () => {
         axios
             .post("http://localhost:8000/auth/register_login", userData)
             .then(res => {
-                console.log(res);
-                console.log(res.data.type)
+                localStorage.setItem("id", res.data.success.id) //save id to local storage
+                localStorage.setItem("leader", res.data.success.leader) // save leader boolean to local storage
+                // var aValue = localStorage.getItem("id") exemplar call to local storage
             })
             .catch(err => {
                 console.log(err);

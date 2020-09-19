@@ -1,91 +1,114 @@
-import React, { useState } from "react";
-import { Form, Col, Row } from "react-bootstrap";
-import axios from "axios";
-import { Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Form, Col, Row } from 'react-bootstrap';
+import axios from 'axios';
 import url from '../../url';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  makeStyles
+} from '@material-ui/core';
+import Page from 'src/components/Page';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    height: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
+  }
+}));
 
 const SignUpLoginForm = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const onSubmit = e => {
-        e.preventDefault();
+  const onSubmit = e => {
+    e.preventDefault();
 
-        const userData = {
-            email,
-            password
-        };
-        console.log(email, password)
-        axios
-            .post(`${url}/auth/register_login`, userData)
-            .then(res => {
-                localStorage.setItem("id", res.data.success.id) //save id to local storage
-                localStorage.setItem("leader", res.data.success.leader) // save leader boolean to local storage
-                // var aValue = localStorage.getItem("id") exemplar call to local storage
-            })
-            .catch(err => {
-                console.log(err);
-                console.log(err.response);
-            });
+    const userData = {
+      email,
+      password
     };
+    console.log(email, password);
+    axios
+      .post(`${url}/auth/register_login`, userData)
+      .then(res => {
+        localStorage.setItem('id', res.data.success.id); //save id to local storage
+        localStorage.setItem('leader', res.data.success.leader); // save leader boolean to local storage
+        // var aValue = localStorage.getItem("id") exemplar call to local storage
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.response);
+      });
+  };
 
-    return (
-        <Form onSubmit={onSubmit}>
-            <Form.Group controlId="formBasicEmail">
+  return (
+    <Page className={classes.root} title="Login">
+      <Box
+        display="flex"
+        flexDirection="column"
+        height="100%"
+        justifyContent="center"
+      >
+        <Container maxWidth="sm">
+          <Grid container spacing={1}>
+            <Form onSubmit={onSubmit}>
+              <Form.Group controlId="formBasicEmail">
                 <Row>
-                    <Form.Label column xs="2" sm="1">
-                    </Form.Label>
-                    <Col xs="10" sm="11">
-                        <Form.Control
-                            type="email"
-                            placeholder="Enter email"
-                            onChange={e => {
-                                setEmail(e.target.value);
-                                console.log(email);
-                            }}
-                            required
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
-                    </Col>
+                  <Col xs="10" sm="11">
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      onChange={e => {
+                        setEmail(e.target.value);
+                        console.log(email);
+                      }}
+                      required
+                    />
+                    
+                  </Col>
                 </Row>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
+              </Form.Group>
+              <Form.Group  controlId="formBasicPassword">
+                <Row>             
+                  <Col xs="10" sm="11">
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      onChange={e => setPassword(e.target.value)}
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+              <Form.Group controlId="formBasicCheckbox">
                 <Row>
-                    <Form.Label column xs="2" sm="1">
-                    </Form.Label>
-                    <Col xs="10" sm="11">
-                        <Form.Control
-                            type="password"
-                            placeholder="Password"
-                            onChange={e => setPassword(e.target.value)}
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Col>
+                  <Col xs="2" sm="1">
+                    <Form.Check type="checkbox" />
+                  </Col>
+                  <Col xs="10" sm="11">
+                    <Typography>
+                      I hereby confirm that the referral app is allowed to send
+                      me emails, up until I unsubscribe.
+                    </Typography>
+                  </Col>
                 </Row>
-            </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-                <Row>
-                    <Col xs="2" sm="1">
-                        <Form.Check type="checkbox" />
-                    </Col>
-                    <Col xs="10" sm="11">
-                        <Form.Label>
-                                I hereby confirm that the referral app is allowed to send me emails, up until I
-                                unsuscribe
-                        </Form.Label>
-                    </Col>
-                </Row>
-            </Form.Group>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={onSubmit}
-            >Login</Button>
-        </Form>
-    );
+              </Form.Group>
+              <Button variant="contained" color="primary" onClick={onSubmit}>
+                Login
+              </Button>
+            </Form>
+          </Grid>
+        </Container>
+      </Box>
+    </Page>
+  );
 };
 
 export default SignUpLoginForm;

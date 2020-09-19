@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -16,37 +16,35 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Search as SearchIcon } from 'react-feather';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import {
-  TextField,
-  InputAdornment,
-  SvgIcon,
-} from '@material-ui/core';
-
-import { Search as SearchIcon } from 'react-feather';
+import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
+import url from '../../url';
+import axios from 'axios';
 
 function createData(name, symbol, change24H, price) {
-  return { name, symbol, change24H, price};
+  return { name, symbol, change24H, price };
 }
 
-const rows = [
-  createData('Apple', 'AAPL', 3.7, 67),
-  createData('Tesla', 'TSLA', 25.0, 51),
-  createData('GE', 'GE', 1.0, 24),
-  createData('Twitter', 'TWTR', 6.0, 24),
-  createData('Groupon', 'GRP', 6.0, 49),
-  createData('Homewell', 'HWL', 3.2, 87),
-  createData('The Home Depot', 'THD', 9.0, 37),
-  createData('Jelly Belly', 'JB', -2.3, 94),
-  createData('Walmart', 'WM', 26.0, 65),
-  createData('kellogs', 'KLG', 0.2, 98),
-  createData('Microsoft', 'MSFT', -6.3, 81),
-  createData('Splunk', 'SPLK', -19.0, 9),
-  createData('Bitcoin', 'BTC', 18.0, 63)
-];
+// const rows = [
+//   createData('Apple', 'AAPL', 3.7, 67),
+//   createData('Tesla', 'TSLA', 25.0, 51),
+//   createData('GE', 'GE', 1.0, 24),
+//   createData('Twitter', 'TWTR', 6.0, 24),
+//   createData('Groupon', 'GRP', 6.0, 49),
+//   createData('Homewell', 'HWL', 3.2, 87),
+//   createData('The Home Depot', 'THD', 9.0, 37),
+//   createData('Jelly Belly', 'JB', -2.3, 94),
+//   createData('Walmart', 'WM', 26.0, 65),
+//   createData('kellogs', 'KLG', 0.2, 98),
+//   createData('Microsoft', 'MSFT', -6.3, 81),
+//   createData('Splunk', 'SPLK', -19.0, 9),
+//   createData('Bitcoin', 'BTC', 18.0, 63)
+// ];
+
+// console.log(rows)
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,7 +73,6 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Stock Name' },
   { id: 'symbol', numeric: false, disablePadding: false, label: 'Symbol' },
   {
     id: '24Hr Change',
@@ -251,11 +248,26 @@ const useStyles = makeStyles(theme => ({
 export default function AssetTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('chg');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = React.useState([]);
+  useEffect(() => {
+    loadRows();
+  }, []);
+  const loadRows = () => {
+    axios
+      .get(`${url}/prices/assets/`)
+      .then(res => {
+        console.log('Current Assets', res.data.rv);
+        const r = res.data.rv;
+        setRows(r);
+        // returns at Number that represents a percent.
+      })
+      .catch(err => console.log(err));
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -334,17 +346,17 @@ export default function AssetTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.symbol);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.name)}
+                      onClick={event => handleClick(event, row.symbol)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.symbol}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -353,17 +365,9 @@ export default function AssetTable() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell>
                       <TableCell align="right">{row.symbol}</TableCell>
+                      <TableCell align="right">{row.change}</TableCell>
                       <TableCell align="right">{row.price}</TableCell>
-                      <TableCell align="right">{row.change24H}</TableCell>
                     </TableRow>
                   );
                 })}

@@ -26,9 +26,9 @@ let routes = [
       { path: 'login', element: <SignUpLoginForm /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/leader/dashboard" /> }, //NEEDS TO BE CHANGED!
+      { path: '/', element: <Navigate to="/user/dashboard" /> }, //NEEDS TO BE CHANGED!
       { path: '*', element: <Navigate to="/404" /> }
-    ]
+    ] 
   }
 ];
 
@@ -38,7 +38,7 @@ let isLeader = localStorage.getItem('leader');
 
 const setRoutes = u => {
   if (u === true) {
-    
+
     routes.push({
       path: 'user',
       element: <DashboardLayout />,

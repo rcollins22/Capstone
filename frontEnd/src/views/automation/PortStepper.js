@@ -42,11 +42,11 @@ function getStepContent(step) {
   switch (step) {
     case 0:
       return (<SelectAllocation/>);
-    case 0:
-      return (<AssetTable/>);
     case 1:
-      return (<AllocationTable/>) ;
+      return (<AssetTable/>);
     case 2:
+      return (<AllocationTable/>) ;
+    case 3:
       return (<Grid
         container
         direction="column"

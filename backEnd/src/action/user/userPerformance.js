@@ -2,7 +2,8 @@ const { models } = require('../../models');
 
 const userPerformance = async (userId, days) => {
     let portfolios = await models.Portfolio.find()
-    let uPortfolios = portfolios.filter(p => p.userId.toString() == userId.toString())
+    console.log(portfolios)
+    let uPortfolios = portfolios.filter(p => p.user.toString() == userId.toString())
     // grab all the history array from each portfolio of this user
     let histories = uPortfolios.map(p => p.history)
     // reverse each of the arrays
@@ -17,8 +18,8 @@ const userPerformance = async (userId, days) => {
     }
     // move it to the front of the histories array
     histories = [longestH, ...histories.filter(history => history != longestH)]
-    performanceValues = h1.map(history => history.value) // map its values
-    dates = h1.map(history => history.date) // map its dates
+    performanceValues = longestH.map(history => history.value) // map its values
+    dates = longestH.map(history => history.date) // map its dates
 
     // loop through all the subsequent histories and add their values to the already created values array
     for (let i = 0; i < performanceValues.length; i++) {

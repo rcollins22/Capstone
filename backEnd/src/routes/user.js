@@ -1,5 +1,6 @@
 // import { Router } from 'express';
 const { Router } = require('express');
+const userPerformance = require('../action/user/userPerformance')
  
 const router = Router();
  
@@ -23,6 +24,23 @@ router.get('/balance/:userId', async (req, res) => {
   }
   let returnValue = user.totalFunds - portfoliosValue
   return res.send({"returnValue": returnValue})
+})
+
+router.get('/leaders', async (req, res) => {
+  const users = await req.context.models.User.find()
+  let performancePercents = []
+  for (var i = 0; i < users.length; i++) {
+    let allPerformances = await userPerformance(users[i]._id, 30)
+    let interval = Math.min(allPerformances.length, 30)
+    let performancePercent = (allPerformances[0] - allPerformances[interval-1]) / allPerformances[interval-1] * 100
+    performancePercents.push(performancePercent)
+  }
+  console.log(performancePercents)
+  let rv = users.map((u, idx) => {
+    console.log(u.followers.length)
+    return {name: u.name, email: u.email, followers: u.followers.length, monthlyPerformance: performancePercents[idx], creationDate: u.createdAt}
+  })
+  return res.send({"rv": rv})
 })
  
 // has access to the user identifier to read the correct user from the MongoDB database.

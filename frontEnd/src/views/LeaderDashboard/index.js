@@ -62,7 +62,7 @@ const Dashboard = () => {
 
   const loadAvailableBalance = () => {
     var currUid = localStorage.getItem("id")
-    axios.get(`${url}/users/balance/${currUid}`)
+    axios.get(`${url}/users/total-balance/${currUid}`)
     .then(res => {
       setBalance(res.data) // returns at Number that represents a percent.
     })
@@ -80,7 +80,7 @@ const Dashboard = () => {
         });
         setPortData(pData)
         setPortNames(pNames)
-        
+
     })
     .catch(err => console.log(err));
   }

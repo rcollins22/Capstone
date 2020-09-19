@@ -5,19 +5,15 @@ let portfolioSchema = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        required: true,
     },
     usableFunds: {
         type: Number,
-        required: true,
     },
     startingValue: { // What
         type: Number,
-        required: true
     },
     currentValue: { // changes of all of the stocks accounted for. Sum of all tickerCurrValues
         type: Number,
-        required: true
     },
     // Array of all the tickers: [{symbol : 'TSLA', allocation: 21, currValue: 20}, {symbol : 'AMZN', allocation: 79, currValue: 80}]
     tickers: [{
@@ -29,7 +25,6 @@ let portfolioSchema = new mongoose.Schema({
     }],
     followers: { 
         type: Array,
-        required: true,
     },
     history: [{
         date: Date,

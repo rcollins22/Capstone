@@ -24,27 +24,11 @@ import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
 import url from '../../url';
 import axios from 'axios';
 
-function createData(name, symbol, change24H, price) {
-  return { name, symbol, change24H, price };
 }
-
-// const rows = [
-//   createData('Apple', 'AAPL', 3.7, 67),
-//   createData('Tesla', 'TSLA', 25.0, 51),
-//   createData('GE', 'GE', 1.0, 24),
-//   createData('Twitter', 'TWTR', 6.0, 24),
-//   createData('Groupon', 'GRP', 6.0, 49),
-//   createData('Homewell', 'HWL', 3.2, 87),
-//   createData('The Home Depot', 'THD', 9.0, 37),
-//   createData('Jelly Belly', 'JB', -2.3, 94),
-//   createData('Walmart', 'WM', 26.0, 65),
-//   createData('kellogs', 'KLG', 0.2, 98),
-//   createData('Microsoft', 'MSFT', -6.3, 81),
-//   createData('Splunk', 'SPLK', -19.0, 9),
-//   createData('Bitcoin', 'BTC', 18.0, 63)
-// ];
-
-// console.log(rows)
+const getID = () => {
+  // return localStorage.getItem("id")
+  return '5f651667e37bfe1ffb9871d8'
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -55,13 +39,11 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
-
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
-
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -71,7 +53,6 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map(el => el[0]);
 }
-
 const headCells = [
   { id: 'symbol', numeric: false, disablePadding: false, label: 'Symbol' },
   {
@@ -82,7 +63,6 @@ const headCells = [
   },
   { id: 'Price', numeric: true, disablePadding: false, label: 'Price ($)' }
 ];
-
 function EnhancedTableHead(props) {
   const {
     classes,
@@ -96,7 +76,6 @@ function EnhancedTableHead(props) {
   const createSortHandler = property => event => {
     onRequestSort(event, property);
   };
-
   return (
     <TableHead>
       <TableRow>
@@ -133,7 +112,6 @@ function EnhancedTableHead(props) {
     </TableHead>
   );
 }
-
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
@@ -143,7 +121,6 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired
 };
-
 const useToolbarStyles = makeStyles(theme => ({
   root: {
     paddingLeft: theme.spacing(2),
@@ -163,11 +140,9 @@ const useToolbarStyles = makeStyles(theme => ({
     flex: '1 1 100%'
   }
 }));
-
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
-
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -199,7 +174,6 @@ const EnhancedTableToolbar = props => {
           variant="outlined"
         />
       )}
-
       {numSelected > 0 ? (
         <Tooltip title="Add Assets">
           <IconButton aria-label="delete">
@@ -216,11 +190,9 @@ const EnhancedTableToolbar = props => {
     </Toolbar>
   );
 };
-
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
@@ -244,7 +216,6 @@ const useStyles = makeStyles(theme => ({
     width: 1
   }
 }));
-
 export default function AssetTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -268,13 +239,20 @@ export default function AssetTable() {
       })
       .catch(err => console.log(err));
   };
+  console.log(selected)
+  const bodyFormData = new FormData()
+  let tickerList = selected
+  tickerList.forEach((ticker) => {
+    bodyFormData.append('tickerList[]', ticker);
+  });
+  // axios.post(`${url}/portfolios/addTickers/${getID()}`, bodyFormData)
+  axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
   const handleSelectAllClick = event => {
     if (event.target.checked) {
       const newSelecteds = rows.map(n => n.name);
@@ -283,11 +261,9 @@ export default function AssetTable() {
     }
     setSelected([]);
   };
-
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
@@ -300,28 +276,21 @@ export default function AssetTable() {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const handleChangeDense = event => {
     setDense(event.target.checked);
   };
-
   const isSelected = name => selected.indexOf(name) !== -1;
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -348,7 +317,6 @@ export default function AssetTable() {
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.symbol);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover

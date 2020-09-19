@@ -1,6 +1,18 @@
 // import { Router } from 'express';
 const { Router } = require('express');
+const { models } = require('../models')
 
+
+const findNewPortfolio = async (userId) => {
+  const portfolios = await models.Portfolio.find(); // all portfolios
+
+  // just for testing purposes
+  return portfolios[0]
+
+  // const ports = portfolios.filter(p => p.user.toString() === userId.toString()) // all portfolios for this user
+  // const p = ports.find(p => p.history.length == 0) //only a new portfolio would have zero history
+  // return p
+}
  
 const router = Router();
 //  return all portfolios saved in the database
@@ -25,57 +37,89 @@ router.get('/history/:portfolioId', async (req, res) => {
   return res.send(rv)
 })
 
-router.get('/portfolio-allocations', async (req, res) => {
-  // returns each portfolio's name and amount of funds in the portfolio
-  try {
-   const user = await req.context.models.User.find() // get current user
-   var portfolioInfo = []
-
-   user[0].portfolios.forEach(async port => {
-       let portfolio = await req.context.models.Portfolio.findById(port._id);
-       const pf = {name: portfolio.name, startingValue: portfolio.startingValue} //
-       portfolioInfo.push(pf)
-
-       if (port == user[0].portfolios.slice(-1)[0]) {
-           // last portfolio finished calculating
-           return res.send(portfolioInfo) // send all porfolio infos.
-       }
-   });
- } catch (err) {
-     // user can't be found
-     return res.send(err)
- }
-});
-
 //  create a new portfolio
-router.post('/', async (req, res) => {
+router.post('/name/:name/:id', async (req, res) => {
   // needs to be updated
-  // const portfolio = await req.context.models.Portfolio.create({
-  //   name: req.body.name,
-  //   user: req.context.currentUser.id,
-  //   funds: 0,
-  //   percent_allocated: 0,
-  //   active: false,
-  //   asset_num: 0,
-  //   last_rebalance: new Date(),
-  // });
- 
+  const portfolio = await req.context.models.Portfolio.create({
+    name: req.params.name,
+    active: false,
+    usableFunds: 0,
+    startingValue: 0,
+    currentValue: 0,
+    tickers: [],
+    followers: false,
+    history: [],
+    user: req.params.id
+  });
+  let message = "portfolio created"
   return res.send(message);
 });
-// update portfolio based on form
-router.put('/update/:portfolioId', async (req, res) => {
-    const portfolio = await req.context.models.Portfolio.save({
-      name: req.body.name,
-      user: req.context.currentUser.id,
-      funds: req.body.funds,
-      percent_allocated: req.body.percent_allocated,
-      active: req.body.active,
-      asset_num: req.body.asset_num,
-    // can not be handled by user
-    //   last_rebalance: new Date(), 
-    });
+// update portfolio funds based on id
+router.post('/addFunds/:id/:funds', async (req, res) => {
+  console.log(req) // how do I grab the payload???
+  let userId = req.params.id
+  let data = req.params.funds
+  // find portfolio by name and update funds based on post data
+  let p = await findNewPortfolio(userId)
+  await models.Portfolio.updateOne({ _id: p._id },
+    { usableFunds: data })
+  return res.send(p);
+});
 
-    return res.json(portfolio);
+// add portfolio tickers based on id
+router.post('/addTickers/:id/', async (req, res) => {
+  let tickers = req.query.tickers.split(',')
+  console.log(tickers)
+  let userId = req.params.id
+  // find portfolio by name and update funds based on post data
+  let p = await findNewPortfolio(userId)
+  let tickerData = tickers.map(t => {
+    return {symbol: t, allocation: 0, desiredAllocation: 0, currValue: 0, units: 0}
+  })
+  await models.Portfolio.updateOne({ _id: p._id },
+    { tickers: tickerData })
+  return res.send("Complete");
+});
+
+// return new portfolio tickers based on id
+router.get('/addTickers/:id', async (req, res) => {
+  let userId = req.params.id
+  // find portfolio by name and update funds based on post data
+  let p = await findNewPortfolio(userId)
+  let tickerData = p.tickers.map(t => {
+    return {symbol: t.symbol}
+  })
+  return res.send(tickerData);
+});
+
+// add allocations to portfolio tickers based on id
+router.post('/addAllocations/:id', async (req, res) => {
+  console.log(req) // how do I grab the payload???
+  let userId = req.params.id
+  let tickerAllocations = req.data // assume this is array of ticker with desiredAllocations
+  // find portfolio by name and update funds based on post data
+  let p = await findNewPortfolio(userId)
+  let tickerAs = tickers.map(t => {
+    return {symbol: t.symbol, allocation: 0, desiredAllocation: tickerAllocations.allocation, currValue: 0, units: 0}
+  })
+  await models.Portfolio.updateOne({ _id: p._id },
+    { tickers: tickerAs })
+  // allocate portfolio
+  for (let i = 0; i < p.tickers.length; i++) {
+    let ticker = p.tickers[i]
+    await allocate(p._id, ticker.desiredAllocation, ticker.symbol)
+  }
+  return res.send(p);
+});
+// update portfolio based on form
+router.put('/update/:userId/:name', async (req, res) => {
+    // find portfolio by name and userID
+    let userId = req.params.id
+    let name = req.params.name
+    
+    
+
+    return res.send(portfolio);
 });
 
 // do a fetch and use the method from API. have express.json

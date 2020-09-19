@@ -15,17 +15,26 @@ const getID = () => {
 let usableBal = 2347.23
 
 export default function SelectAllocation() {
-const [projectedBalance, setProjectedBalance] = useState()
+// const [projectedBalance, setProjectedBalance] = useState()
 const [availableBalance, setAvailableBalance] = useState()
   useEffect(() => {
     loadAvailableBalance()
   }, []);
 const loadAvailableBalance = () => {
-  '/balance:userId'
   axios.get(`${url}/users/balance/${getID()}`)
   .then(res => {
-    console.log("Avaliable Balance", res.data.returnValue)
+
+    console.log("Available", res.data.returnValue)
     setAvailableBalance(res.data.returnValue) // returns at Number that represents a percent.
+  })
+  .catch(err => console.log(err));
+}
+const addFunds = () => {
+  let fundsPercent = 50 // NEEDS TO BE DYNAMIC
+  let fundAmount = fundsPercent*0.01*availableBalance
+  axios.post(`${url}/portfolios/addFunds/${getID}/${fundAmount}`)
+  .then(res => {
+    console.log("Adding funds", res.data)
   })
   .catch(err => console.log(err));
 }
@@ -41,7 +50,7 @@ const loadAvailableBalance = () => {
           Select the desired allocation for your new portfolio
         </Typography>
         <br/>
-    <Typography variant="h3">Avaliable Balance: {availableBalance}</Typography>
+    <Typography variant="h3">Avaliable Balance: ${availableBalance}</Typography>
       </Grid>
       <Grid>
           <br/>

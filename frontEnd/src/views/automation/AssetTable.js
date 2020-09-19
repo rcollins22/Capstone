@@ -255,13 +255,7 @@ export default function AssetTable() {
       })
       .catch(err => console.log(err));
   };
-  console.log(selected)
-  const bodyFormData = new FormData()
-  let tickerList = selected
-  tickerList.forEach((ticker) => {
-    bodyFormData.append('tickerList[]', ticker);
-  });
-  // axios.post(`${url}/portfolios/addTickers/${getID()}`, bodyFormData)
+  
   axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
 
   // let payload = {

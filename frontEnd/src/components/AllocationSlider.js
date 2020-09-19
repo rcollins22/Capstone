@@ -86,7 +86,7 @@ export default function AllocationSlider() {
     <Grid container spacing={2} alignItems="center">
       <Grid item xs>
         <InputSlider
-          disabled= {true} // this disables usability. (if allocation > 100, {disable})
+          disabled= {false} // this disables usability. (if allocation > 100, {disable})
           value={typeof value === 'number' ? value : 0}
           onChange={handleSliderChange}
           aria-labelledby="input-slider"

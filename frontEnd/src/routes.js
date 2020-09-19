@@ -67,6 +67,6 @@ const setRoutes = u => {
     });
   }
 };
-setRoutes(false);
+setRoutes(true);
 
 export default routes;

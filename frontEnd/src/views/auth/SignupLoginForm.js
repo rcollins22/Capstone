@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
+import { MemoryRouter as Router } from 'react-router';
+
 import url from '../../url';
 import {
   Box,
   Button,
   Container,
   Grid,
-  Link,
   TextField,
   Typography,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import { Navigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,6 +27,8 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(3)
   }
 }));
+
+
 
 const SignUpLoginForm = () => {
   const classes = useStyles();
@@ -48,6 +55,9 @@ const SignUpLoginForm = () => {
         console.log(err.response);
       });
   };
+  const LinkBehavior = React.forwardRef((props, ref) => (
+    <RouterLink ref={ref} to="/user/dashboard" {...props} />
+  ));
 
   return (
     <Page className={classes.root} title="Login">
@@ -103,10 +113,14 @@ const SignUpLoginForm = () => {
                     </Col>
                   </Row>
                 </Form.Group>
-
-                <Button variant="contained" color="primary" onClick={onSubmit}>
-                  Login
-                </Button>
+                <Router>
+                  <div>
+                    <br />
+                    <Link component={LinkBehavior}>
+                      <Button variant='contained' color='primary' onSubmit={onSubmit}>Hello</Button>
+                    </Link>
+                  </div>
+                </Router>
               </Form>
             </Grid>
           </Grid>

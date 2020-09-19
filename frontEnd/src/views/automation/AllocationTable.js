@@ -10,40 +10,26 @@ import Paper from '@material-ui/core/Paper';
 import AllocationSlider from '../../components/AllocationSlider';
 import axios from 'axios'
 import url from '../../url'
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container' ;
 
 const useStyles = makeStyles({
   table: {
     minWidth: 250,
   },
 });
-
+let sendVals;
 const getID = () => {
-  // return localStorage.getItem("id")
+
   return '5f651667e37bfe1ffb9871d8'
 }
 
-// function createData(stock, allocation) {
-//   return { stock, allocation};
-// }
-
-// const rows = [
-//     createData('Apple', 'AAPL', 3.7, 67),
-//     createData('Tesla', 'TSLA', 25.0, 51),
-//     createData('GE', 'GE', 1.0, 24),
-//     createData('Twitter', 'TWTR', 6.0, 24),
-//     createData('Groupon', 'GRP', 6.0, 49),
-//     createData('Homewell', 'HWL', 3.2, 87),
-//     createData('The Home Depot', 'THD', 9.0, 37),
-//     createData('Jelly Belly', 'JB', -2.3, 94),
-//     createData('Walmart', 'WM', 26.0, 65),
-//     createData('kellogs', 'KLG', 0.2, 98),
-//     createData('Microsoft', 'MSFT', -6.3, 81),
-//     createData('Splunk', 'SPLK', -19.0, 9),
-//     createData('Bitcoin', 'BTC', 18.0, 63)
-//   ];
-
 export default function AllocationTable() {
   const [rows, setRows] = React.useState([]);
+  const [maxAlloc,setMaxAlloc]= React.useState(100)
+  const [valArr,setValArr]= React.useState({})
+  const [usedAlloc,setUsedAlloc]=React.useState()
+  
   useEffect(() => {
     loadRows();
   }, []);
@@ -52,37 +38,67 @@ export default function AllocationTable() {
       .get(`${url}/portfolios/addTickers/${getID()}`)
       .then(res => {
         console.log('Current Assets', res.data.tickerData);
-        const r = res.data.tickerData;
-        setRows(r);
+        const ro = res.data.tickerData;
+        
+        ro.forEach(r=>{
+          r.allocation = 100/ro.length
+        })
+        setRows(ro);
       })
       .catch(err => console.log(err));
   };
   const classes = useStyles();
 
+  const startVal = 100/rows.length
+  
+
+  // for(let i=0;i<rows.length;i++){
+  //   const [i,setI]=React.useState()
+  // }
+  const sendVals = (name,amount) => {
+    return {name,amount};
+  };
+  
+  rows.map(e=>{
+    
+
+  }
+  )
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="caption table">
-        <caption>Select your desired allocation using the sliders above</caption>
-        <TableHead>
-          <TableRow>
-            {/* <TableCell align="right">Delete Stock</TableCell> */}
-            <TableCell>Stock</TableCell>
-            <TableCell align="right">Allocation amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.symbol}>
-              <TableCell component="th" scope="row">
-                {row.symbol}
-              </TableCell>
-              <TableCell align="right"><AllocationSlider/></TableCell>
-              {/* <TableCell align="right"><AllocationSlider/></TableCell>
-              <TableCell align="right"><AllocationSlider/></TableCell> */}
+    <div>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="caption table">
+          <caption>
+            Select your desired allocation using the sliders above
+          </caption>
+          <TableHead>
+            <TableRow>
+              {/* <TableCell align="right">Delete Stock</TableCell> */}
+              <TableCell>Stock</TableCell>
+              <TableCell align="right">Allocation amount</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <TableRow key={row.symbol}>
+                <TableCell component="th" scope="row">
+                  {row.symbol}
+                </TableCell>
+                <TableCell align="right">
+                  <AllocationSlider max={maxAlloc} val={row.allocation} />
+                </TableCell>
+                {/* <TableCell align="right"><AllocationSlider/></TableCell>
+              <TableCell align="right"><AllocationSlider/></TableCell> */}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Container>
+        <Button variant="outlined" onSubmit={sendVals}>
+          Save
+        </Button>
+      </Container>
+    </div>
   );
 }

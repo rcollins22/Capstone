@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
-
+import Button from '@material-ui/core/Button';
 const useStyles = makeStyles(theme => ({
   root: {
     width: 200 + theme.spacing(3)
@@ -62,9 +62,10 @@ const InputSlider = withStyles({
   }
 })(Slider);
 
-export default function AllocationSlider() {
+export default function AllocationSlider({val, max}) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(30);
+  const [value, setValue] = React.useState(val);
+  let alloc = value
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
@@ -81,6 +82,7 @@ export default function AllocationSlider() {
       setValue(100);
     }
   };
+  
 
   return (
     <Grid container spacing={2} alignItems="center">
@@ -107,6 +109,7 @@ export default function AllocationSlider() {
           }}
         />
       </Grid>
+      
     </Grid>
   );
 }

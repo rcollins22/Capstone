@@ -24,7 +24,6 @@ import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
 import url from '../../url';
 import axios from 'axios';
 
-}
 const getID = () => {
   // return localStorage.getItem("id")
   return '5f651667e37bfe1ffb9871d8'

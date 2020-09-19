@@ -26,9 +26,9 @@ let routes = [
       { path: 'login', element: <SignUpLoginForm /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/leader/dashboard" /> }, //NEEDS TO BE CHANGED!
+      { path: '/', element: <Navigate to="/user/dashboard" /> }, //NEEDS TO BE CHANGED!
       { path: '*', element: <Navigate to="/404" /> }
-    ]
+    ] 
   }
 ];
 // let userID = localStorage.getItem('id');
@@ -37,7 +37,7 @@ let routes = [
 
 const setRoutes = u => {
   if (u === true) {
-    
+
     routes.push({
       path: 'user',
       element: <DashboardLayout />,

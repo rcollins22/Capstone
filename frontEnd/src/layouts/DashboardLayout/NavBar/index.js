@@ -33,10 +33,10 @@ const user = {
 
 let route;
 
-const LeadFollowRoute = (user) =>{
-  user.leader = true ? route = 'leader' : route = 'follower'
-}
-LeadFollowRoute(user)
+const LeadFollowRoute = user => {
+  user.leader = true ? (route = 'user') : (route = 'user');
+};
+LeadFollowRoute(user);
 
 const items = [
   {
@@ -89,41 +89,25 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   }, [location.pathname]);
 
   const content = (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-    >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      >
+    <Box height="100%" display="flex" flexDirection="column">
+      <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className={classes.avatar}
           component={RouterLink}
           src={user.avatar}
           to={`/${route}/account`}
         />
-        <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
-        >
+        <Typography className={classes.name} color="textPrimary" variant="h5">
           {user.name}
         </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
+        <Typography color="textSecondary" variant="body2">
           {user.jobTitle}
         </Typography>
       </Box>
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {items.map(item => (
             <NavItem
               href={item.href}
               key={item.title}

@@ -17,10 +17,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const FollowerSocialView = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const classes = useStyles();
+  
   const handleLimitChange = event => {
     setLimit(event.target.value);
   };
@@ -28,7 +30,7 @@ const FollowerSocialView = () => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
-  
+
   let leaders = [
     { name: 'Mr. Trades', chg: 14.23 },
     { name: 'Rashad', chg: 24.85 },
@@ -53,7 +55,7 @@ const FollowerSocialView = () => {
             ))}
           </Grid>
           <Pagination
-            component='div'
+            component="div"
             count={leaders.length}
             variant="outlined"
             color="primary"

@@ -15,8 +15,10 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import SelectAllocation from './SelectAllocation';
 import Grid from '@material-ui/core/Grid';
+
 import axios from 'axios'
 import url from '../../url'
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -45,6 +47,13 @@ const postName = () => {
     console.log(res)
   })
   .catch(err => console.log(err));
+  return [
+    'Allocate Funds',
+    'Select Assets',
+    'Select Allocations',
+    'Name your Portfolio'
+  ];
+
 }
 
 function getStepContent(step) {
@@ -106,13 +115,13 @@ export default function VerticalLinearStepper() {
               {getStepContent(index)}
               <div className={classes.actionsContainer}>
                 <div>
-                  <Button
+                  {/* <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.button}
                   >
                     Back
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="contained"
                     color="primary"

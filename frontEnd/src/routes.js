@@ -15,7 +15,7 @@ import FollowerDashboard from './views/FollowerDashboard';
 import FollowerSocialView from './views/social/FollowerSocialView';
 import SignUpLoginForm from 'src/views/auth/SignupLoginForm';
 
-let user = { name: 'me', type: false }; //
+let user = { name: 'me', type: true }; //
 let routes = [
   {
     path: '/',
@@ -24,7 +24,7 @@ let routes = [
       { path: 'login', element: <SignUpLoginForm /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/leader/dashboard" /> }, //NEEDS TO BE CHANGED!
+      { path: '/', element: <SignUpLoginForm /> }, //NEEDS TO BE CHANGED! 
       { path: '*', element: <Navigate to="/404" /> }
     ]
   }

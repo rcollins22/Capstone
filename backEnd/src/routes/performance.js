@@ -18,15 +18,16 @@ const fetchPrice = (ticker, callback) => {
   });
 }
 
-router.get('/overall-performance', async (req, res) => {
+router.get('/overall-performance/:userId', async (req, res) => {
     // returns overall percentage of change over specified period of time. /overall-performance?days=2 //
     try {
-        const user = await req.context.models.User.find() // current user id
+        console.log("userId", req.params.userId)
+        const user = await req.context.models.User.findById(req.params.userId) // current user id
         var totalPortfoliosPercentChange = 0; //
 
         user[0].portfolios.forEach(async port => {
             let portfolio = await req.context.models.Portfolio.findById(port._id);
-            let days = req.query.days // req query days count
+            let days = 2//req.query.days // req query days count
             const range = portfolio.history.length >= days && days != 0 ? days : portfolio.history.length
             let dayRange = portfolio.history.slice(0, range)
             // Calculate differences and sum percentage changed.
@@ -39,6 +40,7 @@ router.get('/overall-performance', async (req, res) => {
                 // last portfolio finished calculating
                 // send total percentage changed
                 let twoPlaces = Number(totalPortfoliosPercentChange).toFixed(2);
+                console.log(`overall-performance - ${req.params.userId} = ${twoPlaces}`)
                 return res.send(`${twoPlaces}`)
             }
         });
@@ -48,9 +50,9 @@ router.get('/overall-performance', async (req, res) => {
     }
 })
 
-router.get('/total-balance', async (req, res)=> {
+router.get('/total-balance/:userId', async (req, res)=> {
     try {
-        const user = await req.context.models.User.find() // current user id
+        const user = await req.context.models.User.findById(req.params.userId) // current user id
         var totalportfolioValue = 0
         user[0].portfolios.forEach(async port => {
             let portfolio = await req.context.models.Portfolio.findById(port._id);

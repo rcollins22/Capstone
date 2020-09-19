@@ -25,10 +25,10 @@ router.get('/history/:portfolioId', async (req, res) => {
   return res.send(rv)
 })
 
-router.get('/portfolio-allocations', async (req, res) => {
+router.get('/portfolio-allocations/:userId', async (req, res) => {
   // returns each portfolio's name and amount of funds in the portfolio
   try {
-   const user = await req.context.models.User.find() // get current user
+   const user = await req.context.models.User.findById(req.params.userId) // get current user
    var portfolioInfo = []
 
    user[0].portfolios.forEach(async port => {

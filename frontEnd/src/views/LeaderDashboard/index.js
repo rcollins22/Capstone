@@ -43,7 +43,6 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios.get(`${url}/users/overall-performance/${currUid}`)
     .then(res => {
-      console.log("Todays Change", res.data)
         setTodaysChangeP(res.data.percent)
         setTodaysChangeV(res.data.value)
     })
@@ -54,8 +53,7 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios.get(`${url}/users/followers/${currUid}`)
     .then(res => {
-      console.log("followers", res)
-        setFollowers(res.data)
+      setFollowers(res.data)
     })
     .catch(err => console.log(err));
   }
@@ -76,11 +74,19 @@ const Dashboard = () => {
     .then(res => {
         res.data.forEach((port) => {
           pNames.push(port.name)
-          pData.push(port.startingValue)
+          pData.push(port.currentValue)
         });
         setPortData(pData)
         setPortNames(pNames)
+    })
+    .catch(err => console.log(err));
+  }
 
+  const loadPortfolioHistories = () => {
+    var currUid = localStorage.getItem("id")
+    axios.get(`${url}/portfolios/portfolio-allocations/${currUid}`)
+    .then(res => {
+        //setPortNames(pNames)
     })
     .catch(err => console.log(err));
   }
@@ -108,7 +114,7 @@ const Dashboard = () => {
             <PerformanceSummary />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <OverviewDonut portNames={portNames} portData={portData} />
+            <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />

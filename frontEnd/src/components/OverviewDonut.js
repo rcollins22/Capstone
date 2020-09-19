@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const OverviewDonut = ({ className, portNames, portData, ...rest }) => {
+const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -83,7 +83,7 @@ const OverviewDonut = ({ className, portNames, portData, ...rest }) => {
                 {name}
               </Typography>
               <Typography variant="h2">
-                {portData[index]}%
+                {portData[index]/totalBalance*100}%
               </Typography>
             </Box>
           )) : 'Loading'}

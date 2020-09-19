@@ -33,7 +33,7 @@ router.get('/portfolio-allocations/:userId', async (req, res) => {
 
    user.portfolios.forEach(async port => {
        let portfolio = await req.context.models.Portfolio.findById(port._id);
-       const pf = {name: portfolio.name, startingValue: portfolio.startingValue} //
+       const pf = {name: portfolio.name, currentValue: portfolio.currentValue} //
        portfolioInfo.push(pf)
 
        if (port == user.portfolios.slice(-1)[0]) {

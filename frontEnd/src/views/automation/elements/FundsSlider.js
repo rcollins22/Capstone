@@ -34,7 +34,7 @@ ValueLabelComponent.propTypes = {
 
 const InputSlider = withStyles({
   root: {
-    color: '#4051B5',
+    color: '#0A6D03',
     height: 8
   },
   thumb: {

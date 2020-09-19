@@ -23,29 +23,13 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
 import url from '../../url';
 import axios from 'axios';
-function createData(name, symbol, change24H, price) {
-  return { name, symbol, change24H, price };
+
 }
 const getID = () => {
   // return localStorage.getItem("id")
   return '5f651667e37bfe1ffb9871d8'
 }
-// const rows = [
-//   createData('Apple', 'AAPL', 3.7, 67),
-//   createData('Tesla', 'TSLA', 25.0, 51),
-//   createData('GE', 'GE', 1.0, 24),
-//   createData('Twitter', 'TWTR', 6.0, 24),
-//   createData('Groupon', 'GRP', 6.0, 49),
-//   createData('Homewell', 'HWL', 3.2, 87),
-//   createData('The Home Depot', 'THD', 9.0, 37),
-//   createData('Jelly Belly', 'JB', -2.3, 94),
-//   createData('Walmart', 'WM', 26.0, 65),
-//   createData('kellogs', 'KLG', 0.2, 98),
-//   createData('Microsoft', 'MSFT', -6.3, 81),
-//   createData('Splunk', 'SPLK', -19.0, 9),
-//   createData('Bitcoin', 'BTC', 18.0, 63)
-// ];
-// console.log(rows)
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -264,24 +248,6 @@ export default function AssetTable() {
   // axios.post(`${url}/portfolios/addTickers/${getID()}`, bodyFormData)
   axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
 
-  // let payload = {
-  //   tickers: selected
-  // };
-  // axios
-  //   .post(`${url}portfolios/addTickers/${getID()}`, payload)
-  // // axios({
-  // //   url: `${url}portfolios/addTickers/${getID()}`,
-  // //   method: 'post',
-  // //   data: payload
-  // // })
-  // .then((res) => {
-  //     // your action after success
-  //     console.log(res);
-  // })
-  // .catch((err) => {
-  //    // your action on error success
-  //     console.log(err);
-  // });
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -15,7 +15,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import SelectAllocation from './SelectAllocation';
 import Grid from '@material-ui/core/Grid';
-
+import axios from 'axios'
+import url from '../../url'
 
 
 const useStyles = makeStyles(theme => ({
@@ -35,19 +36,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Allocate Funds','Select Assets', 'Select Allocations', 'Name your Portfolio'];
+  return ['Name your new portfolio','Add funds to your new portfolio','Select Stock(s)', 'Determine allocations',];
+}
+const postName = () => {
+  let name = "My new Portfolio" // @RASHAD THIS IS DUMMY DATA, WE NEED TO MAKE THIS DYNAMIC. 
+  axios.post(`${url}/portfolios/name/:${name}`)
+  .then(res => {
+    console.log(res)
+  })
+  .catch(err => console.log(err));
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return (<SelectAllocation/>);
-    case 0:
-      return (<AssetTable/>);
-    case 1:
-      return (<AllocationTable/>) ;
-    case 2:
-      return (<Grid
+      return (
+      <Grid
         container
         direction="column"
         justify="center"
@@ -59,9 +63,17 @@ function getStepContent(step) {
           <FilledInput
             id="filled-prtfolio-name"
           />
+          <Button variant='outlined' color='primary' onSubmit={postName}
+          save
+          />
         </FormControl>
-      </Grid>
-      );
+      </Grid>);
+    case 1:
+      return (<SelectAllocation/>);
+    case 2:
+      return (<AssetTable/>) ;
+    case 3:
+      return (<AllocationTable/>);
     default:
       return 'Portfolio Created';
   }

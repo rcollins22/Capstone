@@ -10,12 +10,21 @@ router.get('/', async (req, res) => {
   return res.send(prices);
 });
 //  return a price by id
-router.get('/:priceId', async (req, res) => {
+router.get('/return/:priceId', async (req, res) => {
   const price = await req.context.models.Prices.findById(
     req.params.priceId,
   );
   return res.send(price);
 });
+router.get('/assets', async (req, res)=> {
+  // all of the seeded stocks in price table
+  // map through all stocks and get symbol, the 24hr change, and the current price
+  const prices = await req.context.models.Prices.find()
+  let result = prices.map(price => {
+    return {symbol: price.ticker, change: ((price.currPrice - price.prevPrice) / price.prevPrice*100).toFixed(2), price: price.currPrice}
+  })
+  return res.send({"rv": result})
+})
 
 //  return a price by ticker
 router.get('/:ticker', async (req, res) => {

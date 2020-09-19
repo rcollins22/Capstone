@@ -34,6 +34,9 @@ const rows = [
     createData('Splunk', 'SPLK', -19.0, 9),
     createData('Bitcoin', 'BTC', 18.0, 63)
   ];
+const realRows = [
+  createData
+]
 
 export default function AllocationTable() {
   const classes = useStyles();

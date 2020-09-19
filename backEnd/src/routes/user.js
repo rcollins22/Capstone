@@ -22,7 +22,7 @@ router.get('/balance/:userId', async (req, res) => {
     portfoliosValue += value
   }
   let returnValue = user.totalFunds - portfoliosValue
-  return res.send({"returnValue": portfoliosValue})
+  return res.send({"returnValue": returnValue})
 })
  
 // has access to the user identifier to read the correct user from the MongoDB database.

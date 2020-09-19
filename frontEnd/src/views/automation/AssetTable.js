@@ -24,7 +24,6 @@ import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
 import url from '../../url';
 import axios from 'axios';
 
-}
 const getID = () => {
   // return localStorage.getItem("id")
   return '5f651667e37bfe1ffb9871d8'
@@ -239,13 +238,7 @@ export default function AssetTable() {
       })
       .catch(err => console.log(err));
   };
-  console.log(selected)
-  const bodyFormData = new FormData()
-  let tickerList = selected
-  tickerList.forEach((ticker) => {
-    bodyFormData.append('tickerList[]', ticker);
-  });
-  // axios.post(`${url}/portfolios/addTickers/${getID()}`, bodyFormData)
+  
   axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
 
   const handleRequestSort = (event, property) => {

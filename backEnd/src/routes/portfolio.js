@@ -86,10 +86,11 @@ router.get('/addTickers/:id', async (req, res) => {
   let userId = req.params.id
   // find portfolio by name and update funds based on post data
   let p = await findNewPortfolio(userId)
+  console.log(p.tickers)
   let tickerData = p.tickers.map(t => {
-    return {symbol: t.symbol}
+    return {symbol: t.symbol, allocation: 0}
   })
-  return res.send(tickerData);
+  res.send({"tickerData": tickerData})
 });
 
 // add allocations to portfolio tickers based on id

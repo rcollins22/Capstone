@@ -16,8 +16,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import SelectAllocation from './SelectAllocation';
 import Grid from '@material-ui/core/Grid';
 
-
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
@@ -35,32 +33,33 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Allocate Funds','Select Assets', 'Select Allocations', 'Name your Portfolio'];
+  return [
+    'Allocate Funds',
+    'Select Assets',
+    'Select Allocations',
+    'Name your Portfolio'
+  ];
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return (<SelectAllocation/>);
+      return <SelectAllocation />;
     case 1:
-      return (<AssetTable/>);
+      return <AssetTable />;
     case 2:
-      return (<AllocationTable/>) ;
+      return <AllocationTable />;
     case 3:
-      return (<Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        <Typography>Enter Your New Portfolio Name</Typography>
-        <FormControl fullWidth variant="filled">
-          <InputLabel htmlFor="filled-prtfolio-name">Portfolio Name</InputLabel>
-          <FilledInput
-            id="filled-prtfolio-name"
-          />
-        </FormControl>
-      </Grid>
+      return (
+        <Grid container direction="column" justify="center" alignItems="center">
+          <Typography>Enter Your New Portfolio Name</Typography>
+          <FormControl fullWidth variant="filled">
+            <InputLabel htmlFor="filled-prtfolio-name">
+              Portfolio Name
+            </InputLabel>
+            <FilledInput id="filled-prtfolio-name" />
+          </FormControl>
+        </Grid>
       );
     default:
       return 'Portfolio Created';
@@ -94,13 +93,13 @@ export default function VerticalLinearStepper() {
               {getStepContent(index)}
               <div className={classes.actionsContainer}>
                 <div>
-                  <Button
+                  {/* <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.button}
                   >
                     Back
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="contained"
                     color="primary"

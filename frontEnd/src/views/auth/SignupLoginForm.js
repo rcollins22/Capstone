@@ -58,52 +58,57 @@ const SignUpLoginForm = () => {
         justifyContent="center"
       >
         <Container maxWidth="sm">
-          <Grid container spacing={1}>
-            <Form onSubmit={onSubmit}>
-              <Form.Group controlId="formBasicEmail">
-                <Row>
-                  <Col xs="10" sm="11">
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter email"
-                      onChange={e => {
-                        setEmail(e.target.value);
-                        console.log(email);
-                      }}
-                      required
-                    />
-                    
-                  </Col>
-                </Row>
-              </Form.Group>
-              <Form.Group  controlId="formBasicPassword">
-                <Row>             
-                  <Col xs="10" sm="11">
-                    <Form.Control
-                      type="password"
-                      placeholder="Password"
-                      onChange={e => setPassword(e.target.value)}
-                    />
-                  </Col>
-                </Row>
-              </Form.Group>
-              <Form.Group controlId="formBasicCheckbox">
-                <Row>
-                  <Col xs="2" sm="1">
-                    <Form.Check type="checkbox" />
-                  </Col>
-                  <Col xs="10" sm="11">
-                    <Typography>
-                      I hereby confirm that the referral app is allowed to send
-                      me emails, up until I unsubscribe.
-                    </Typography>
-                  </Col>
-                </Row>
-              </Form.Group>
-              <Button variant="contained" color="primary" onClick={onSubmit}>
-                Login
-              </Button>
-            </Form>
+          <Grid item container spacing={50}>
+            <Typography variant="h1">Sign Up/Log In</Typography>
+            <Grid item xs={12}>
+              <Form onSubmit={onSubmit}>
+                <Form.Group controlId="formBasicEmail">
+                  <Row>
+                    <Col xs="1" sm="1">
+                      <Form.Control
+                        size="lg"
+                        type="email"
+                        placeholder="Enter email"
+                        onChange={e => {
+                          setEmail(e.target.value);
+                          console.log(email);
+                        }}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                </Form.Group>
+                <Form.Group controlId="formBasicPassword">
+                  <Row>
+                    <Col xs="10" sm="11">
+                      <Form.Control
+                        size="lg"
+                        type="password"
+                        placeholder="Password"
+                        onChange={e => setPassword(e.target.value)}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Group>
+                <Form.Group controlId="formBasicCheckbox">
+                  <Row>
+                    <Col xs="2" sm="1">
+                      <Form.Check type="checkbox" />
+                    </Col>
+                    <Col xs="10" sm="11">
+                      <Typography>
+                        I hereby confirm that the referral app is allowed to
+                        send me emails, up until I unsubscribe.
+                      </Typography>
+                    </Col>
+                  </Row>
+                </Form.Group>
+
+                <Button variant="contained" color="primary" onClick={onSubmit}>
+                  Login
+                </Button>
+              </Form>
+            </Grid>
           </Grid>
         </Container>
       </Box>

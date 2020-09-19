@@ -24,7 +24,7 @@ const loadAvailableBalance = () => {
   '/balance:userId'
   axios.get(`${url}/users/balance/${getID()}`)
   .then(res => {
-    console.log("Todays Change", res.data.returnValue)
+    console.log("Avaliable Balance", res.data.returnValue)
     setAvailableBalance(res.data.returnValue) // returns at Number that represents a percent.
   })
   .catch(err => console.log(err));

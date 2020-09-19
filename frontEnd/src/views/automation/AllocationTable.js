@@ -59,6 +59,8 @@ export default function AllocationTable() {
   };
   const classes = useStyles();
 
+  // axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="caption table">

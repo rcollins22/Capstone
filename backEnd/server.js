@@ -219,6 +219,6 @@ const createUser = async () => {
 //     }
 
 
-createPortfoliosAndUsers()
-scheduledUpdate()
+// createPortfoliosAndUsers()
+// scheduledUpdate()
 // test()

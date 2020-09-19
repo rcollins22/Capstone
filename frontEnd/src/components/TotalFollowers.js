@@ -58,7 +58,7 @@ const TotalFollowers = ({ className, followers, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              {followers ? `${followers}%` : 'loading'}
+              {followers > -1 ? `${followers}` : 'Loading'}
             </Typography>
           </Grid>
           <Grid item>
@@ -72,18 +72,18 @@ const TotalFollowers = ({ className, followers, ...rest }) => {
           display="flex"
           alignItems="center"
         >
-          <ArrowUpwardIcon className={classes.differenceIcon} />
+          {/* <ArrowUpwardIcon className={classes.differenceIcon} /> */}
           <Typography
             className={classes.differenceValue}
             variant="body2"
           >
-            16%
+            {/* 16% */}
           </Typography>
           <Typography
             color="textSecondary"
             variant="caption"
           >
-            Since last month
+            {/* Since last month */}
           </Typography>
         </Box>
       </CardContent>

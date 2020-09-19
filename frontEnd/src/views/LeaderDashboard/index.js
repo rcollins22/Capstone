@@ -23,28 +23,39 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const classes = useStyles();
 
-
-  const [todaysChange, setTodaysChange] = useState()
-  const [totalFollowers, setFollowers] = useState()
-  const [portfolioAllocations, setPortAllocations] = useState()
-  const [totalBalance, setBalance] = useState()
+  // Portfolio Values
+  const [portNames, setPortNames] = useState()
+  const [portData, setPortData] = useState()
+  // End
+  const [todaysChangeP, setTodaysChangeP] = useState() // Percentage
+  const [todaysChangeV, setTodaysChangeV] = useState() // Value
+  const [totalFollowers, setFollowers] = useState(-1)
+  const [totalBalance, setBalance] = useState(-1)
 
   useEffect(() => {
-   //loadTodaysChange()
+   loadTodaysChange()
     loadAvailableBalance()
-    //loadPortfolioAllocations()
+    getFollowerCount()
+    loadPortfolioAllocations()
   }, []);
 
   const loadTodaysChange = () => {
-    
     var currUid = localStorage.getItem("id") //exemplar call to local storage
-    //axios.get(`/performance/overall-performance?days=2/${currUid}`)
-    console.log('TODAYS CHANGE', currUid)
-    // axios.get(`${url}/performance/overall-performance/${currUid}`)
-    axios.get('/')
+    axios.get(`${url}/users/overall-performance/${currUid}`)
     .then(res => {
       console.log("Todays Change", res.data)
-        setTodaysChange(res.data) // returns at Number that represents a percent.
+        setTodaysChangeP(res.data.percent)
+        setTodaysChangeV(res.data.value)
+    })
+    .catch(err => console.log(err));
+  }
+
+  const getFollowerCount = () => {
+    var currUid = localStorage.getItem("id") //exemplar call to local storage
+    axios.get(`${url}/users/followers/${currUid}`)
+    .then(res => {
+      console.log("followers", res)
+        setFollowers(res.data)
     })
     .catch(err => console.log(err));
   }
@@ -53,11 +64,27 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id")
     axios.get(`${url}/users/balance/${currUid}`)
     .then(res => {
-      console.log("Todays Change", res.data.returnValue)
-      //setAvailableBalance(res.data.returnValue) // returns at Number that represents a percent.
+      setBalance(res.data) // returns at Number that represents a percent.
     })
     .catch(err => console.log(err));
   }
+
+  const loadPortfolioAllocations = () => {
+    var currUid = localStorage.getItem("id")
+    var pNames = []; var pData = [];
+    axios.get(`${url}/portfolios/portfolio-allocations/${currUid}`)
+    .then(res => {
+        res.data.forEach((port) => {
+          pNames.push(port.name)
+          pData.push(port.startingValue)
+        });
+        setPortData(pData)
+        setPortNames(pNames)
+        
+    })
+    .catch(err => console.log(err));
+  }
+
 
   //5f64f5c4d47886242c72ea6c
 
@@ -66,22 +93,22 @@ const Dashboard = () => {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysChange change={todaysChange} />
+            <TodaysChange change={todaysChangeP} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TotalFollowers />
+            <TotalFollowers followers={totalFollowers} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysMoney />
+            <TodaysMoney money={todaysChangeV} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TotalBalance />
+            <TotalBalance balance={totalBalance} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <PerformanceSummary />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <OverviewDonut />
+            <OverviewDonut portNames={portNames} portData={portData} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />

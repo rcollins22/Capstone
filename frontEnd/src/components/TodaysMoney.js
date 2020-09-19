@@ -72,18 +72,18 @@ const TodaysChange = ({ className, money, ...rest }) => {
           display="flex"
           alignItems="center"
         >
-          <ArrowDownwardIcon className={classes.differenceIcon} />
+          {/* <ArrowDownwardIcon className={classes.differenceIcon} /> */}
           <Typography
             className={classes.differenceValue}
             variant="body2"
           >
-            12%
+            {/* 12% */}
           </Typography>
           <Typography
             color="textSecondary"
             variant="caption"
           >
-            Since last month
+            {/* Since last */}
           </Typography>
         </Box>
       </CardContent>

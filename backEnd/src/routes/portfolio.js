@@ -31,12 +31,12 @@ router.get('/portfolio-allocations/:userId', async (req, res) => {
    const user = await req.context.models.User.findById(req.params.userId) // get current user
    var portfolioInfo = []
 
-   user[0].portfolios.forEach(async port => {
+   user.portfolios.forEach(async port => {
        let portfolio = await req.context.models.Portfolio.findById(port._id);
        const pf = {name: portfolio.name, startingValue: portfolio.startingValue} //
        portfolioInfo.push(pf)
 
-       if (port == user[0].portfolios.slice(-1)[0]) {
+       if (port == user.portfolios.slice(-1)[0]) {
            // last portfolio finished calculating
            return res.send(portfolioInfo) // send all porfolio infos.
        }

@@ -23,43 +23,16 @@ import {
   Users as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
+import url from '../../../url'
+import axios from 'axios'
 
-const user = {
-  avatar: 'https://picsum.photos/200',
-  jobTitle: 'Leader',
-  name: 'Rashad Collins',
-  leader: true
-};
 
-let route;
-
-const LeadFollowRoute = user => {
-  user.leader = true ? (route = 'user') : (route = 'user');
-};
-LeadFollowRoute(user);
-
-const items = [
-  {
-    href: `/${route}/dashboard`,
-    icon: BarChartIcon,
-    title: 'Dashboard'
-  },
-  {
-    href: `/${route}/social`,
-    icon: UsersIcon,
-    title: 'Social'
-  },
-  {
-    href: `/${route}/automations`,
-    icon: ToggleRightIcon,
-    title: 'Automation'
-  },
-  {
-    href: `/${route}/Portfolio`,
-    icon: PieChartIcon,
-    title: 'Portfolio'
-  }
-];
+// const user = {
+//   avatar: 'https://picsum.photos/200',
+//   jobTitle: 'Leader',
+//   name: 'Rashad Collins',
+//   leader: true
+// };
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -78,6 +51,56 @@ const useStyles = makeStyles(() => ({
 }));
 
 const NavBar = ({ onMobileClose, openMobile }) => {
+  const [name, setName] = React.useState("");
+  useEffect(() => {
+    loadName();
+  }, []);
+  const loadName = () => {
+    axios
+      .get(`${url}/users/name/${localStorage.getItem("id")}`)
+      .then(res => {
+        console.log('Users name', res.data.rv);
+        const r = res.data.rv;
+        setName(r);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const user = {
+    avatar: 'https://picsum.photos/200',
+    jobTitle: localStorage.getItem("leader") ? "Leader" : "Follower",
+    name: name,
+    leader: localStorage.getItem("leader")
+  }
+  let route;
+
+  const LeadFollowRoute = user => {
+    user.leader = true ? (route = 'user') : (route = 'user');
+  };
+  LeadFollowRoute(user);
+
+  const items = [
+    {
+      href: `/${route}/dashboard`,
+      icon: BarChartIcon,
+      title: 'Dashboard'
+    },
+    {
+      href: `/${route}/social`,
+      icon: UsersIcon,
+      title: 'Social'
+    },
+    {
+      href: `/${route}/automations`,
+      icon: ToggleRightIcon,
+      title: 'Automation'
+    },
+    {
+      href: `/${route}/Portfolio`,
+      icon: PieChartIcon,
+      title: 'Portfolio'
+    }
+  ];
   const classes = useStyles();
   const location = useLocation();
 

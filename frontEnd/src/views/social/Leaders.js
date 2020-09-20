@@ -137,13 +137,13 @@ const Leaders = ({ className, leaders, ...rest }) => {
                     {leader.email}
                   </TableCell>
                   <TableCell>
-                    {`${leader.address.city}, ${leader.address.state}, ${leader.address.country}`}
+                    {leader.followers}
                   </TableCell>
                   <TableCell>
-                    {leader.phone}
+                    {leader.monthlyPerformance}
                   </TableCell>
                   <TableCell>
-                    {moment(leader.createdAt).format('DD/MM/YYYY')}
+                    {moment(leader.creationDate).format('DD/MM/YYYY')}
                   </TableCell>
                 </TableRow>
               ))}

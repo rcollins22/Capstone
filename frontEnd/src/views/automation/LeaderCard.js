@@ -67,7 +67,7 @@ export default function LeaderCard({ name, chg, ...rest }) {
       curve: 'smooth'
     },
     fill: {
-      opacity: 0.3,
+      opacity: 0.5,
       color: '#0A6D03'
     },
     yaxis: {

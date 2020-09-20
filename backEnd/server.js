@@ -115,6 +115,7 @@ connectDb().then(async () => {
 // }
 
 const createPortfoliosAndUsers = async () => {
+  console.log("created")
     await Promise.all([
         models.User.deleteMany({}),
         models.Portfolio.deleteMany({})
@@ -126,7 +127,7 @@ const createPortfoliosAndUsers = async () => {
         password: pswrd,
         leader: true,
         followers: 0,
-        totalFunds: 3179.99,
+        totalFunds: 4179.99,
         portfolios: []
       });
       await user1.save();
@@ -147,7 +148,7 @@ const createPortfoliosAndUsers = async () => {
         usableFunds: 0,
         startingValue: 1500,
         currentValue: 3179.99,
-        tickers: [{symbol : 'TSLA', allocation: 0, desiredAllocation: 50, currValue: 0, units: 0}, {symbol : 'AMZN', allocation: 100, desiredAllocation: 50, currValue: 3179.99, units: 1}],
+        tickers: [{symbol : 'TSLA', allocation: 0, desiredAllocation: 33, currValue: 0, units: 0}, {symbol : 'AMZN', allocation: 100, desiredAllocation: 33, currValue: 3179.99, units: 1}],
         followers: [],
         history: [{date : new Date("2016-05-18T16:00:00Z"), value: 1500}, {date : new Date("2016-05-19T16:00:00Z"), value: 3179.99}],
         user: user1.id,
@@ -217,7 +218,6 @@ const createUser = async () => {
 //         models.Stock.deleteMany({}),
 //       ]);
 //     }
-
 
 // createPortfoliosAndUsers()
 // scheduledUpdate()

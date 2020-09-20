@@ -17,7 +17,7 @@ let usableBal = 2347.23
 
 export default function SelectAllocation({onComplete}) {
 // const [projectedBalance, setProjectedBalance] = useState()
-const [availableBalance, setAvailableBalance] = useState()
+const [availableBalance, setAvailableBalance] = useState(0)
 const [sliderValue, setSliderValue] = useState(0)
   useEffect(() => {
     loadAvailableBalance()
@@ -56,6 +56,8 @@ console.log(sliderValue)
         </Typography>
         <br/>
     <Typography variant="h3">Avaliable Balance: ${availableBalance}</Typography>
+    <br/>
+    <Typography variant="h3">New Portfolio Balance: ${sliderValue*0.01*availableBalance}</Typography>
       </Grid>
       <Grid>
           <br/>

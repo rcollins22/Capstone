@@ -31,13 +31,29 @@ const Dashboard = () => {
   const [todaysChangeV, setTodaysChangeV] = useState() // Value
   const [totalFollowers, setFollowers] = useState(-1)
   const [totalBalance, setBalance] = useState(-1)
+  const [chartData, setChartData] = useState()
 
   useEffect(() => {
    loadTodaysChange()
     loadAvailableBalance()
     getFollowerCount()
     loadPortfolioAllocations()
+    loadUserPerformanceGraphData()
   }, []);
+
+  const loadUserPerformanceGraphData = () => {
+    var currUid = localStorage.getItem("id") //exemplar call to local storage
+    axios
+    .get(`${url}/users/performance-graph/${currUid}`)
+    .then(res => {
+      console.log("Data", [res.data.rv])
+
+        console.log("chart Data", res.data.rv)
+
+        setChartData(res.data.rv)
+    })
+    .catch(err => console.log(err));
+  }
 
   const loadTodaysChange = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
@@ -111,7 +127,7 @@ const Dashboard = () => {
             <TotalBalance balance={totalBalance} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <PerformanceSummary />
+            <PerformanceSummary chartData={chartData} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />

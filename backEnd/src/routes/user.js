@@ -10,6 +10,11 @@ router.get('/', async (req, res) => {
   return res.send(users);
 });
 
+router.get('/name/:id', async (req, res) => {
+  const user = await req.context.models.User.findById(req.params.id);
+  return res.send({"rv": user.name})
+});
+
 router.get('/balance/:userId', async (req, res) => {
   // map through all portfolios, sum up total currentValues, subtract tht from user Totals funds
   // synchronousloy map through portfolios
@@ -72,8 +77,6 @@ router.get('/follower/leaders/data', async (req, res) => {
     })
     allUsersPerformances.push(result) // push this user to the final array
   }
-  console.log(allUsersPerformances)
-  console.log(allUsersPerformances[0])
   return res.send({"rv": allUsersPerformances})
 })
  

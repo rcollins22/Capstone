@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import AllocationSlider from '../../components/AllocationSlider';
 import axios from 'axios'
 import url from '../../url'
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   table: {
@@ -18,8 +19,8 @@ const useStyles = makeStyles({
 });
 
 const getID = () => {
-  // return localStorage.getItem("id")
-  return '5f651667e37bfe1ffb9871d8'
+  return localStorage.getItem("id")
+  // return '5f668a67cd1885550c833916'
 }
 
 // function createData(stock, allocation) {
@@ -57,9 +58,13 @@ export default function AllocationTable() {
       })
       .catch(err => console.log(err));
   };
+  const postAllocations = () => {
+      console.log(this.fieldEditor1.state)
+      // axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+  }
   const classes = useStyles();
 
-  // axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+  
 
   return (
     <TableContainer component={Paper}>
@@ -79,12 +84,23 @@ export default function AllocationTable() {
                 {row.symbol}
               </TableCell>
               <TableCell align="right"><AllocationSlider/></TableCell>
-              {/* <TableCell align="right"><AllocationSlider/></TableCell>
-              <TableCell align="right"><AllocationSlider/></TableCell> */}
+              {/* <TableCell align="right"><AllocationSlider
+              ref={{(eval('var' + "allocationEditor" + row.symbol)} => {this.fieldEditor1 = fieldEditor1;}
+              {...props}
+              /></TableCell> */}
+              {/* <TableCell align="right"><AllocationSlider
+                ref={(fieldEditor1) => {this.fieldEditor1 = fieldEditor1;}}
+              /></TableCell> */}
+              {/* <TableCell align="right"><AllocationSlider/></TableCell> */}
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <Button
+          variant="contained"
+          color="primary"
+          onClick={postAllocations}
+          >Save Allocations - Only Press Once</Button>
     </TableContainer>
   );
 }

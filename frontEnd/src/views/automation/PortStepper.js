@@ -14,10 +14,8 @@ import FilledInput from '@material-ui/core/FilledInput';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import SelectAllocation from './SelectAllocation';
-import Grid from '@material-ui/core/Grid';
+import NamePortfolio from './elements/NamePortfolio'
 
-import axios from 'axios'
-import url from '../../url'
 
 
 
@@ -38,45 +36,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Name your new portfolio','Add funds to your new portfolio','Select Stock(s)', 'Determine allocations',];
+  return ['Name your new portfolio','Add funds to your new portfolio','Select Stock(s)', 'Determine allocations'];
 }
-const postName = () => {
-  let name = "My new Portfolio" // @RASHAD THIS IS DUMMY DATA, WE NEED TO MAKE THIS DYNAMIC. 
-  axios.post(`${url}/portfolios/name/:${name}`)
-  .then(res => {
-    console.log(res)
-  })
-  .catch(err => console.log(err));
-  return [
-    'Allocate Funds',
-    'Select Assets',
-    'Select Allocations',
-    'Name your Portfolio'
-  ];
-
-}
+// const postName = () => {
+//   let name = "My new Portfolio" // @RASHAD THIS IS DUMMY DATA, WE NEED TO MAKE THIS DYNAMIC. 
+  
+// }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return (
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        <Typography>Enter Your New Portfolio Name</Typography>
-        <FormControl fullWidth variant="filled">
-          <InputLabel htmlFor="filled-prtfolio-name">Portfolio Name</InputLabel>
-          <FilledInput
-            id="filled-prtfolio-name"
-          />
-          <Button variant='outlined' color='primary' onSubmit={postName}
-          save
-          />
-        </FormControl>
-      </Grid>);
+      return (<NamePortfolio />)
     case 1:
       return (<SelectAllocation/>);
     case 2:

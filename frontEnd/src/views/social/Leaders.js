@@ -74,77 +74,40 @@ const Leaders = ({ className, leaders, ...rest }) => {
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
         <Box minWidth={1050}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Location
-                </TableCell>
-                <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Registration date
-                </TableCell>
+                <TableCell></TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Followers</TableCell>
+                <TableCell>Change(%)</TableCell>
+                <TableCell>Performance</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {leaders.slice(0, limit).map((leader) => (
+              {leaders.slice(0, limit).map(leader => (
                 <TableRow
                   hover
                   key={leader.id}
                   selected={selectedLeaderIds.indexOf(leader.id) !== -1}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedLeaderIds.indexOf(leader.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, leader.id)}
-                      value="true"
-                    />
+                  <TableCell >
                   </TableCell>
                   <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <Avatar
-                        className={classes.avatar}
-                        src={leader.avatarUrl}
-                      >
+                    <Box alignItems="center" display="flex">
+                      <Avatar className={classes.avatar} src={leader.avatarUrl}>
                         {getInitials(leader.name)}
                       </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
+                      <Typography color="textPrimary" variant="body1">
                         {leader.name}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>
-                    {leader.email}
-                  </TableCell>
-                  <TableCell>
-                    {leader.followers}
-                  </TableCell>
-                  <TableCell>
-                    {leader.monthlyPerformance}
-                  </TableCell>
-                  <TableCell>
-                    {moment(leader.creationDate).format('DD/MM/YYYY')}
-                  </TableCell>
+                  <TableCell>{leader.followers}</TableCell>
+              <TableCell>{}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

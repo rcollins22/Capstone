@@ -35,7 +35,7 @@ let routes = [
 // let isLeader = localStorage.getItem('leader');
 
 const setRoutes = u => {
-  if (u) {
+  if (u/2!==0) {
 
     routes.push({
       path: 'user',
@@ -43,6 +43,7 @@ const setRoutes = u => {
       children: [
         { path: 'account', element: <AccountView /> },
         { path: 'social', element: <LeaderListView /> },
+        { path: 'test', element: <FollowerSocialView/> },
         { path: 'dashboard', element: <LeaderDashboard /> },
         { path: 'automations', element: <AutomationStepper /> },
         { path: 'settings', element: <SettingsView /> },
@@ -66,6 +67,6 @@ const setRoutes = u => {
     });
   }
 };
-setRoutes(localStorage.getItem('leader'));
+setRoutes(7);
 
 export default routes;

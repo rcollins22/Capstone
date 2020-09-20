@@ -40,7 +40,7 @@ const LeaderListView = () => {
   return (
     <Page
       className={classes.root}
-      title="Customers"
+      title="Leaders"
     >
       <Container maxWidth={false}>
         <Toolbar />

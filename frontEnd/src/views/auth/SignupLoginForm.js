@@ -28,9 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
-
-const SignUpLoginForm = () => {
+const SignUpLoginForm = ({onLogIn}) => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,6 +47,7 @@ const SignUpLoginForm = () => {
         localStorage.setItem('id', res.data.success.id); //save id to local storage
         localStorage.setItem('leader', res.data.success.leader); // save leader boolean to local storage
         // var aValue = localStorage.getItem("id") exemplar call to local storage
+        onLogIn(true)
       })
       .catch(err => {
         console.log(err);
@@ -117,7 +116,7 @@ const SignUpLoginForm = () => {
                   <div>
                     <br />
                     <Link component={LinkBehavior}>
-                      <Button variant='contained' color='primary' onSubmit={onSubmit}>Hello</Button>
+                      <Button variant='contained' color='primary' onClick={onSubmit}>Hello</Button>
                     </Link>
                   </div>
                 </Router>

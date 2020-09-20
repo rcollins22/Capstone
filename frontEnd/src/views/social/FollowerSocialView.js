@@ -33,28 +33,30 @@ const FollowerSocialView = () => {
     setPage(newPage);
   };
 
-  // let leaders = [
-  //   { name: 'Mr. Trades', chg: 14.23 },
-  //   { name: 'Rashad', chg: 24.85 },
-  //   { name: 'David', chg: -4.2 },
-  //   { name: 'Nathan', chg: 13.34 },
-  //   { name: 'Carrie', chg: -10.45 },
-  //   { name: 'Allie', chg: 1.03 },
-  //   { name: 'Clint', chg: 2.34 },
-  //   { name: 'Adnan', chg: -12.45 },
-  //   { name: 'Dana', chg: 0.04 },
-  //   { name: 'Kevin', chg: -2.41 }
-  // ];
-  // data =         [1, 34],
-  // [3.8, 43],
-  // [5, 31],
-  // [10, 43],
-  // [13, 33],
-  // [15, 43],
-  // [18, 33],
-  // [20, 52]
-    const [leaders, setLeaders] = React.useState([]);
-    const [data, setData] = React.useState([]);
+  let leaders = [
+    { name: 'Mr. Trades', chg: 14.23 },
+    { name: 'Rashad', chg: 24.85 },
+    { name: 'David', chg: -4.2 },
+    { name: 'Nathan', chg: 13.34 },
+    { name: 'Carrie', chg: -10.45 },
+    { name: 'Allie', chg: 1.03 },
+    { name: 'Clint', chg: 2.34 },
+    { name: 'Adnan', chg: -12.45 },
+    { name: 'Dana', chg: 0.04 },
+    { name: 'Kevin', chg: -2.41 }
+  ];
+  let data = [
+    [1, 34],
+    [3.8, 43],
+    [5, 31],
+    [10, 43],
+    [13, 33],
+    [15, 43],
+    [18, 33],
+    [20, 52]
+  ];
+    // const [leaders, setLeaders] = React.useState([]);
+    // const [data, setData] = React.useState([]);
     useEffect(() => {
       loadData();
       loadLeaders();
@@ -65,7 +67,7 @@ const FollowerSocialView = () => {
         .then(res => {
           console.log('FollowerView Leaders data', res.data.rv);
           const rv = res.data.rv;
-          setData(rv);
+          // setData(rv);
         })
         .catch(err => console.log(err));
     };
@@ -75,7 +77,7 @@ const FollowerSocialView = () => {
         .then(res => {
           console.log('FollowerView Leaders', res.data.rv);
           const r = res.data.rv;
-          setLeaders(r);
+          // setLeaders(r);
         })
         .catch(err => console.log(err));
     };

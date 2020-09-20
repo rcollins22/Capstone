@@ -31,6 +31,11 @@ router.get('/balance/:userId', async (req, res) => {
   return res.send({"returnValue": returnValue})
 })
 
+router.get('/followers/:userId', async (req, res) => {
+  const user = await req.context.models.User.findById(req.params.userId)
+  res.send(`${user.followers}`)
+})
+
 router.get('/leaders', async (req, res) => {
   const users = await req.context.models.User.find()
   const leaders = users.filter(u => u.leader==true)
@@ -87,6 +92,67 @@ router.get('/:userId', async (req, res) => {
   );
   return res.send(user);
 });
+
+router.get('/overall-performance/:userId', async (req, res) => {
+  // returns overall percentage of change over specified period of time. /overall-performance?days=2 //
+  try {
+      const user = await req.context.models.User.findById(req.params.userId) // current user id
+      var totalPortfoliosPercentChange = 0; //
+      var dayIncreaseOrDecrease = 0
+
+      user.portfolios.forEach(async port => {
+          let portfolio = await req.context.models.Portfolio.findById(port._id);
+          let days = 2//req.query.days // req query days count
+          const range = portfolio.history.length >= days && days != 0 ? days : portfolio.history.length
+          let dayRange = portfolio.history.slice(0, range)
+          // Calculate differences and sum percentage changed.
+          let difference = dayRange[0].value - dayRange.slice(-1)[0].value
+          let percent = (difference / dayRange[0].value) * 100 // if its negative - its a increase; if its positive - its a decrease.
+          let percentChange = percent < 0 ? Math.abs(percent) : -Math.abs(percent) // invert negative and positive signs. 20% = increase, -20% = decrease
+          totalPortfoliosPercentChange+=percentChange // add the percent change to the total percent change.
+          dayIncreaseOrDecrease = difference > 0 ? -Math.abs(difference) : Math.abs(difference)
+          if (port == user.portfolios.slice(-1)[0]) {
+              // last portfolio finished calculating
+              // send total percentage changed
+              let pChanged2Decimals = Number(totalPortfoliosPercentChange).toFixed(2);
+              let vChanged2Decimals = Number(dayIncreaseOrDecrease).toFixed(2);
+              return res.json({percent: pChanged2Decimals, value: vChanged2Decimals})
+          }
+      });
+  } catch (err) {
+      // user can't be found
+      return res.send(err)
+  }
+})
+
+router.get('/total-balance/:userId', async (req, res)=> {
+  try {
+      const user = await req.context.models.User.findById(req.params.userId) // current user id
+      return res.send(user.totalFunds)
+  } catch (err) {
+      // user can't be found
+      return res.send(err)
+  }
+})
+
+// will send performance in percentage of any specific portfolio over 'x' amount of days. /213241421?days=2
+router.get('/portfolio/:portfolioId', async (req, res) => {
+  try {
+      let portfolio = await req.context.models.Portfolio.findById(req.params.portfolioId);
+      let days = req.query.days // req query days count
+      const range = portfolio.history.length >= days && days != 0 ? days : portfolio.history.length
+      let dayRange = portfolio.history.slice(0, range)
+
+      // Calculate differences and sum percentage changed.
+      let difference = dayRange[0].value - dayRange.slice(-1)[0].value
+      let percent = (difference / dayRange[0].value) * 100 // if its negative - its a increase; if its positive - its a decrease.
+      let percentChange = percent < 0 ? Math.abs(percent) : -Math.abs(percent) // invert negative and positive signs. 20% = increase, -20% = decrease
+      res.send(`${percentChange}`)
+
+  } catch (err) {
+      res.send("Can't Find Portfolio")
+  }
+})
  
 // export default router;
 // exports.router = router;

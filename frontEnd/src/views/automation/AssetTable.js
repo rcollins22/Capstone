@@ -23,6 +23,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
 import url from '../../url';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 const getID = () => {
   return localStorage.getItem("id")
@@ -215,7 +216,7 @@ const useStyles = makeStyles(theme => ({
     width: 1
   }
 }));
-export default function AssetTable() {
+export default function AssetTable({onComplete}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('chg');
@@ -238,8 +239,15 @@ export default function AssetTable() {
       })
       .catch(err => console.log(err));
   };
-  
-  axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+  const postAssets = (event) => {
+    event.preventDefault();
+    axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+    .then(res => {
+        console.log(res.data.rv)
+        onComplete() // 
+    })
+    .catch(err => console.log(err));
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -349,6 +357,11 @@ export default function AssetTable() {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={postAssets}
+            >Save Assets</Button>
       </Paper>
     </div>
   );

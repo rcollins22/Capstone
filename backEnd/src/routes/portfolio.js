@@ -4,14 +4,12 @@ const { models } = require('../models')
 
 
 const findNewPortfolio = async (userId) => {
-  const portfolios = await models.Portfolio.find(); // all portfolios
-
-  // just for testing purposes
-  return portfolios[0]
-
-  // const ports = portfolios.filter(p => p.user.toString() === userId.toString()) // all portfolios for this user
-  // const p = ports.find(p => p.history.length == 0) //only a new portfolio would have zero history
-  // return p
+    const portfolios = await models.Portfolio.find(); // all portfolios
+    // // just for testing purposes
+    // return portfolios[0]
+    const ports = portfolios.filter(p => p.user.toString() === userId.toString()) // all portfolios for this user
+    const p = ports.find(p => p.history.length == 0) //only a new portfolio would have zero history
+  return p
 }
  
 const router = Router();
@@ -27,7 +25,7 @@ router.get('/:portfolioId', async (req, res) => {
   );
   return res.send(portfolio);
 });
-  
+
 // return a portfolio history over the last x days
 router.get('/history/:portfolioId', async (req, res) => {
     let interval = req.query.days;
@@ -64,7 +62,7 @@ router.post('/addFunds/:id/:funds', async (req, res) => {
   let p = await findNewPortfolio(userId)
   await models.Portfolio.updateOne({ _id: p._id },
     { usableFunds: data })
-  return res.send(p);
+  return res.send({"rv": p});
 });
 
 // add portfolio tickers based on id
@@ -82,6 +80,28 @@ router.post('/addTickers/:id/', async (req, res) => {
   return res.send("Complete");
 });
 
+router.get('/portfolio-allocations/:userId', async (req, res) => {
+  // returns each portfolio's name and amount of funds in the portfolio
+  try {
+   const user = await req.context.models.User.findById(req.params.userId) // get current user
+   var portfolioInfo = []
+
+   user.portfolios.forEach(async port => {
+       let portfolio = await req.context.models.Portfolio.findById(port._id);
+       const pf = {name: portfolio.name, currentValue: portfolio.currentValue} //
+       portfolioInfo.push(pf)
+
+       if (port == user.portfolios.slice(-1)[0]) {
+           // last portfolio finished calculating
+           return res.send(portfolioInfo) // send all porfolio infos.
+       }
+   });
+ } catch (err) {
+     // user can't be found
+     return res.send(err)
+ }
+});
+
 // return new portfolio tickers based on id
 router.get('/addTickers/:id', async (req, res) => {
   let userId = req.params.id
@@ -96,22 +116,23 @@ router.get('/addTickers/:id', async (req, res) => {
 
 // add allocations to portfolio tickers based on id
 router.post('/addAllocations/:id', async (req, res) => {
-  console.log(req) // how do I grab the payload???
-  let userId = req.params.id
-  let tickerAllocations = req.data // assume this is array of ticker with desiredAllocations
-  // find portfolio by name and update funds based on post data
-  let p = await findNewPortfolio(userId)
-  let tickerAs = tickers.map(t => {
-    return {symbol: t.symbol, allocation: 0, desiredAllocation: tickerAllocations.allocation, currValue: 0, units: 0}
-  })
-  await models.Portfolio.updateOne({ _id: p._id },
-    { tickers: tickerAs })
-  // allocate portfolio
-  for (let i = 0; i < p.tickers.length; i++) {
-    let ticker = p.tickers[i]
-    await allocate(p._id, ticker.desiredAllocation, ticker.symbol)
-  }
-  return res.send(p);
+  let tickers = req.query.tickers.split(',')
+  console.log(tickers)
+  // let allocations = req.query.allocations.split(',')
+  // console.log(allocations)
+  // // find portfolio by name and update funds based on post data
+  // let p = await findNewPortfolio(userId)
+  // let tickerAs = tickers.map(t => {
+  //   return {symbol: t.symbol, allocation: 0, desiredAllocation: tickerAllocations.allocation, currValue: 0, units: 0}
+  // })
+  // await models.Portfolio.updateOne({ _id: p._id },
+  //   { tickers: tickerAs })
+  // // allocate portfolio
+  // for (let i = 0; i < p.tickers.length; i++) {
+  //   let ticker = p.tickers[i]
+  //   await allocate(p._id, ticker.desiredAllocation, ticker.symbol)
+  // }
+  // return res.send(p);
 });
 // update portfolio based on form
 router.put('/update/:userId/:name', async (req, res) => {

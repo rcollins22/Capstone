@@ -24,7 +24,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function LeaderCard({ name, chg, data, ...rest }) {
+export default function LeaderCard({ name, chg, data, followers, ...rest }) {
+  const now = new Date();
+  const monthAgo = now.setDate(now.getDate() - 30);
   const classes = useStyles();
   const series = [
     {
@@ -50,6 +52,12 @@ export default function LeaderCard({ name, chg, data, ...rest }) {
     yaxis: {
       min: 0
     },
+    xaxis:{
+      type: 'datetime',
+      max: now,
+      min: monthAgo
+    
+    },
     colors: ['#0A6D03'],
     title: {
       text: `${name}`,
@@ -59,7 +67,7 @@ export default function LeaderCard({ name, chg, data, ...rest }) {
       }
     },
     subtitle: {
-      text: `${chg}%`,
+      text: `${chg}%   (${followers} followers)`,
       offsetX: 0,
       style: {
         fontSize: '14px'

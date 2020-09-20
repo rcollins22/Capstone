@@ -88,7 +88,7 @@ const FollowerSocialView = () => {
         <Box mt={3}>
           <Grid container spacing={1}>
             {leaders.map((leader, idx) => (
-              <LeaderCard name={leader.name} chg={leader.chg} data = {data[idx]} />
+              <LeaderCard name={leader.name} chg={leader.chg} data = {data} />
             ))}
           </Grid>
           <Pagination

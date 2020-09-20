@@ -43,7 +43,7 @@ const setRoutes = u => {
       children: [
         { path: 'account', element: <AccountView /> },
         { path: 'social', element: <LeaderListView /> },
-        { path: 'test', element: <RegisterView/> },
+        { path: 'test', element: <FollowerSocialView/> },
         { path: 'dashboard', element: <LeaderDashboard /> },
         { path: 'automations', element: <AutomationStepper /> },
         { path: 'settings', element: <SettingsView /> },

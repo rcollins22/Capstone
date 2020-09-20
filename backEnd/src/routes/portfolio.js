@@ -64,7 +64,7 @@ router.post('/addFunds/:id/:funds', async (req, res) => {
   let p = await findNewPortfolio(userId)
   await models.Portfolio.updateOne({ _id: p._id },
     { usableFunds: data })
-  return res.send(p);
+  return res.send({"rv": p});
 });
 
 // add portfolio tickers based on id

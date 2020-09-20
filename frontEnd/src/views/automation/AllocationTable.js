@@ -36,7 +36,7 @@ export default function AllocationTable() {
       .then(res => {
         console.log('Current Assets', res.data.tickerData);
         const r = res.data.tickerData;
-        setRows(r);
+        setRows(r.sort((a,b)=> a.symbol < b.symbol ? -1:1));
         // setAllValues(r)
       })
       .catch(err => console.log(err));

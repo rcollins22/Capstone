@@ -62,10 +62,10 @@ const InputSlider = withStyles({
   }
 })(Slider);
 
-export default function AllocationSlider({val, max}) {
+export default function AllocationSlider({val, calculcateMax, symbol}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(val);
-  let alloc = value
+  // let alloc = value
 
   const handleSliderChange = (event, newValue) => {
     calculcateMax({allocation: newValue, symbol: symbol})
@@ -76,13 +76,13 @@ export default function AllocationSlider({val, max}) {
   //   setValue(event.target.value === '' ? '' : Number(event.target.value));
   // };
 
-  const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
-    } else if (value > 100) {
-      setValue(100);
-    }
-  };
+  // const handleBlur = () => {
+  //   if (value < 0) {
+  //     setValue(0);
+  //   } else if (value > 100) {
+  //     setValue(100);
+  //   }
+  // };
   
 
   return (

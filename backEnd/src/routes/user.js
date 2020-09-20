@@ -10,7 +10,20 @@ router.get('/', async (req, res) => {
   return res.send(users);
 });
 
-router.get('/addUser', async (req, res) => { 
+router.get('/addUser/:name/:email/:password/:leader/:funds', async (req, res) => { 
+  const users = await req.context.models.User.find()
+  const newUser = new models.User({
+    name: req.params.name,
+    email: req.params.email,
+    password: req.params.password,
+    leader: req.params.leader,
+    followers: 0,
+    totalFunds: req.params.funds,
+    usableFunds: req.params.funds,
+    portfolios: []
+  });
+  await newUser.save();
+  return res.send({"rv":newUser})
 })
 
 router.get('/name/:id', async (req, res) => {

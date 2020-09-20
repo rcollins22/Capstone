@@ -18,6 +18,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import axios from 'axios';
+import url from '../../url'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,14 @@ const RegisterView = () => {
   const [funds, setFunds] = useState('')
   const [leader, setLeader] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleClick = (event) => {
+    axios.get(`${url}/users/addUser/${name}/${email}/${password}/${leader}/${funds}`)
+    .then(res => {
+      console.log("New user", res.data.rv)
+    })
+    .catch(err => console.log(err));
+  }
 
   return (
     <Page
@@ -116,6 +125,7 @@ const RegisterView = () => {
                 size="large"
                 type="submit"
                 variant="contained"
+                onClick={handleClick}
               >
                 Sign up now
               </Button>

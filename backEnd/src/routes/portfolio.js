@@ -1,6 +1,7 @@
 // import { Router } from 'express';
 const { Router } = require('express');
 const { models } = require('../models')
+const allocate = require('../action/portfolio/allocateStock').allocate
 
 
 const findNewPortfolio = async (userId) => {
@@ -107,7 +108,6 @@ router.get('/addTickers/:id', async (req, res) => {
   let userId = req.params.id
   // find portfolio by name and update funds based on post data
   let p = await findNewPortfolio(userId)
-  console.log(p.tickers)
   let tickerData = p.tickers.map(t => {
     return {symbol: t.symbol, allocation: 0}
   })
@@ -115,24 +115,30 @@ router.get('/addTickers/:id', async (req, res) => {
 });
 
 // add allocations to portfolio tickers based on id
-router.post('/addAllocations/:id', async (req, res) => {
-  let tickers = req.query.tickers.split(',')
-  console.log(tickers)
-  // let allocations = req.query.allocations.split(',')
-  // console.log(allocations)
-  // // find portfolio by name and update funds based on post data
-  // let p = await findNewPortfolio(userId)
-  // let tickerAs = tickers.map(t => {
-  //   return {symbol: t.symbol, allocation: 0, desiredAllocation: tickerAllocations.allocation, currValue: 0, units: 0}
-  // })
-  // await models.Portfolio.updateOne({ _id: p._id },
-  //   { tickers: tickerAs })
+router.get('/addAllocations/:id', async (req, res) => {
+  let symbols = req.query.symbols.split(',')
+  let allocations = req.query.allocations.split(',')
+  let userId = req.params.id
+  allocationNums = allocations.map(a=>parseInt(a))
+  console.log(symbols, "server line 120")
+  console.log(allocations, "server line 120")
+  console.log(allocationNums)
+  // find portfolio by name and update funds based on post data
+  let p = await findNewPortfolio(userId)
+  let newTickers = symbols.map((t, idx) => {
+    return {symbol: t, allocation: 0, desiredAllocation: allocationNums[idx], currValue: 0, units: 0}
+  })
+  console.log(newTickers)
+  await models.Portfolio.updateOne({ _id: p._id },
+    { tickers: newTickers })
+  // wait until schedule update to allocate
   // // allocate portfolio
   // for (let i = 0; i < p.tickers.length; i++) {
   //   let ticker = p.tickers[i]
   //   await allocate(p._id, ticker.desiredAllocation, ticker.symbol)
   // }
-  // return res.send(p);
+  let finalP = req.context.models.Portfolio.findById(p._id)
+  return res.send({"rv":p});
 });
 // update portfolio based on form
 router.put('/update/:userId/:name', async (req, res) => {

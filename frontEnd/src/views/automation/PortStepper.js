@@ -70,7 +70,7 @@ export default function VerticalLinearStepper() {
       case 2:
         return (<AssetTable onComplete = {handleNext}/>) ;
       case 3:
-        return (<AllocationTable/>);
+        return (<AllocationTable onComplete = {handleNext}/>);
       default:
         return 'Portfolio Created';
     }
@@ -93,14 +93,14 @@ export default function VerticalLinearStepper() {
                   >
                     Back
                   </Button> */}
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
                   >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </StepContent>
@@ -110,9 +110,9 @@ export default function VerticalLinearStepper() {
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
           <Typography>Your Portfolio has been created</Typography>
-          <Button onClick={handleReset} className={classes.button}>
+          {/* <Button onClick={handleReset} className={classes.button}>
             Save
-          </Button>
+          </Button> */}
         </Paper>
       )}
     </div>

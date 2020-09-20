@@ -67,7 +67,7 @@ console.log(sliderValue)
             variant="contained"
             color="primary"
             onClick={addFunds}
-            >Save Portfolio Allocation - Only Press Once</Button>
+            >Next</Button>
     </Container>
   );
 };

@@ -20,16 +20,17 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const PerformanceSummary = ({ className, ...rest }) => {
+const PerformanceSummary = ({ className, chartData, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  
+  console.log("Component Chart Data", chartData)
+
   const series = [
     {
-      name: "XYZ MOTORS",
-      data: [[1, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
-      
+      name: "All Portfolios",
+     // data: chartData ? chartData : [[1, 34], [3.8, 43], [5, 31], [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
+      data: chartData ? chartData : []
     }
   ];
   const options = {

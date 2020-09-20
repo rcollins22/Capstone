@@ -1,7 +1,7 @@
 const schedule = require('node-schedule'); // scheduling at times
 const updateStockPrices = require('./prices/updatePrices')
 const updatePortfolioStocks = require('./portfolio/updatePortfolioStocks')
-const updateUserTotalFunds = require('./user/updateUserTotalFunds')
+const updateUsers = require('./user/updateUsers')
 const rebalanceAllPortfolios = require('./portfolio/rebalanceAllPortfolios')
 const updateFollowerPortfolios = require('./user/updateFollowerPortfolios')
 
@@ -14,7 +14,7 @@ const scheduledUpdate = async () => {
         console.log('Reached 10 Seconds of the Current Minute');
         await updateStockPrices() // Pull down latest prices and update prices table
         await updatePortfolioStocks() // Update all stock prices/values/allocations and history/currentValue in every portfolio
-        await updateUserTotalFunds() // Recalculate each users total funds
+        await updateUsers() // Recalculate each users total funds
         await rebalanceAllPortfolios()
         await updateFollowerPortfolios() // automate allocation of follower portfolios
         console.log("Completed portfolio rebalance")
@@ -26,7 +26,7 @@ const scheduledUpdate = async () => {
     var k = schedule.scheduleJob(rule, async () => {
       await updateStockPrices() // Pull down latest prices and update prices table
       await updatePortfolioStocks() // Update all stock prices/values/allocations and history/currentValue in every portfolio
-      await updateUserTotalFunds() // Recalculate each users total funds
+      await updateUsers() // Recalculate each users total funds
       await updateFollowerPortfolios() // automate allocation of follower portfolios
   });
   var rule2 = new schedule.RecurrenceRule();

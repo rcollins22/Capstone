@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Card';
 import { Container } from '@material-ui/core';
 import axios from 'axios'
 import url from '../../url'
+import Button from '@material-ui/core/Button';
 
 const getID = () => {
   return localStorage.getItem("id")
@@ -16,7 +17,7 @@ let usableBal = 2347.23
 
 export default function SelectAllocation({onComplete}) {
 // const [projectedBalance, setProjectedBalance] = useState()
-const [availableBalance, setAvailableBalance] = useState()
+const [availableBalance, setAvailableBalance] = useState(0)
 const [sliderValue, setSliderValue] = useState(0)
   useEffect(() => {
     loadAvailableBalance()
@@ -24,17 +25,17 @@ const [sliderValue, setSliderValue] = useState(0)
 const loadAvailableBalance = () => {
   axios.get(`${url}/users/balance/${getID()}`)
   .then(res => {
-
     console.log("Available", res.data.returnValue)
     setAvailableBalance(res.data.returnValue) // returns at Number that represents a percent.
   })
   .catch(err => console.log(err));
 }
 const addFunds = () => {
-  let fundsPercent = sliderValue // NEEDS TO BE DYNAMIC
+  let fundsPercent = sliderValue
   console.log(fundsPercent)
   let fundAmount = fundsPercent*0.01*availableBalance
-  axios.post(`${url}/portfolios/addFunds/${getID}/${fundAmount}`)
+  console.log(fundAmount)
+  axios.post(`${url}/portfolios/addFunds/${getID()}/${fundAmount}`)
   .then(res => {
     console.log("Adding funds", res.data)
     onComplete()
@@ -55,11 +56,18 @@ console.log(sliderValue)
         </Typography>
         <br/>
     <Typography variant="h3">Avaliable Balance: ${availableBalance}</Typography>
+    <br/>
+    <Typography variant="h3">New Portfolio Balance: ${sliderValue*0.01*availableBalance}</Typography>
       </Grid>
       <Grid>
           <br/>
         <FundsSlider avail = {availableBalance} toParent = {setSliderValue} />
       </Grid>
+      <Button
+            variant="contained"
+            color="primary"
+            onClick={addFunds}
+            >Save Portfolio Allocation - Only Press Once</Button>
     </Container>
   );
 };

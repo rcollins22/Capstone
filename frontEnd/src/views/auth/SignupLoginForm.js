@@ -116,7 +116,7 @@ const SignUpLoginForm = ({onLogIn}) => {
                   <div>
                     <br />
                     <Link component={LinkBehavior}>
-                      <Button variant='contained' color='primary' onSubmit={onSubmit}>Hello</Button>
+                      <Button variant='contained' color='primary' onClick={onSubmit}>Hello</Button>
                     </Link>
                   </div>
                 </Router>

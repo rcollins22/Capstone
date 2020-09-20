@@ -24,7 +24,7 @@ const getID = () => {
   // return '5f668a67cd1885550c833916'
 }
 
-export default function AllocationTable() {
+export default function AllocationTable({onComplete}) {
   const [rows, setRows] = useState([]);
   // const [allValues, setAllValues] = useState([]);
   useEffect(() => {
@@ -36,13 +36,19 @@ export default function AllocationTable() {
       .then(res => {
         console.log('Current Assets', res.data.tickerData);
         const r = res.data.tickerData;
-        setRows(r);
+        setRows(r.sort((a,b)=> a.symbol < b.symbol ? -1:1));
         // setAllValues(r)
       })
       .catch(err => console.log(err));
   };
-  const postAllocations = () => {
-      // axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+  const postAllocations = (event) => {
+    event.preventDefault();
+    axios.post(`${url}/portfolios/addAllocations/${getID()}/?tickers=${rows.toString()}`)
+    .then(res => {
+        console.log(res.data.rv)
+        onComplete()
+    })
+    .catch(err => console.log(err));
   }
   const classes = useStyles();
 

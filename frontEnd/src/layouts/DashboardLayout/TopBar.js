@@ -54,7 +54,9 @@ const TopBar = ({
             </Badge>
           </IconButton>
           <IconButton color="inherit">
-            <InputIcon />
+            <InputIcon 
+            onClick={()=>{localStorage.removeItem("id"); window.location = '/'}}
+            />
           </IconButton>
         </Hidden>
         <Hidden lgUp>

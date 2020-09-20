@@ -94,7 +94,7 @@ export default function FundsSlider(props) {
         />
       </Grid>
       <Grid item>
-      <span>{value}</span>
+      <span>{value}%</span>
         {/* <Input
           className={classes.input}
           value={value}

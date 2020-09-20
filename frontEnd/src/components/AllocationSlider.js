@@ -62,9 +62,8 @@ const InputSlider = withStyles({
   }
 })(Slider);
 
-export default function AllocationSlider({val, calculcateMax, symbol}) {
+export default function AllocationSlider({value, calculcateMax, symbol}) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(val);
   // let alloc = value
 
   const handleSliderChange = (event, newValue) => {
@@ -83,8 +82,7 @@ export default function AllocationSlider({val, calculcateMax, symbol}) {
   //     setValue(100);
   //   }
   // };
-  
-
+  console.log(value)
   return (
     <Grid container spacing={2} alignItems="center">
       <Grid item xs>
@@ -96,7 +94,7 @@ export default function AllocationSlider({val, calculcateMax, symbol}) {
         />
       </Grid>
       <Grid item>
-        <span>{value}</span>
+        <span>{value}%</span>
         {/* <Input
           className={classes.input}
           value={value}

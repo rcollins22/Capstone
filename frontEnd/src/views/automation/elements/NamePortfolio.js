@@ -8,9 +8,7 @@ import url from '../../../url'
 
 
 const getID = () => {
-    console.log(localStorage.getItem("id"))
     return localStorage.getItem("id")
-    // return '5f668a67cd1885550c833916'
   }
 
 const NamePortfolio = ({onComplete}) => {

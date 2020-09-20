@@ -23,6 +23,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { TextField, InputAdornment, SvgIcon } from '@material-ui/core';
 import url from '../../url';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 const getID = () => {
   return localStorage.getItem("id")
@@ -238,17 +239,15 @@ export default function AssetTable({onComplete}) {
       })
       .catch(err => console.log(err));
   };
-//   const postAssets = (event) => {
-//     event.preventDefault();
-//     axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
-//     .then(res => {
-//         console.log(res.data.rv)
-//         onComplete() // 
-//     })
-//     .catch(err => console.log(err));
-// }
-  
-  
+  const postAssets = (event) => {
+    event.preventDefault();
+    axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+    .then(res => {
+        console.log(res.data.rv)
+        onComplete() // 
+    })
+    .catch(err => console.log(err));
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -358,6 +357,11 @@ export default function AssetTable({onComplete}) {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={postAssets}
+            >Save Assets</Button>
       </Paper>
     </div>
   );

@@ -37,22 +37,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function LeaderCard({ name, chg, ...rest }) {
-  
+export default function LeaderCard({ name, chg, data, ...rest }) {
   const classes = useStyles();
   const series = [
     {
-      name: 'Overall Performance',
-      data: [
-        [1, 34],
-        [3.8, 43],
-        [5, 31],
-        [10, 43],
-        [13, 33],
-        [15, 43],
-        [18, 33],
-        [20, 52]
-      ]
+      name: "Overall Performance",
+      data: data
     }
   ];
   let options = {

@@ -20,8 +20,8 @@ const useStyles = makeStyles({
 });
 let sendVals;
 const getID = () => {
-
-  return '5f651667e37bfe1ffb9871d8'
+  return localStorage.getItem("id")
+  // return '5f668a67cd1885550c833916'
 }
 
 export default function AllocationTable() {
@@ -47,58 +47,49 @@ export default function AllocationTable() {
       })
       .catch(err => console.log(err));
   };
-  const classes = useStyles();
-
-  const startVal = 100/rows.length
-  
-
-  // for(let i=0;i<rows.length;i++){
-  //   const [i,setI]=React.useState()
-  // }
-  const sendVals = (name,amount) => {
-    return {name,amount};
-  };
-  
-  rows.map(e=>{
-    
-
+  const postAllocations = () => {
+      console.log(this.fieldEditor1.state)
+      // axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
   }
-  )
+  const classes = useStyles();
+  
+
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="caption table">
-          <caption>
-            Select your desired allocation using the sliders above
-          </caption>
-          <TableHead>
-            <TableRow>
-              {/* <TableCell align="right">Delete Stock</TableCell> */}
-              <TableCell>Stock</TableCell>
-              <TableCell align="right">Allocation amount</TableCell>
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="caption table">
+        <caption>Select your desired allocation using the sliders above</caption>
+        <TableHead>
+          <TableRow>
+            {/* <TableCell align="right">Delete Stock</TableCell> */}
+            <TableCell>Stock</TableCell>
+            <TableCell align="right">Allocation amount</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(row => (
+            <TableRow key={row.symbol}>
+              <TableCell component="th" scope="row">
+                {row.symbol}
+              </TableCell>
+              <TableCell align="right"><AllocationSlider/></TableCell>
+              {/* <TableCell align="right"><AllocationSlider
+              ref={{(eval('var' + "allocationEditor" + row.symbol)} => {this.fieldEditor1 = fieldEditor1;}
+              {...props}
+              /></TableCell> */}
+              {/* <TableCell align="right"><AllocationSlider
+                ref={(fieldEditor1) => {this.fieldEditor1 = fieldEditor1;}}
+              /></TableCell> */}
+              {/* <TableCell align="right"><AllocationSlider/></TableCell> */}
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.symbol}>
-                <TableCell component="th" scope="row">
-                  {row.symbol}
-                </TableCell>
-                <TableCell align="right">
-                  <AllocationSlider max={maxAlloc} val={row.allocation} />
-                </TableCell>
-                {/* <TableCell align="right"><AllocationSlider/></TableCell>
-              <TableCell align="right"><AllocationSlider/></TableCell> */}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Container>
-        <Button variant="outlined" onSubmit={sendVals}>
-          Save
-        </Button>
-      </Container>
-    </div>
+          ))}
+        </TableBody>
+      </Table>
+      <Button
+          variant="contained"
+          color="primary"
+          onClick={postAllocations}
+          >Save Allocations - Only Press Once</Button>
+    </TableContainer>
   );
 }
+

@@ -27,7 +27,7 @@ router.get('/:portfolioId', async (req, res) => {
   );
   return res.send(portfolio);
 });
-
+  
 // return a portfolio history over the last x days
 router.get('/history/:portfolioId', async (req, res) => {
     let interval = req.query.days;
@@ -40,6 +40,7 @@ router.get('/history/:portfolioId', async (req, res) => {
 //  create a new portfolio
 router.post('/name/:name/:id', async (req, res) => {
   // needs to be updated
+  console.log(req.params.id)
   const portfolio = await req.context.models.Portfolio.create({
     name: req.params.name,
     active: false,
@@ -51,8 +52,8 @@ router.post('/name/:name/:id', async (req, res) => {
     history: [],
     user: req.params.id
   });
-  let message = "portfolio created"
-  return res.send(message);
+  // await portfolio.save()
+  return res.send({"rv": portfolio});
 });
 // update portfolio funds based on id
 router.post('/addFunds/:id/:funds', async (req, res) => {

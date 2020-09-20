@@ -13,7 +13,7 @@ const getID = () => {
     // return '5f668a67cd1885550c833916'
   }
 
-const NamePortfolio = () => {
+const NamePortfolio = ({onComplete}) => {
     const [name, setName] = useState("");
 
     const postName = (event) => {
@@ -22,6 +22,7 @@ const NamePortfolio = () => {
         axios.post(`${url}/portfolios/name/${name}/${getID()}`)
         .then(res => {
             console.log(res.data.rv)
+            onComplete() // 
         })
         .catch(err => console.log(err));
     }

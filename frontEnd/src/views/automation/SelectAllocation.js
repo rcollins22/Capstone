@@ -14,9 +14,10 @@ const getID = () => {
 
 let usableBal = 2347.23
 
-export default function SelectAllocation() {
+export default function SelectAllocation({onComplete}) {
 // const [projectedBalance, setProjectedBalance] = useState()
 const [availableBalance, setAvailableBalance] = useState()
+const [sliderValue, setSliderValue] = useState(0)
   useEffect(() => {
     loadAvailableBalance()
   }, []);
@@ -30,14 +31,17 @@ const loadAvailableBalance = () => {
   .catch(err => console.log(err));
 }
 const addFunds = () => {
-  let fundsPercent = 50 // NEEDS TO BE DYNAMIC
+  let fundsPercent = sliderValue // NEEDS TO BE DYNAMIC
+  console.log(fundsPercent)
   let fundAmount = fundsPercent*0.01*availableBalance
   axios.post(`${url}/portfolios/addFunds/${getID}/${fundAmount}`)
   .then(res => {
     console.log("Adding funds", res.data)
+    onComplete()
   })
   .catch(err => console.log(err));
 }
+console.log(sliderValue)
   return (
     <Container>
       <Grid
@@ -54,7 +58,7 @@ const addFunds = () => {
       </Grid>
       <Grid>
           <br/>
-        <FundsSlider avail = {availableBalance}/>
+        <FundsSlider avail = {availableBalance} toParent = {setSliderValue} />
       </Grid>
     </Container>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
@@ -64,10 +64,12 @@ const InputSlider = withStyles({
 
 export default function FundsSlider(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleSliderChange = (event, newValue) => {
+    console.log(newValue)
     setValue(newValue);
+    props.toParent(newValue)
   };
 
   const handleInputChange = event => {
@@ -86,13 +88,14 @@ export default function FundsSlider(props) {
     <Grid container spacing={2} alignItems="center">
       <Grid item xs>
         <InputSlider
-          value={typeof value === 'number' ? value : 0}
+          value={value}
           onChange={handleSliderChange}
           aria-labelledby="input-slider"
         />
       </Grid>
       <Grid item>
-        <Input
+      <span>{value}</span>
+        {/* <Input
           className={classes.input}
           value={value}
           margin="dense"
@@ -104,7 +107,7 @@ export default function FundsSlider(props) {
             type: 'number',
             'aria-labelledby': 'input-slider'
           }}
-        />
+        /> */}
       </Grid>
     </Grid>
   );

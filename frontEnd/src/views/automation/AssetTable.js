@@ -215,7 +215,7 @@ const useStyles = makeStyles(theme => ({
     width: 1
   }
 }));
-export default function AssetTable() {
+export default function AssetTable({onComplete}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('chg');
@@ -238,8 +238,17 @@ export default function AssetTable() {
       })
       .catch(err => console.log(err));
   };
+//   const postAssets = (event) => {
+//     event.preventDefault();
+//     axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+//     .then(res => {
+//         console.log(res.data.rv)
+//         onComplete() // 
+//     })
+//     .catch(err => console.log(err));
+// }
   
-  axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
+  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

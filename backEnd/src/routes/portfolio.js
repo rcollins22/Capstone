@@ -27,7 +27,7 @@ router.get('/:portfolioId', async (req, res) => {
   );
   return res.send(portfolio);
 });
-  
+
 // return a portfolio history over the last x days
 router.get('/history/:portfolioId', async (req, res) => {
     let interval = req.query.days;
@@ -80,6 +80,28 @@ router.post('/addTickers/:id/', async (req, res) => {
   await models.Portfolio.updateOne({ _id: p._id },
     { tickers: tickerData })
   return res.send("Complete");
+});
+
+router.get('/portfolio-allocations/:userId', async (req, res) => {
+  // returns each portfolio's name and amount of funds in the portfolio
+  try {
+   const user = await req.context.models.User.findById(req.params.userId) // get current user
+   var portfolioInfo = []
+
+   user.portfolios.forEach(async port => {
+       let portfolio = await req.context.models.Portfolio.findById(port._id);
+       const pf = {name: portfolio.name, currentValue: portfolio.currentValue} //
+       portfolioInfo.push(pf)
+
+       if (port == user.portfolios.slice(-1)[0]) {
+           // last portfolio finished calculating
+           return res.send(portfolioInfo) // send all porfolio infos.
+       }
+   });
+ } catch (err) {
+     // user can't be found
+     return res.send(err)
+ }
 });
 
 // return new portfolio tickers based on id

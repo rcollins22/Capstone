@@ -32,11 +32,10 @@ let routes = [
   }
 ];
 // let userID = localStorage.getItem('id');
-// //
 // let isLeader = localStorage.getItem('leader');
 
 const setRoutes = u => {
-  if (u === true) {
+  if (u) {
 
     routes.push({
       path: 'user',
@@ -67,6 +66,6 @@ const setRoutes = u => {
     });
   }
 };
-setRoutes(false);
+setRoutes(localStorage.getItem('leader'));
 
 export default routes;

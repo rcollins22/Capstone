@@ -24,16 +24,15 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const OverviewDonut = ({ className, ...rest }) => {
+const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  
   const data = {
     datasets: [
       {
         //MAP VALUES OF ALL PORTFOLIOS (automatically %)
-        data: [63, 15, 22],
+        data: portData ? [...portData] : [],
         backgroundColor: [
           colors.indigo[500],
           colors.red[600],
@@ -44,7 +43,7 @@ const OverviewDonut = ({ className, ...rest }) => {
         hoverBorderColor: colors.common.white
       }
     ],
-    labels: ['Portfolio 1', 'Portfolio 2', 'Portfolio 3']
+    labels: portNames ? [...portNames] : []
   };
 
   const options = {
@@ -69,28 +68,6 @@ const OverviewDonut = ({ className, ...rest }) => {
     }
   };
 
-  // should be porfolio objects
-  const portfolios = [
-    {
-      title: 'Portfolio 1',
-      value: 63,
-      icon: LaptopMacIcon,
-      color: colors.indigo[500]
-    },
-    {
-      title: 'Portfolio 2',
-      value: 15,
-      icon: TabletIcon,
-      color: colors.red[600]
-    },
-    {
-      title: 'Portfolio 3',
-      value: 23,
-      icon: PhoneIcon,
-      color: colors.orange[600]
-    }
-  ];
-
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader title="Overall Allocation" />
@@ -100,16 +77,16 @@ const OverviewDonut = ({ className, ...rest }) => {
           <DonutChart data={data} options={options} height="100%" />
         </Box>
         <Box display="flex" justifyContent="center" mt={2}>
-          {portfolios.map(({ color, title, value }) => (
-            <Box key={title} p={1} textAlign="center">
+          {portNames ? portNames.map((name, index) => (
+            <Box key={name} p={1} textAlign="center">
               <Typography color="textPrimary" variant="body1">
-                {title}
+                {name}
               </Typography>
-              <Typography style={{ color }} variant="h2">
-                {value}%
+              <Typography variant="h2">
+                {portData[index]/totalBalance*100}%
               </Typography>
             </Box>
-          ))}
+          )) : 'Loading'}
         </Box>
       </CardContent>
     </Card>

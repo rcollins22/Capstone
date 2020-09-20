@@ -44,7 +44,8 @@ const getID = () => {
 //   ];
 
 export default function AllocationTable() {
-  const [rows, setRows] = React.useState([]);
+  const [rows, setRows] = useState([]);
+  // const [allValues, setAllValues] = useState([]);
   useEffect(() => {
     loadRows();
   }, []);
@@ -55,16 +56,23 @@ export default function AllocationTable() {
         console.log('Current Assets', res.data.tickerData);
         const r = res.data.tickerData;
         setRows(r);
+        // setAllValues(r)
       })
       .catch(err => console.log(err));
   };
   const postAllocations = () => {
-      console.log(this.fieldEditor1.state)
       // axios.post(`${url}/portfolios/addTickers/${getID()}/?tickers=${selected.toString()}`)
   }
   const classes = useStyles();
 
-  
+  const calculateValuesMax = (updatedItem) => {
+    console.log(rows)
+    let othersValue = rows.filter(v => v.symbol != updatedItem.symbol)
+    .reduce((a, c) => c.allocation+a, 0)
+    console.log(othersValue)
+    updatedItem.allocation = othersValue + updatedItem.allocation > 100 ? 100-othersValue : updatedItem.allocation
+    setRows([...rows.filter(v => v.symbol != updatedItem.symbol), updatedItem].sort((a,b)=> a.symbol < b.symbol ? -1:1))
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -83,7 +91,7 @@ export default function AllocationTable() {
               <TableCell component="th" scope="row">
                 {row.symbol}
               </TableCell>
-              <TableCell align="right"><AllocationSlider/></TableCell>
+              <TableCell align="right"><AllocationSlider value = {row.allocation} calculcateMax = {calculateValuesMax} symbol = {row.symbol}/></TableCell>
               {/* <TableCell align="right"><AllocationSlider
               ref={{(eval('var' + "allocationEditor" + row.symbol)} => {this.fieldEditor1 = fieldEditor1;}
               {...props}

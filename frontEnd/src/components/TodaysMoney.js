@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TodaysChange = ({ className, ...rest }) => {
+const TodaysChange = ({ className, money, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -58,7 +58,7 @@ const TodaysChange = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              $4,100.25
+              {money ? `$${money}` : 'Loading'}
             </Typography>
           </Grid>
           <Grid item>
@@ -72,18 +72,18 @@ const TodaysChange = ({ className, ...rest }) => {
           display="flex"
           alignItems="center"
         >
-          <ArrowDownwardIcon className={classes.differenceIcon} />
+          {/* <ArrowDownwardIcon className={classes.differenceIcon} /> */}
           <Typography
             className={classes.differenceValue}
             variant="body2"
           >
-            12%
+            {/* 12% */}
           </Typography>
           <Typography
             color="textSecondary"
             variant="caption"
           >
-            Since last month
+            {/* Since last */}
           </Typography>
         </Box>
       </CardContent>

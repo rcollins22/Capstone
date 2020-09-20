@@ -10,6 +10,9 @@ router.get('/', async (req, res) => {
   return res.send(users);
 });
 
+router.get('/addUser', async (req, res) => { 
+})
+
 router.get('/name/:id', async (req, res) => {
   const user = await req.context.models.User.findById(req.params.id);
   return res.send({"rv": user.name})

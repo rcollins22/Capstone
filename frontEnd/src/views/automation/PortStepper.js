@@ -43,20 +43,6 @@ function getSteps() {
   
 // }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return (<NamePortfolio />)
-    case 1:
-      return (<SelectAllocation/>);
-    case 2:
-      return (<AssetTable/>) ;
-    case 3:
-      return (<AllocationTable/>);
-    default:
-      return 'Portfolio Created';
-  }
-}
 
 export default function VerticalLinearStepper() {
   const classes = useStyles();
@@ -74,6 +60,21 @@ export default function VerticalLinearStepper() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (<NamePortfolio onComplete = {handleNext} />)
+      case 1:
+        return (<SelectAllocation onComplete = {handleNext}/>);
+      case 2:
+        return (<AssetTable onComplete = {handleNext}/>) ;
+      case 3:
+        return (<AllocationTable/>);
+      default:
+        return 'Portfolio Created';
+    }
+  }
 
   return (
     <div className={classes.root}>

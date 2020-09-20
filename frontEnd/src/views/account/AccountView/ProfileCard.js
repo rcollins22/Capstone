@@ -43,22 +43,14 @@ const ProfileCard = ({ className, ...rest }) => {
             {user.name}
           </Typography>
           <Typography color="textSecondary" variant="body1">
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
+            {user.leader ? 'Leader' : 'Follower'}
           </Typography>
         </Box>
       </CardContent>
-      <Divider />
       <CardActions>
-        <Button color="primary" fullWidth variant="text">
+        {/* <Button color="primary" fullWidth variant="text">
           Upload picture
-        </Button>
+        </Button> */}
       </CardActions>
     </Card>
   );

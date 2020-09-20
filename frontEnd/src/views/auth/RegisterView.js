@@ -48,7 +48,7 @@ const RegisterView = () => {
           <Formik
             initialValues={{
               email: '',
-              firstName: '',
+              name: '',
               lastName: '',
               password: '',
               leader: false
@@ -56,8 +56,7 @@ const RegisterView = () => {
             validationSchema={
               Yup.object().shape({
                 email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                firstName: Yup.string().max(255).required('First name is required'),
-                lastName: Yup.string().max(255).required('Last name is required'),
+                name: Yup.string().max(255).required('First name is required'),
                 password: Yup.string().max(255).required('password is required'),
                 leader: Yup.boolean().oneOf([true], 'This field must be checked')
               })
@@ -90,27 +89,15 @@ const RegisterView = () => {
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.firstName && errors.firstName)}
+                  error={Boolean(touched.name && errors.name)}
                   fullWidth
-                  helperText={touched.firstName && errors.firstName}
-                  label="First name"
+                  helperText={touched.name && errors.name}
+                  label="Name"
                   margin="normal"
-                  name="firstName"
+                  name="name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.firstName}
-                  variant="outlined"
-                />
-                <TextField
-                  error={Boolean(touched.lastName && errors.lastName)}
-                  fullWidth
-                  helperText={touched.lastName && errors.lastName}
-                  label="Last name"
-                  margin="normal"
-                  name="lastName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
+                  value={values.name}
                   variant="outlined"
                 />
                 <TextField

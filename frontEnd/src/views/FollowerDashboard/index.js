@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios'
 import { Container, Grid, makeStyles, CardHeader } from '@material-ui/core';
 import Page from 'src/components/Page';
 import LatestOrders from '../../components/LatestOrders';
@@ -22,13 +23,35 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const classes = useStyles();
 
+  const [todaysChange, setTodaysChange] = useState()
+  const [totalFollowers, setFollowers] = useState()
+  const [portfolioAllocations, setPortAllocations] = useState()
+  const [totalBalance, setBalance] = useState()
+
+  useEffect(() => {
+    loadTodaysChange()
+    //loadPortfolioAllocations()
+  }, []);
+
+  const loadTodaysChange = () => {
+    console.log('TODAYS CHANGE')
+    var currUid = localStorage.getItem("id") //exemplar call to local storage
+
+    axios.get(`/performance/overall-performance?days=2/${currUid}`)
+    .then(res => {
+      console.log("Todays Change", res.data)
+        setTodaysChange(res.data) // returns at Number that represents a percent.
+    })
+    .catch(err => console.log(err));
+  }
+
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
         <Typography variant="h1">FOLLOWER</Typography>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysChange />
+            <TodaysChange change={todaysChange} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalFollowers />

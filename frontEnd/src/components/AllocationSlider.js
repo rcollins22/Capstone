@@ -62,40 +62,40 @@ const InputSlider = withStyles({
   }
 })(Slider);
 
-export default function AllocationSlider({val, max}) {
+export default function AllocationSlider({value, calculcateMax, symbol}) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(val);
-  let alloc = value
+  // let alloc = value
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    calculcateMax({allocation: newValue, symbol: symbol})
+    // setValue(newValue);
   };
 
-  const handleInputChange = event => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
-  };
+  // const handleInputChange = event => {
+  //   setValue(event.target.value === '' ? '' : Number(event.target.value));
+  // };
 
-  const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
-    } else if (value > 100) {
-      setValue(100);
-    }
-  };
-  
-
+  // const handleBlur = () => {
+  //   if (value < 0) {
+  //     setValue(0);
+  //   } else if (value > 100) {
+  //     setValue(100);
+  //   }
+  // };
+  console.log(value)
   return (
     <Grid container spacing={2} alignItems="center">
       <Grid item xs>
         <InputSlider
           disabled= {false} // this disables usability. (if allocation > 100, {disable})
-          value={typeof value === 'number' ? value : 0}
+          value={value}
           onChange={handleSliderChange}
           aria-labelledby="input-slider"
         />
       </Grid>
       <Grid item>
-        <Input
+        <span>{value}%</span>
+        {/* <Input
           className={classes.input}
           value={value}
           margin="dense"
@@ -107,7 +107,7 @@ export default function AllocationSlider({val, max}) {
             type: 'number',
             'aria-labelledby': 'input-slider'
           }}
-        />
+        /> */}
       </Grid>
       
     </Grid>

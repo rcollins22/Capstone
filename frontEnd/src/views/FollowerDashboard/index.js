@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const classes = useStyles();
 
+  const [chartData, setChartData] = useState()
   // Portfolio Values
   const [portNames, setPortNames] = useState();
   const [portData, setPortData] = useState();
@@ -36,17 +37,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadTodaysChange();
-   loadAvailableBalance();
+    loadAvailableBalance();
     getFollowerCount();
     loadPortfolioAllocations();
     loadUserPerformanceGraphData()
   }, []);
 
   const loadUserPerformanceGraphData = () => {
+    var currUid = localStorage.getItem('id');
     axios
-    .get(`${url}/users/performance-graph/'`)
+    .get(`${url}/users/performance-graph/${currUid}'`)
     .then(res => {
-        console.log("user Performance", res)
+        setChartData(res.data.rv)
     })
     .catch(err => console.log(err));
   }
@@ -120,14 +122,14 @@ const Dashboard = () => {
             <TotalBalance balance={totalBalance} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <PerformanceSummary />
+            <PerformanceSummary chartData={chartData}/>
           </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
+          {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance}/>
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <LatestOrders />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

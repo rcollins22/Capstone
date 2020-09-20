@@ -40,7 +40,7 @@ const StyledMenuItem = withStyles(theme => ({
   }
 }))(MenuItem);
 
-export default function PortfolioDropdown() {
+const PortfolioDropdown = ({portNames}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -70,12 +70,19 @@ export default function PortfolioDropdown() {
         onClose={handleClose}
       >
         <StyledMenuItem>
-          <ListItemText primary="Portfolio 2" />
+          <ListItemText primary={"All Portfolios"} />
         </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemText primary="Portfolio 3" />
-        </StyledMenuItem>
+        {portNames ? portNames.map((name)=> {
+          return (
+          <StyledMenuItem>
+            <ListItemText primary={name} />
+           </StyledMenuItem>
+          )
+        })
+      : ''}
       </StyledMenu>
     </div>
   );
 }
+
+export default PortfolioDropdown

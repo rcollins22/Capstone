@@ -44,6 +44,7 @@ const SignUpLoginForm = ({onLogIn}) => {
     axios
       .post(`${url}/auth/register_login`, userData)
       .then(res => {
+        console.log(res)
         localStorage.setItem('id', res.data.success.id); //save id to local storage
         localStorage.setItem('leader', res.data.success.leader); // save leader boolean to local storage
         // var aValue = localStorage.getItem("id") exemplar call to local storage
@@ -105,9 +106,15 @@ const SignUpLoginForm = ({onLogIn}) => {
                       <Form.Check type="checkbox" />
                     </Col>
                     <Col xs="10" sm="11">
-                      <Typography>
-                        I hereby confirm that the referral app is allowed to
-                        send me emails, up until I unsubscribe.
+                      <Typography color="textSecondary" variant="body1">
+                        Don&apos;t have an account?{' '}
+                        <Link
+                          component={RouterLink}
+                          to="/register"
+                          variant="h6"
+                        >
+                          Sign up
+                        </Link>
                       </Typography>
                     </Col>
                   </Row>
@@ -116,7 +123,13 @@ const SignUpLoginForm = ({onLogIn}) => {
                   <div>
                     <br />
                     <Link component={LinkBehavior}>
-                      <Button variant='contained' color='primary' onClick={onSubmit}>Hello</Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={onSubmit}
+                      >
+                        Hello
+                      </Button>
                     </Link>
                   </div>
                 </Router>

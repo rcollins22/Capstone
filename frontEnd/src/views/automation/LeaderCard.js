@@ -13,19 +13,6 @@ import {
 } from '@material-ui/core';
 import AreaChart from '../../mixins/AreaChart';
 
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     display: 'flex',
-//     flexDirection: 'column'
-//   },
-//   statsItem: {
-//     alignItems: 'center',
-//     display: 'flex'
-//   },
-//   statsIcon: {
-//     marginRight: theme.spacing(1)
-//   }
-// }));
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,7 +44,7 @@ export default function LeaderCard({ name, chg, data, ...rest }) {
       curve: 'smooth'
     },
     fill: {
-      opacity: 0.3,
+      opacity: 0.5,
       color: '#0A6D03'
     },
     yaxis: {

@@ -43,15 +43,14 @@ const ProfileCard = ({ className, ...rest }) => {
             {user.name}
           </Typography>
           <Typography color="textSecondary" variant="body1">
-            {user.leader === true ? 'Leader' : 'Follower'}
+            {user.leader ? 'Leader' : 'Follower'}
           </Typography>
         </Box>
       </CardContent>
-      <Divider />
       <CardActions>
-        <Button color="primary" fullWidth variant="text">
+        {/* <Button color="primary" fullWidth variant="text">
           Upload picture
-        </Button>
+        </Button> */}
       </CardActions>
     </Card>
   );

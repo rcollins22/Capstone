@@ -136,7 +136,7 @@ const createPortfoliosAndUsers = async () => {
         name: 'Rashad',
         email: 'r@gmail.com',
         password: pswrd,
-        leader: true,
+        leader: false,
         followers: 0,
         totalFunds: 1000,
         usableFunds: 0,
@@ -191,7 +191,7 @@ const createUser = async () => {
         name: 'David',
         email: 'd@gmail.com',
         password: pswrd,
-        leader: true,
+        leader: false,
         followers: 0
       });
       await user2.save();

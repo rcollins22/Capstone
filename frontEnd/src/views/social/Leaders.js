@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Leaders = ({ className, leaders, ...rest }) => {
   const classes = useStyles();
   const [selectedLeaderIds, setSelectedLeaderIds] = useState([]);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
   const handleSelectAll = (event) => {
@@ -80,7 +80,6 @@ const Leaders = ({ className, leaders, ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Followers</TableCell>
                 <TableCell>Change(%)</TableCell>
@@ -94,8 +93,6 @@ const Leaders = ({ className, leaders, ...rest }) => {
                   key={leader.id}
                   selected={selectedLeaderIds.indexOf(leader.id) !== -1}
                 >
-                  <TableCell >
-                  </TableCell>
                   <TableCell>
                     <Box alignItems="center" display="flex">
                       <Avatar className={classes.avatar} src={leader.avatarUrl}>
@@ -107,7 +104,12 @@ const Leaders = ({ className, leaders, ...rest }) => {
                     </Box>
                   </TableCell>
                   <TableCell>{leader.followers}</TableCell>
-              <TableCell>{}</TableCell>
+                  <TableCell>{leader.monthlyPerformance.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Box>
+
+                    </Box>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

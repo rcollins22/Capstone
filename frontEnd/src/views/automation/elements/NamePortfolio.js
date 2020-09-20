@@ -32,7 +32,7 @@ const NamePortfolio = ({onComplete}) => {
             justify="center"
             alignItems="center"
         >
-            <Typography>Enter Your New Portfolio Name</Typography>
+            {/* <Typography>Enter Your New Portfolio Name</Typography> */}
             <TextField
             variant="standard"
             placeholder="Portfolio Name"
@@ -47,7 +47,7 @@ const NamePortfolio = ({onComplete}) => {
             variant="contained"
             color="primary"
             onClick={postName}
-            >Save Name - Only Press Once</Button>
+            >Next</Button>
         </div>
     )
 }

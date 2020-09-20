@@ -128,6 +128,7 @@ const createPortfoliosAndUsers = async () => {
         leader: true,
         followers: 0,
         totalFunds: 4179.99,
+        usableFunds: 1000,
         portfolios: []
       });
       await user1.save();
@@ -138,6 +139,7 @@ const createPortfoliosAndUsers = async () => {
         leader: true,
         followers: 0,
         totalFunds: 1000,
+        usableFunds: 0,
         portfolios: []
     });
     await user2.save();

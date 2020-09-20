@@ -26,6 +26,9 @@ let userSchema = new mongoose.Schema(
     totalFunds: {
       type: Number,
     },
+    usableFunds: {
+      type: Number,
+    },
     portfolios: {
       type: Array,
     },

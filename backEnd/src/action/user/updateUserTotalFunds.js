@@ -21,9 +21,9 @@ const updateSpecificUser = async (u) => {
     const userPorts = allPorts.filter(p=> p.user.toString() == u._id.toString())
     let newValues = userPorts.map(p => p.currentValue)
     let allFunds = sum(newValues)
-    // update user with summed portfolio values
+    // update user with summed portfolio values + unallocated funds
     await models.User.updateOne({ _id: u._id },
-        { totalFunds: allFunds})
+        { totalFunds: allFunds + u.usableFunds})
         // { totalFunds: getPortfolioValues(u)})
 }
 module.exports = updateAllUsers

@@ -361,7 +361,7 @@ export default function AssetTable({onComplete}) {
             variant="contained"
             color="primary"
             onClick={postAssets}
-            >Save Assets</Button>
+            >Next</Button>
       </Paper>
     </div>
   );

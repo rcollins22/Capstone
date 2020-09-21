@@ -20,16 +20,20 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const PerformanceSummary = ({ className, ...rest }) => {
+const PerformanceSummary = ({chartData, className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  
+  const now = new Date();
+  const monthAgo = now.setDate(now.getDate() - 30);
+
+  chartData ? chartData = chartData : chartData = ''
+
   const series = [
     {
-      name: "XYZ MOTORS",
+      // data: chartData
+      // data: chartData.map((val, idx)=> [idx+1, val])
       data: [[1, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
-      
     }
   ];
   const options = {
@@ -76,7 +80,9 @@ const PerformanceSummary = ({ className, ...rest }) => {
       },
     },
     xaxis: {
-      // type: "datetime",
+      type: 'datetime',
+      max: now,
+      min: monthAgo
     },
     tooltip: {
       shared: false,

@@ -83,7 +83,7 @@ const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }
                 {name}
               </Typography>
               <Typography variant="h2">
-                {portData[index]/totalBalance*100}%
+                {(portData[index]/totalBalance*100).toFixed(2)}%
               </Typography>
             </Box>
           )) : 'Loading'}

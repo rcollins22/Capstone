@@ -83,25 +83,14 @@ router.post('/addTickers/:id/', async (req, res) => {
 
 router.get('/portfolio-allocations/:userId', async (req, res) => {
   // returns each portfolio's name and amount of funds in the portfolio
-  try {
-   const user = await req.context.models.User.findById(req.params.userId) // get current user
-   var portfolioInfo = []
-
-   user.portfolios.forEach(async port => {
-       let portfolio = await req.context.models.Portfolio.findById(port._id);
-       const pf = {name: portfolio.name, currentValue: portfolio.currentValue} //
-       portfolioInfo.push(pf)
-
-       if (port == user.portfolios.slice(-1)[0]) {
-           // last portfolio finished calculating
-           return res.send(portfolioInfo) // send all porfolio infos.
-       }
-   });
- } catch (err) {
-     // user can't be found
-     return res.send(err)
- }
-});
+  const user = await req.context.models.User.findById(req.params.userId) // get current user
+  var portfolioInfo = []
+  for (let i = 0; i<user.portfolios.length; i++) {
+    let portfolio = await req.context.models.Portfolio.findById(user.portfolios[i]._id);
+    portfolioInfo.push({name: portfolio.name, currentValue: portfolio.currentValue})
+    }
+  return res.send({"rv": portfolioInfo, unAllocated: user.usableFunds})
+})
 
 // return new portfolio tickers based on id
 router.get('/addTickers/:id', async (req, res) => {

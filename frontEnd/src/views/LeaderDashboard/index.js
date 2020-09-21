@@ -10,6 +10,7 @@ import TotalBalance from '../../components/TotalBalance';
 import OverviewDonut from '../../components/OverviewDonut';
 import FollowBar from '../../components/FollowBar';
 import TodaysMoney from '../../components/TodaysMoney'
+import PortfolioDropdown from '../automation/elements/PortfolioDropdown';
 import url from '../../url'
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,18 +32,33 @@ const Dashboard = () => {
   const [todaysChangeV, setTodaysChangeV] = useState() // Value
   const [totalFollowers, setFollowers] = useState(-1)
   const [totalBalance, setBalance] = useState(-1)
+  const [chartData, setChartData] = useState()
 
   useEffect(() => {
    loadTodaysChange()
     loadAvailableBalance()
     getFollowerCount()
     loadPortfolioAllocations()
+    loadUserPerformanceGraphData()
+  //getSpecificPortfolioHistory()
   }, []);
+
+  const loadUserPerformanceGraphData = () => {
+    var currUid = localStorage.getItem("id") //exemplar call to local storage
+    axios
+    .get(`${url}/users/performance-graph/${currUid}`)
+    .then(res => {
+        setChartData(res.data.rv)
+    })
+    .catch(err => console.log(err));
+  }
 
   const loadTodaysChange = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
-    axios.get(`${url}/users/overall-performance/${currUid}`)
+    axios.get(`${url}/users/overall-performance/${currUid}?days=2`)
     .then(res => {
+      console.log(res.data.percent)
+        // setTodaysChangeP(res.data.percent)
         setTodaysChangeP(res.data.percent)
         setTodaysChangeV(res.data.value)
     })
@@ -53,7 +69,7 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios.get(`${url}/users/followers/${currUid}`)
     .then(res => {
-      setFollowers(res.data)
+      setFollowers(res.data.rv)
     })
     .catch(err => console.log(err));
   }
@@ -62,7 +78,7 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id")
     axios.get(`${url}/users/total-balance/${currUid}`)
     .then(res => {
-      setBalance(res.data) // returns at Number that represents a percent.
+      setBalance(res.data.rv) // returns at Number that represents a percent.
     })
     .catch(err => console.log(err));
   }
@@ -72,21 +88,33 @@ const Dashboard = () => {
     var pNames = []; var pData = [];
     axios.get(`${url}/portfolios/portfolio-allocations/${currUid}`)
     .then(res => {
-        res.data.forEach((port) => {
-          pNames.push(port.name)
-          pData.push(port.currentValue)
-        });
+      let allPorts = res.data.rv
+      for (let i = 0; i<allPorts.length; i++) {
+          pNames.push(allPorts[i].name)
+          pData.push(allPorts[i].currentValue.toFixed(2))
+      };
+      pNames.push("unAllocated")
+      pData.push(res.data.unAllocated.toFixed(2))
+      // push the unallocated value with name unallocated
         setPortData(pData)
         setPortNames(pNames)
     })
     .catch(err => console.log(err));
   }
 
-  const loadPortfolioHistories = () => {
+  const getSpecificPortfolioHistory = (portId) => {
     var currUid = localStorage.getItem("id")
-    axios.get(`${url}/portfolios/portfolio-allocations/${currUid}`)
+    axios.get(`${url}/portfolios/5f67cb818bbc8b2ea82d306e?days=5`)
     .then(res => {
-        //setPortNames(pNames)
+        console.log("Specific portfolio data", res.data.history)
+        const portHistory = res.data.history
+
+        var dataPoints = [] // [[1, 432], [2, 313]]
+        for (let i; i<portHistory.length-1; i++) {
+            let arry = [i+1, portHistory[i].value]
+            dataPoints.push(arry)
+        }
+        setChartData(dataPoints)
     })
     .catch(err => console.log(err));
   }
@@ -110,19 +138,22 @@ const Dashboard = () => {
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalBalance balance={totalBalance} />
           </Grid>
+          <Grid item lg={5} sm={6} xl={3} xs={12}>
+            <PortfolioDropdown portNames={portNames} />
+          </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <PerformanceSummary />
+            <PerformanceSummary chartData={chartData} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />
           </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
+          {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />
             <FollowBar />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <LatestOrders />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

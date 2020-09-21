@@ -4,6 +4,7 @@ import axios from 'axios';
 import url from '../../url';
 import Page from 'src/components/Page';
 import Leaders from './Leaders';
+import LeaderSeed from './LeaderSeed'
 import Toolbar from './Toolbar';
 import data from './data';
 
@@ -38,7 +39,8 @@ const LeaderListView = () => {
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
-          <Leaders leaders={leaders} />
+          {/* <Leaders leaders={leaders} /> */}
+          <LeaderSeed />
         </Box>
       </Container>
     </Page>

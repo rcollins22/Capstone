@@ -27,17 +27,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Leaders = ({ className, leaders, ...rest }) => {
+const LeaderSeed = ({ className,  ...rest }) => {
   const classes = useStyles();
   const [selectedLeaderIds, setSelectedLeaderIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
+  const getNum = (id) => {id.slice(0, 4)}
+
+  const data = [
+    { name: 'David Mitchell', email: 'dmitchell217@mail.com', monthlyPerformance: 126.12, followers: 1, id: '093244761-9', avatarUrl:`https://picsum.photos/200`},
+    { name: 'Dick Boole', email: 'dboole0@craigslist.org', monthlyPerformance: 6.12, followers: 14, id: '093244761-9', avatarUrl:`https://picsum.photos/0932/200`},
+    { name: 'Nydia Hartless', email: 'nhartless1@shareasale.com', monthlyPerformance: 143.08, followers: 5, id: '205138912-8', avatarUrl:'https://picsum.photos/2912/200'},
+    { name: 'Luz Melledy', email: 'lmelledy2@smugmug.com', monthlyPerformance: -42.39, followers: 1, id: '737340667-X', avatarUrl:'https://picsum.photos/737/200'},
+    { name: 'Lyda Swanton', email: 'lswanton3@oakley.com', monthlyPerformance: -55.2, followers: 29, id: '804346398-0', avatarUrl:'https://picsum.photos/8043/200'},
+    { name: 'Yancey Tudbald', email: 'ytudbald4@myspace.com', monthlyPerformance: 32.92, followers: 27, id: '445985506-2', avatarUrl:'https://picsum.photos/449/200'},
+    { name: 'Corney Lyptrit', email: 'clyptrit5@mediafire.com', monthlyPerformance: -53.18, followers: 10, id: '394498085-9', avatarUrl:'https://picsum.photos/394/200'},
+    { name: 'Kristian Muslim', email: 'kmuslim6@answers.com', monthlyPerformance: 125.42, followers: 21, id: '918590293-4', avatarUrl:'https://picsum.photos/915/200'},
+    { name: 'Cart Odams', email: 'codams8@opera.com', monthlyPerformance: 91.7, followers: 11, id: '683456122-6', avatarUrl:'https://picsum.photos/685/200'},
+    { name: 'Kristian Muslim', email: 'kmuslim6@answers.com', monthlyPerformance: -39.65, followers: 7, id: '776881129-1', avatarUrl:'https://picsum.photos/80/200'}
+  ]
+
   const handleSelectAll = (event) => {
     let newSelectedLeaderIds;
 
     if (event.target.checked) {
-      newSelectedLeaderIds = leaders.map((leader) => leader.id);
+      newSelectedLeaderIds = data.map((d) => d.id);
     } else {
       newSelectedLeaderIds = [];
     }
@@ -87,24 +102,24 @@ const Leaders = ({ className, leaders, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {leaders.slice(0, limit).map(leader => (
+              {data.slice(0, limit).map(data => (
                 <TableRow
                   hover
-                  key={leader.id}
-                  selected={selectedLeaderIds.indexOf(leader.id) !== -1}
+                  key={data.id}
+                  selected={selectedLeaderIds.indexOf(data.id) !== -1}
                 >
                   <TableCell>
                     <Box alignItems="center" display="flex">
-                      <Avatar className={classes.avatar} src={leader.avatarUrl}>
-                        {getInitials(leader.name)}
+                      <Avatar className={classes.avatar} src={data.avatarUrl}>
+                        {getInitials(data.name)}
                       </Avatar>
                       <Typography color="textPrimary" variant="body1">
-                        {leader.name}
+                        {data.name}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>{leader.followers}</TableCell>
-                  <TableCell>{leader.monthlyPerformance.toFixed(2)}</TableCell>
+                  <TableCell>{data.followers}</TableCell>
+                  <TableCell>{data.monthlyPerformance.toFixed(2)}</TableCell>
                   <TableCell>
                     <Box>
 
@@ -118,7 +133,7 @@ const Leaders = ({ className, leaders, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={leaders.length}
+        count={data.length}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
@@ -129,9 +144,9 @@ const Leaders = ({ className, leaders, ...rest }) => {
   );
 };
 
-Leaders.propTypes = {
+LeaderSeed.propTypes = {
   className: PropTypes.string,
-  leaders: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired
 };
 
-export default Leaders;
+export default LeaderSeed;

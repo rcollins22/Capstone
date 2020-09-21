@@ -110,6 +110,14 @@ router.get('/portfolio-allocations/:userId', async (req, res) => {
   return res.send({"rv": portfolioInfo, unAllocated: user.usableFunds})
 })
 
+router.get('/chart/:portfolioID', async (req, res) => {
+  const portfolio = await req.context.models.Portfolios.findById(req.params.portfolioID)
+  let names = portfolio.tickers.map(ticker => ticker.name)
+  let values = portfolio.tickers.map(ticker => ticker.currValue)
+  let totalBalance = portfolio.currentValue
+  return res.send({"names": names, "values": values, "totalBalance": totalBalance})
+})
+
 // return new portfolio tickers based on id
 router.get('/addTickers/:id', async (req, res) => {
   let userId = req.params.id

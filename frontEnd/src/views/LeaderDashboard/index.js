@@ -34,6 +34,9 @@ const Dashboard = () => {
   const [totalBalance, setBalance] = useState(-1)
   const [chartData, setChartData] = useState()
   const [chart, setChart] = useState()
+  const [names, setNames] = useState()
+  const [values, setValues] = useState()
+  const [balance, setTotalBalance] = useState()
 
   const portfolio = localStorage.getItem("onPortfolio")
 
@@ -44,6 +47,7 @@ const Dashboard = () => {
     loadPortfolioAllocations()
     loadUserPerformanceGraphData()
     if (portfolio && portfolio != "Dashboard") {getSpecificPortfolioHistory(portfolio)}
+    if (portfolio && portfolio != "Dashboard") {loadPortfolio(portfolio)}
     // loadAllPortfolioPerformances()
   }, []);
 
@@ -131,7 +135,21 @@ const Dashboard = () => {
 
 
   //5f64f5c4d47886242c72ea6c
+  const loadPortfolio = (portId) => {
+    axios.get(`${url}/portfolios/chart/${portId}`)
+    .then(res => {
+        console.log("Specific portfolio data", res.data.names, res.data.values, res.data.totalBalance)
+        setNames(res.data.names)
+        setValues(res.data.values)
+        setTotalBalance(res.data.totalBalance)
+    })
+    .catch(err => console.log(err));
+  }
+
   let sendChart = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? chartData : chart
+  let sendNames = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portNames : names
+  let sendData = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portData : values
+  let sendBalance = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? totalBalance : balance
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
@@ -155,7 +173,7 @@ const Dashboard = () => {
             <PerformanceSummary chartData={sendChart} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />
+            <OverviewDonut portNames={sendNames} portData={sendData} totalBalance={sendBalance} />
           </Grid>
           {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />

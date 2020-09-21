@@ -70,9 +70,11 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
       // },
     },
     yaxis: {
+      min: 0,
+      max: 4500,
       labels: {
         formatter: function (val) {
-          return (val / 1000000).toFixed(0);
+          return (val).toFixed(2);
         },
       },
       title: {
@@ -80,6 +82,9 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
       },
     },
     xaxis: {
+    title: {
+      text: "Day",
+    },
       // type: 'datetime',
       // max: now,
       // min: monthAgo

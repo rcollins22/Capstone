@@ -39,7 +39,7 @@ const LeaderSeed = ({ className,  ...rest }) => {
     { name: 'David Mitchell', email: 'dmitchell217@mail.com', monthlyPerformance: 126.12, followers: 1, id: '093244761-9', avatarUrl:`https://picsum.photos/200`},
     { name: 'Dick Boole', email: 'dboole0@craigslist.org', monthlyPerformance: 6.12, followers: 14, id: '093244761-9', avatarUrl:`https://picsum.photos/0932/200`},
     { name: 'Nydia Hartless', email: 'nhartless1@shareasale.com', monthlyPerformance: 143.08, followers: 5, id: '205138912-8', avatarUrl:'https://picsum.photos/2912/200'},
-    { name: 'Luz Melledy', email: 'lmelledy2@smugmug.com', monthlyPerformance: -42.39, followers: 1, id: '737340667-X', avatarUrl:'https://picsum.photos/737/200'},
+    { name: 'Luz Melledy', email: 'lmelledy2@smugmug.com', monthlyPerformance: -42.39, followers: 54, id: '737340667-X', avatarUrl:'https://picsum.photos/737/200'},
     { name: 'Lyda Swanton', email: 'lswanton3@oakley.com', monthlyPerformance: -55.2, followers: 29, id: '804346398-0', avatarUrl:'https://picsum.photos/8043/200'},
     { name: 'Yancey Tudbald', email: 'ytudbald4@myspace.com', monthlyPerformance: 32.92, followers: 27, id: '445985506-2', avatarUrl:'https://picsum.photos/449/200'},
     { name: 'Corney Lyptrit', email: 'clyptrit5@mediafire.com', monthlyPerformance: -53.18, followers: 10, id: '394498085-9', avatarUrl:'https://picsum.photos/394/200'},

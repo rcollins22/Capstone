@@ -5,6 +5,7 @@ import DonutChart from '../mixins/DonutChart';
 import {
   Box,
   Card,
+  Grid,
   CardContent,
   CardHeader,
   Divider,
@@ -78,7 +79,7 @@ const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }
         <Box height={300} position="relative">
           <DonutChart data={data} options={options} height="100%" />
         </Box>
-        <Box display="flex" justifyContent="center" mt={2}>
+        <Grid display="flex" justifyContent="center" direction='column'mt={2}>
           {portNames ? portNames.map((name, index) => (
             <Box key={name} p={1} textAlign="center">
               <Typography color="textPrimary" variant="body1">
@@ -89,7 +90,7 @@ const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }
               </Typography>
             </Box>
           )) : 'Loading'}
-        </Box>
+        </Grid>
       </CardContent>
     </Card>
   );

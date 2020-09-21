@@ -68,7 +68,6 @@ const Dashboard = () => {
     axios
     .get(`${url}/users/performance-graph/${currUid}`)
     .then(res => {
-        console.log(res.data.rv)
         setChartData(res.data.rv)
     })
     .catch(err => console.log(err));
@@ -78,7 +77,6 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios.get(`${url}/users/overall-performance/${currUid}?days=2`)
     .then(res => {
-      console.log(res.data.percent)
         // setTodaysChangeP(res.data.percent)
         setTodaysChangeP(res.data.percent/100)
         setTodaysChangeV(res.data.value)
@@ -127,7 +125,6 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id")
     axios.get(`${url}/portfolios/history/${portId}?days=20`)
     .then(res => {
-        console.log("Specific portfolio data", res.data.rv)
         setChart(res.data.rv)
     })
     .catch(err => console.log(err));
@@ -138,7 +135,6 @@ const Dashboard = () => {
   const loadPortfolio = (portId) => {
     axios.get(`${url}/portfolios/chart/${portId}`)
     .then(res => {
-        console.log("Specific portfolio data", res.data.names, res.data.values, res.data.totalBalance)
         setNames(res.data.names)
         setValues(res.data.values)
         setTotalBalance(res.data.totalBalance)
@@ -156,13 +152,13 @@ console.log(todaysChangeP)
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysChange change={todaysChangeP} />
+            <TodaysChange change={(-todaysChangeP).toFixed(2)} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalFollowers followers={totalFollowers} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysMoney money={todaysChangeV} />
+            <TodaysMoney money={-todaysChangeV} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalBalance balance={totalBalance} />

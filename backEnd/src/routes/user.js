@@ -10,6 +10,22 @@ router.get('/', async (req, res) => {
   return res.send(users);
 });
 
+router.get('/addUser/:name/:email/:password/:leader/:funds', async (req, res) => { 
+  const users = await req.context.models.User.find()
+  const newUser = new models.User({
+    name: req.params.name,
+    email: req.params.email,
+    password: req.params.password,
+    leader: req.params.leader,
+    followers: 0,
+    totalFunds: req.params.funds,
+    usableFunds: req.params.funds,
+    portfolios: []
+  });
+  await newUser.save();
+  return res.send({"rv":newUser})
+})
+
 router.get('/name/:id', async (req, res) => {
   const user = await req.context.models.User.findById(req.params.id);
   return res.send({"rv": user.name})
@@ -21,13 +37,13 @@ router.get('/balance/:userId', async (req, res) => {
   let id = req.params.userId
   const user = await req.context.models.User.findById(id)
   var portfoliosValue = 0
-  for (var i = 0; i < user.portfolios.length; i++) {
-    let pid = user.portfolios[i]
-    let portfolio = await req.context.models.Portfolio.findById(pid)
-    let value = portfolio.currentValue
-    portfoliosValue += value
-  }
-  let returnValue = user.totalFunds - portfoliosValue
+  // for (var i = 0; i < user.portfolios.length; i++) {
+  //   let pid = user.portfolios[i]
+  //   let portfolio = await req.context.models.Portfolio.findById(pid)
+  //   let value = portfolio.currentValue
+  //   portfoliosValue += value
+  // }
+  let returnValue = user.usableFunds
   return res.send({"returnValue": returnValue})
 })
 

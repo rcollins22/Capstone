@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -18,6 +18,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import axios from 'axios';
+import url from '../../url'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +33,21 @@ const useStyles = makeStyles((theme) => ({
 const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  // const [confirmPass, setConfirmPassword] = useState("")
+  const [funds, setFunds] = useState('')
+  const [leader, setLeader] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleClick = (event) => {
+    axios.get(`${url}/users/addUser/${name}/${email}/${password}/${leader}/${funds}`)
+    .then(res => {
+      console.log("New user", res.data.rv)
+    })
+    .catch(err => console.log(err));
+  }
 
   return (
     <Page className={classes.root} title="Register">

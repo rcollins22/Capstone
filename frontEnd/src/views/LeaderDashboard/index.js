@@ -10,6 +10,7 @@ import TotalBalance from '../../components/TotalBalance';
 import OverviewDonut from '../../components/OverviewDonut';
 import FollowBar from '../../components/FollowBar';
 import TodaysMoney from '../../components/TodaysMoney'
+import PortfolioDropdown from '../automation/elements/PortfolioDropdown';
 import url from '../../url'
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,13 +32,26 @@ const Dashboard = () => {
   const [todaysChangeV, setTodaysChangeV] = useState() // Value
   const [totalFollowers, setFollowers] = useState(-1)
   const [totalBalance, setBalance] = useState(-1)
+  const [chartData, setChartData] = useState()
 
   useEffect(() => {
    loadTodaysChange()
     loadAvailableBalance()
     getFollowerCount()
     loadPortfolioAllocations()
+    loadUserPerformanceGraphData()
+  //getSpecificPortfolioHistory()
   }, []);
+
+  const loadUserPerformanceGraphData = () => {
+    var currUid = localStorage.getItem("id") //exemplar call to local storage
+    axios
+    .get(`${url}/users/performance-graph/${currUid}`)
+    .then(res => {
+        setChartData(res.data.rv)
+    })
+    .catch(err => console.log(err));
+  }
 
   const loadTodaysChange = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
@@ -82,11 +96,20 @@ const Dashboard = () => {
     .catch(err => console.log(err));
   }
 
-  const loadPortfolioHistories = () => {
+  const getSpecificPortfolioHistory = (portId) => {
     var currUid = localStorage.getItem("id")
-    axios.get(`${url}/portfolios/portfolio-allocations/${currUid}`)
+    axios.get(`${url}/portfolios/5f67cb818bbc8b2ea82d306e?days=5`)
     .then(res => {
-        //setPortNames(pNames)
+        console.log("Specific portfolio data", res.data.history)
+        const portHistory = res.data.history
+
+        var dataPoints = [] // [[1, 432], [2, 313]]
+        var inc = 0 // increment...
+        for (inc; inc<portHistory.length-1; inc++) {
+            let arry = [inc+1, portHistory[inc].value]
+            dataPoints.push(arry)
+        }
+        setChartData(dataPoints)
     })
     .catch(err => console.log(err));
   }
@@ -110,19 +133,22 @@ const Dashboard = () => {
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalBalance balance={totalBalance} />
           </Grid>
+          <Grid item lg={5} sm={6} xl={3} xs={12}>
+            <PortfolioDropdown portNames={portNames} />
+          </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <PerformanceSummary />
+            <PerformanceSummary chartData={chartData} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />
           </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
+          {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />
             <FollowBar />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <LatestOrders />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

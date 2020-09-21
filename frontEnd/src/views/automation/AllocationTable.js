@@ -43,7 +43,10 @@ export default function AllocationTable({onComplete}) {
   };
   const postAllocations = (event) => {
     event.preventDefault();
-    axios.post(`${url}/portfolios/addAllocations/${getID()}/?tickers=${rows.toString()}`)
+    console.log(rows)
+    let symbols = rows.map(r => r.symbol)
+    let allocations = rows.map(r => r.allocation)
+    axios.get(`${url}/portfolios/addAllocations/${getID()}/?symbols=${symbols.toString()}&allocations=${allocations.toString()}`)
     .then(res => {
         console.log(res.data.rv)
         onComplete()
@@ -95,7 +98,7 @@ export default function AllocationTable({onComplete}) {
           variant="contained"
           color="primary"
           onClick={postAllocations}
-          >Save Allocations - Only Press Once</Button>
+          >Next</Button>
     </TableContainer>
   );
 }

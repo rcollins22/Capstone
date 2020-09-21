@@ -5,7 +5,6 @@ import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
 import LeaderListView from 'src/views/social/LeaderListView';
 import LeaderDashboard from 'src/views/LeaderDashboard';
-import LoginView from 'src/views/auth/SignupLoginForm';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import AutomationStepper from 'src/views/automation';
 import RegisterView from 'src/views/auth/RegisterView';
@@ -26,7 +25,7 @@ let routes = [
       { path: 'login', element: <SignUpLoginForm /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/user/dashboard" /> }, //NEEDS TO BE CHANGED!
+      { path: '/:id', element: <Navigate to="/user/dashboard" /> }, //NEEDS TO BE CHANGED!
       { path: '*', element: <Navigate to="/404" /> }
     ] 
   }
@@ -35,7 +34,11 @@ let routes = [
 // let isLeader = localStorage.getItem('leader');
 
 const setRoutes = u => {
+
+  
+
   if (true) {
+
 
     routes.push({
       path: 'user',
@@ -67,6 +70,7 @@ const setRoutes = u => {
     });
   }
 };
+
 setRoutes(localStorage.getItem('leader'));
 
 export default routes;

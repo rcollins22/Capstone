@@ -57,11 +57,11 @@ export default function AllocationTable({onComplete}) {
 
   const calculateValuesMax = (updatedItem) => {
     console.log(rows)
-    let othersValue = rows.filter(v => v.symbol != updatedItem.symbol)
+    let othersValue = rows.filter(v => v.symbol !== updatedItem.symbol)
     .reduce((a, c) => c.allocation+a, 0)
     console.log(othersValue)
     updatedItem.allocation = othersValue + updatedItem.allocation > 100 ? 100-othersValue : updatedItem.allocation
-    setRows([...rows.filter(v => v.symbol != updatedItem.symbol), updatedItem].sort((a,b)=> a.symbol < b.symbol ? -1:1))
+    setRows([...rows.filter(v => v.symbol !== updatedItem.symbol), updatedItem].sort((a,b)=> a.symbol < b.symbol ? -1:1))
   }
 
   return (

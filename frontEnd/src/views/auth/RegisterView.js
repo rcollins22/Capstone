@@ -50,10 +50,7 @@ const RegisterView = () => {
   }
 
   return (
-    <Page
-      className={classes.root}
-      title="Register"
-    >
+    <Page className={classes.root} title="Register">
       <Box
         display="flex"
         flexDirection="column"
@@ -61,89 +58,117 @@ const RegisterView = () => {
         justifyContent="center"
       >
         <Container maxWidth="sm">
-          <Box mb={3}>
-            <Typography
-              color="textPrimary"
-              variant="h2"
-            >
-              Create new account
-            </Typography>
-            <Typography
-              color="textSecondary"
-              gutterBottom
-              variant="body2"
-            >
-              Use your email to create new account
-            </Typography>
-          </Box>
-            <TextField
-              variant="standard"
-              placeholder="Name"
-              margin="normal"
-              fullWidth = "true"
-              required
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-            />
-            <TextField
-              variant="standard"
-              placeholder="Email Address"
-              margin="normal"
-              fullWidth = "true"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-            />
-            <TextField
-              variant="standard"
-              placeholder="Enter your Password"
-              margin="normal"
-              fullWidth = "true"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-            <TextField
-              variant="standard"
-              placeholder="How much money do you want to start with"
-              margin="normal"
-              fullWidth = "true"
-              required
-              onChange={(e) => setFunds(e.target.value)}
-              value={funds}
-            />
-            <FormGroup row>
-            <FormControlLabel
-              control={<Switch checked={leader} onChange={(evt)=>setLeader(evt.target.checked?true:false)} name="checkedA" />}
-              label="I want to be a Leader" />
-            </FormGroup>
-            <Box my={2}>
-              <Button
-                color="primary"
-                disabled={isSubmitting}
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                onClick={handleClick}
-              >
-                Sign up now
-              </Button>
-            </Box>
-            <Typography
-              color="textSecondary"
-              variant="body1"
-            >
-              Have an account?
-              {' '}
-              <Link
-                component={RouterLink}
-                to="/login"
-                variant="h6"
-              >
-                Sign in
-              </Link>
-            </Typography>
+          <Formik
+            initialValues={{
+              email: '',
+              name: '',
+              lastName: '',
+              password: '',
+              leader: false
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              name: Yup.string()
+                .max(255)
+                .required('First name is required'),
+              password: Yup.string()
+                .max(255)
+                .required('password is required'),
+              leader: Yup.boolean().oneOf([true], 'This field must be checked')
+            })}
+          >
+            {({
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              touched,
+              values
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <Box mb={3}>
+                  <Typography color="textPrimary" variant="h2">
+                    Create new account
+                  </Typography>
+                  <Typography
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    Use your email to create new account
+                  </Typography>
+                </Box>
+                <TextField
+                  error={Boolean(touched.name && errors.name)}
+                  fullWidth
+                  helperText={touched.name && errors.name}
+                  label="Name"
+                  margin="normal"
+                  name="name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.name}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(touched.email && errors.email)}
+                  fullWidth
+                  helperText={touched.email && errors.email}
+                  label="Email Address"
+                  margin="normal"
+                  name="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="email"
+                  value={values.email}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(touched.password && errors.password)}
+                  fullWidth
+                  helperText={touched.password && errors.password}
+                  label="Password"
+                  margin="normal"
+                  name="password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="password"
+                  value={values.password}
+                  variant="outlined"
+                />
+                <FormGroup row>
+                  <FormControlLabel
+                    control={<Switch />}
+                    label="I want to be a Leader"
+                  />
+                </FormGroup>
+                <Box my={2}>
+                  <Link component={RouterLink} to="/login" variant="h6">
+                    <Button
+                      color="primary"
+                      disabled={isSubmitting}
+                      fullWidth
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                    >
+                      Sign up now
+                    </Button>
+                  </Link>
+                </Box>
+                <Typography color="textSecondary" variant="body1">
+                  Have an account?{' '}
+                  <Link component={RouterLink} to="/login" variant="h6">
+                    Sign in
+                  </Link>
+                </Typography>
+              </form>
+            )}
+          </Formik>
         </Container>
       </Box>
     </Page>

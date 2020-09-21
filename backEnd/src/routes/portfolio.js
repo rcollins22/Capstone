@@ -6,10 +6,10 @@ const allocate = require('../action/portfolio/allocateStock').allocate
 
 const findNewPortfolio = async (userId) => {
     const portfolios = await models.Portfolio.find(); // all portfolios
-    // // just for testing purposes
-    // return portfolios[0]
     const ports = portfolios.filter(p => p.user.toString() === userId.toString()) // all portfolios for this user
+    console.log(ports)
     const p = ports.find(p => p.history.length == 0) //only a new portfolio would have zero history
+    console.log(p)
   return p
 }
  
@@ -145,6 +145,7 @@ router.get('/addAllocations/:id', async (req, res) => {
     return {symbol: t, allocation: 0, desiredAllocation: allocationNums[idx], currValue: 0, units: 0}
   })
   console.log(newTickers)
+  console.log(p)
   await models.Portfolio.updateOne({ _id: p._id },
     { tickers: newTickers })
   // wait until schedule update to allocate

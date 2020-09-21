@@ -49,7 +49,7 @@ const TotalBalance = ({ className, balance, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              {balance > -1 ? `$${balance}` : 'Loading'}
+              ${balance}
             </Typography>
           </Grid>
           <Grid item>

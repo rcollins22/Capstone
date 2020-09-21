@@ -27,12 +27,12 @@ import url from '../../../url'
 import axios from 'axios'
 
 
-// const user = {
-//   avatar: 'https://picsum.photos/200',
-//   jobTitle: 'Leader',
-//   name: 'Rashad Collins',
-//   leader: true
-// };
+const user = {
+  avatar: 'https://picsum.photos/200',
+  jobTitle: 'Follower',
+  name: 'Rashad Collins',
+  leader: true
+};
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -66,12 +66,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       .catch(err => console.log(err));
   };
 
-  const user = {
-    avatar: 'https://picsum.photos/200',
-    jobTitle: localStorage.getItem("leader") ? "Leader" : "Follower",
-    name: name,
-    leader: localStorage.getItem("leader")
-  }
+  // const user = {
+  //   avatar: 'https://picsum.photos/200',
+  //   jobTitle: localStorage.getItem("leader") ? "Leader" : "Follower",
+  //   name: name,
+  //   leader: localStorage.getItem("leader")
+  // }
   let route;
 
   const LeadFollowRoute = user => {
@@ -86,7 +86,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       title: 'Dashboard'
     },
     {
-      href: `/${route}/social`,
+      href: `/${route}/test`,
       icon: UsersIcon,
       title: 'Social'
     },
@@ -94,12 +94,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       href: `/${route}/automations`,
       icon: ToggleRightIcon,
       title: 'Automation'
-    },
-    {
-      href: `/${route}/Portfolio`,
-      icon: PieChartIcon,
-      title: 'Portfolio'
     }
+  //   {
+  //     href: `/${route}/Portfolio`,
+  //     icon: PieChartIcon,
+  //     title: 'Portfolio'
+  //   }
   ];
   const classes = useStyles();
   const location = useLocation();

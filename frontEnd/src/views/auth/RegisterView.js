@@ -147,7 +147,8 @@ const RegisterView = () => {
                   />
                 </FormGroup>
                 <Box my={2}>
-                  <Link component={RouterLink} to="/login" variant="h6">
+                  <Link component={RouterLink} to="/user/dashboard
+          " variant="h6">
                     <Button
                       color="primary"
                       disabled={isSubmitting}

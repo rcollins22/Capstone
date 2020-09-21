@@ -20,14 +20,14 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const PerformanceSummary = ({chartData, className, ...rest }) => {
+const PerformanceSummary = ({ chartData, className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   const now = new Date();
   const monthAgo = now.setDate(now.getDate() - 30);
 
-  chartData ? chartData = [] : chartData = []
+  chartData ? (chartData = 'null') : (chartData = []);
 
   const series = [
     {
@@ -39,27 +39,27 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
   const options = {
     chart: {
       height: '400px',
-      type: "area",
+      type: 'area',
       stacked: false,
       zoom: {
-        type: "x",
+        type: 'x',
         enabled: true,
-        autoScaleYaxis: true,
+        autoScaleYaxis: true
       },
-      
+
       toolbar: {
-        autoSelected: "zoom",
-      },
+        autoSelected: 'zoom'
+      }
     },
-    colors:['#3F51B5'],
+    colors: ['#3F51B5'],
     dataLabels: {
-      enabled: false,
+      enabled: false
     },
     markers: {
       size: 0
     },
     fill: {
-        colors: '#3F51B5',
+      colors: '#3F51B5'
       // type: "gradient",
       // gradient: {
       //   shadeIntensity: 1,
@@ -71,17 +71,17 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
     },
     yaxis: {
       labels: {
-        formatter: function (val) {
+        formatter: function(val) {
           return (val / 1000000).toFixed(0);
-        },
+        }
       },
       title: {
-        text: "Value",
-      },
+        text: 'Value'
+      }
     },
-    noData:{
+    noData: {
       text: 'No trades just yet..',
-      align : 'center'
+      align: 'center'
     },
     xaxis: {
       // type: 'datetime',
@@ -91,40 +91,26 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
     tooltip: {
       shared: false,
       y: {
-        formatter: function (val) {
+        formatter: function(val) {
           return (val / 1000000).toFixed(0);
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <CardHeader
-        title="Performance Summary"
-      />
+    <Card className={clsx(classes.root, className)} {...rest}>
+      <CardHeader title="Performance Summary" />
       <Divider />
       <CardContent>
         <Box
           position="relative"
           // height={400}
         >
-          <AreaChart
-            series = {series}
-            options={options}
-            type="area"
-          />
+          <AreaChart series={series} options={options} type="area" />
         </Box>
       </CardContent>
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-      >
-      </Box>
+      <Box display="flex" justifyContent="flex-end" p={2}></Box>
     </Card>
   );
 };

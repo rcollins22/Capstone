@@ -33,6 +33,11 @@ const MarginDiv = withStyles({
 })(Grid);
 
 const Dashboard = () => {
+  let fol=1
+  const setFol =(fol)=>{
+    fol+=1
+  }
+  // const [fol,setFol]=React.useState(1)
   const classes = useStyles();
 
   return (
@@ -45,8 +50,8 @@ const Dashboard = () => {
             justify="space-between"
             alignItems="center"
           >
-            <Typography variant="h1">Portfolio 1</Typography>
-            <PortfolioDropdown />
+            <Typography variant="h1">David Mitchell</Typography>
+            <PortfolioDropdown f={fol}/>
           </MarginDiv>
 
           <Grid
@@ -56,13 +61,13 @@ const Dashboard = () => {
             alignItems="stretch"
           >
             <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <TodaysChange />
+              <TodaysChange chg='2.13' />
             </Grid>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <TotalFollowers />
+              <TotalFollowers amt = {fol} f='Followers'/>
             </Grid>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <TodaysMoney />
+              <TodaysMoney show='Hidden'/>
             </Grid>
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>

@@ -4,7 +4,8 @@ import {
   Box,
   Container,
   Grid,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import ProductCard from './LeaderCard';
@@ -35,6 +36,7 @@ const LeaderList = () => {
       <Container maxWidth={false}>
   
         <Box mt={3}>
+          <Typography variant='h1'>Create your own automated portfolio using the steps below</Typography>
           <PortStepper/>
           
         </Box>

@@ -1,15 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
+import Alert from '@material-ui/lab/Alert';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
-import axios from 'axios'
-import url from '../../../url'
+import axios from 'axios';
+import url from '../../../url';
 
 const StyledMenu = withStyles({
   paper: {
@@ -41,16 +43,24 @@ const StyledMenuItem = withStyles(theme => ({
     }
   }
 }))(MenuItem);
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
 
-const PortfolioDropdown = ({portNames}) => {
+const PortfolioDropdown = ({ portNames, f }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [active, setActive] = useState("Dashboard");
-  const [portfolioIDs, setPortfolioIDs] = useState([])
-  const [portfolioNames, setPortfolioNames] = useState([])
+  const [active, setActive] = useState('Dashboard');
+  const [portfolioIDs, setPortfolioIDs] = useState([]);
+  const [portfolioNames, setPortfolioNames] = useState([]);
 
   const getID = () => {
-    return localStorage.getItem("id") // returns logged in users ID
-  }
+    return localStorage.getItem('id'); // returns logged in users ID
+  };
 
   const loadPortfolios = () => {
     axios
@@ -63,20 +73,20 @@ const PortfolioDropdown = ({portNames}) => {
         // returns at Number that represents a percent.
       })
       .catch(err => console.log(err));
-  }
+  };
 
   useEffect(() => {
-    loadPortfolios()
-  }, [])
+    loadPortfolios();
+  }, []);
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (event, f) => {
+    window.location = `/user/home`;
+    
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
 
   return (
     <div>
@@ -87,7 +97,7 @@ const PortfolioDropdown = ({portNames}) => {
         color="primary"
         onClick={handleClick}
       >
-        Switch Portfolios
+        Follow Leader
       </Button>
       <StyledMenu
         id="customized-menu"
@@ -96,28 +106,33 @@ const PortfolioDropdown = ({portNames}) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-      <StyledMenuItem>
-        <ListItemText primary="Dashboard" onClick={()=> {
-          console.log("Clicked on dashboard")
-          localStorage.setItem("onPortfolio","Dashboard")
-          window.location = "/user/dashboard"
-        }} 
-        />
+        <StyledMenuItem>
+          <ListItemText
+            primary="Dashboard"
+            onClick={() => {
+              console.log('Clicked on dashboard');
+              localStorage.setItem('onPortfolio', 'Dashboard');
+              window.location = '/user/dashboard';
+            }}
+          />
         </StyledMenuItem>
         {portfolioNames.map((name, idx) => {
           return (
             <StyledMenuItem>
-              <ListItemText primary={name} onClick={()=> {
-              console.log(`Clicked on ${name}`)
-              localStorage.setItem("onPortfolio", portfolioIDs[idx])
-              window.location = "/user/dashboard"
-              }}
+              <ListItemText
+                primary={name}
+                onClick={() => {
+                  console.log(`Clicked on ${name}`);
+                  localStorage.setItem('onPortfolio', portfolioIDs[idx]);
+                  window.location = '/user/dashboard';
+                }}
               />
             </StyledMenuItem>
-        )})}
+          );
+        })}
       </StyledMenu>
     </div>
   );
-}
+};
 
-export default PortfolioDropdown
+export default PortfolioDropdown;

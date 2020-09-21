@@ -6,7 +6,7 @@ const FollowBar = () => {
 
     const series = [{
         name: 'Follower Count',
-        data: [13,-4,-1,14,16,5,18]
+        data: [13,12,8,-10,-16,-5,1]
     }]
     const options =  {
           chart: {

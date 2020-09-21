@@ -30,11 +30,11 @@ const PortfolioDonut = ({ className, ...rest }) => {
   const data = {
     datasets: [
       {
-        data: [63.20, 15.85, 23.45,23.58,13],
+        data: [33.33,33.33, 33.33],
         backgroundColor: [
           colors.indigo[500],
           colors.red[600],
-          colors.orange[600],
+          colors.grey[600],
           colors.green[600],
           colors.blue[600]
         ],
@@ -71,29 +71,29 @@ const PortfolioDonut = ({ className, ...rest }) => {
   const devices = [
     {
       title: 'TSLA',
-      value: 63.20,
+      value: 33.33,
       color: colors.indigo[500]
     },
     {
-      title: 'AAPL',
-      value: 15.85,
+      title: 'AMZN',
+      value: 33.33,
       color: colors.red[600]
     },
     {
-      title: 'SBUX',
-      value: 23.45,
-      color: colors.orange[600]
+      title: 'Unallocated',
+      value: 33.33,
+      color: colors.grey[600]
     },
-    {
-      title: 'GE',
-      value: 23.58,
-      color: colors.green[600]
-    },
-    {
-      title: 'TWTR',
-      value: 13,
-      color: colors.blue[600]
-    }
+    // {
+    //   title: 'GE',
+    //   value: 23.58,
+    //   color: colors.green[600]
+    // },
+    // {
+    //   title: 'TWTR',
+    //   value: 13,
+    //   color: colors.blue[600]
+    // }
   ];
 
   return (

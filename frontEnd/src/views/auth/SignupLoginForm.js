@@ -128,7 +128,7 @@ const SignUpLoginForm = ({onLogIn}) => {
                         color="primary"
                         onClick={onSubmit}
                       >
-                        Hello
+                        Let's Trade
                       </Button>
                     </Link>
                   </div>

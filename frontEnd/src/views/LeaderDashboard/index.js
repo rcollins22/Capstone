@@ -122,7 +122,7 @@ const Dashboard = () => {
     })
     .catch(err => console.log(err));
   }
-
+  let c;
   const getSpecificPortfolioHistory = (portId) => {
     var currUid = localStorage.getItem("id")
     axios.get(`${url}/portfolios/history/${portId}?days=20`)
@@ -145,7 +145,7 @@ const Dashboard = () => {
     })
     .catch(err => console.log(err));
   }
-
+  
   let sendChart = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? chartData : chart
   let sendNames = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portNames : names
   let sendData = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portData : values
@@ -158,25 +158,22 @@ const Dashboard = () => {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysChange change={todaysChangeP} />
+            <TodaysChange chg='--' />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TotalFollowers followers={totalFollowers} />
+            <TotalFollowers f='Following' amt='--' />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TodaysMoney money={todaysChangeV} />
+            <TodaysMoney money='--' show='--' />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TotalBalance balance={totalBalance} />
-          </Grid>
-          <Grid item lg={5} sm={6} xl={3} xs={12}>
-            <PortfolioDropdown portNames={portNames} />
+            <TotalBalance balance={10000.00} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <PerformanceSummary chartData={sendChart} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <OverviewDonut portNames={sendNames} portData={sendData} totalBalance={sendBalance} />
+            <OverviewDonut data={c} />
           </Grid>
           {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />

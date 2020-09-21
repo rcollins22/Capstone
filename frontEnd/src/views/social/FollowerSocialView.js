@@ -7,8 +7,8 @@ import data from './data';
 import LeaderCard from '../automation/LeaderCard';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
-import axios from 'axios'
-import url from '../../url'
+import axios from 'axios';
+import url from '../../url';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,12 +19,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 const FollowerSocialView = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const classes = useStyles();
-  
+
   const handleLimitChange = event => {
     setLimit(event.target.value);
   };
@@ -33,35 +32,67 @@ const FollowerSocialView = () => {
     setPage(newPage);
   };
 
-  const random = (data) => {
-    let i;
-    let lastNum = 10000;
-    for(i=0;i<50;i++){
-      let operators = [
-        {
-          sign: '+',
-          method: function(a, b) {
-            return a + b;
-          }
-        },
-        {
-          sign: '-',
-          method: function(a, b) {
-            return a - b;
-          }
-        }
-      ];
-
-      let selectedOperator = Math.floor(Math.random() * operators.length);
-
-      operators[selectedOperator].sign; //this will give you the sign
-      operators[selectedOperator].method(lastNum);
-      data.push(
-        lastNum + Math.floor(Math.random()*10+1)
-      )
-    }
-  }
+  
   let leaders = [
+    {
+      name: 'David Mitchell',
+      email: 'dmitchell217@mail.com',
+      monthlyPerformance: 126.12,
+      followers: 1,
+      data: [
+        28,
+        48,
+        10,
+        36,
+        0,
+        11,
+        21,
+        16,
+        24,
+        2,
+        50,
+        34,
+        45,
+        5,
+        45,
+        47,
+        35,
+        38,
+        38,
+        29,
+        7,
+        48,
+        0,
+        27,
+        17,
+        43,
+        10,
+        6,
+        10,
+        23,
+        33,
+        23,
+        30,
+        20,
+        28,
+        37,
+        30,
+        28,
+        19,
+        35,
+        27,
+        49,
+        9,
+        45,
+        6,
+        7,
+        49,
+        37,
+        25,
+        3
+      ],
+      id: '093244761-9'
+    },
     {
       name: 'Dick Boole',
       email: 'dboole0@craigslist.org',
@@ -3023,41 +3054,43 @@ const FollowerSocialView = () => {
   //   [18, 33],
   //   [20, 52]
   // ];
-    // const [leaders, setLeaders] = React.useState([]);
-    // const [data, setData] = React.useState([]);
-    useEffect(() => {
-      loadData();
-      loadLeaders();
-    }, []);
-    const loadData = () => {
-      axios
-        .get(`${url}/users/follower/leaders/data`)
-        .then(res => {
-          console.log('FollowerView Leaders data', res.data.rv);
-          const rv = res.data.rv;
-          // setData(rv);
-        })
-        .catch(err => console.log(err));
-    };
-    const loadLeaders = () => {
-      axios
-        .get(`${url}/users/follower/leaders`)
-        .then(res => {
-          console.log('FollowerView Leaders', res.data.rv);
-          const r = res.data.rv;
-          // setLeaders(r);
-        })
-        .catch(err => console.log(err));
-    };
+  // const [leaders, setLeaders] = React.useState([]);
+  // const [data, setData] = React.useState([]);
+  useEffect(() => {
+    loadData();
+    loadLeaders();
+  }, []);
+  const loadData = () => {
+    axios
+      .get(`${url}/users/follower/leaders/data`)
+      .then(res => {
+        console.log('FollowerView Leaders data', res.data.rv);
+        const rv = res.data.rv;
+        // setData(rv);
+      })
+      .catch(err => console.log(err));
+  };
+  const loadLeaders = () => {
+    axios
+      .get(`${url}/users/follower/leaders`)
+      .then(res => {
+        console.log('FollowerView Leaders', res.data.rv);
+        const r = res.data.rv;
+        // setLeaders(r);
+      })
+      .catch(err => console.log(err));
+  };
   return (
     <Page className={classes.root} title="Leaders">
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
           <Grid container spacing={1}>
-            {leaders.map((leader, idx) => (
-              <LeaderCard leader={leader} />
-            ))}
+            {leaders.map(
+              (leader, idx) => (
+                (<LeaderCard leader={leader} />)
+              )
+            )}
           </Grid>
           <Pagination
             component="div"

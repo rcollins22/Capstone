@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TotalFollowers = ({ className, followers, ...rest }) => {
+const TotalFollowers = ({ className, f,amt, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -52,13 +52,13 @@ const TotalFollowers = ({ className, followers, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              TOTAL FOLLOWERS
+              {f}
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              {followers > -1 ? `${followers}` : 'Loading'}
+              {amt}
             </Typography>
           </Grid>
           <Grid item>

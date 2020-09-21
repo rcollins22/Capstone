@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import clsx from 'clsx';
 import {
   Avatar,
@@ -29,13 +29,47 @@ export default function LeaderCard({ leader, ...rest }) {
   const classes = useStyles();
   let charData = leader.data;
   const switchUrl = () => {
-    window.location = `/user/${leader.id}`;
+    window.location = `/user/dmitchell217`;
   };
-
+  const random = data => {
+    let i;
+    let lastNum = 9000;
+    for (i = 0; i < 25; i++) {
+      let operators = [
+        {
+          sign: '+',
+          method: function(a, b) {
+            return a + b;
+          }
+        },
+        {
+          sign: '-',
+          method: function(a, b) {
+            return a - b;
+          }
+        }
+      ];
+      let randNum = Math.floor(Math.random() * 700); 
+      let selectedOperator = Math.floor(Math.random() * operators.length);
+      let thisNum = Math.floor(Math.random() * (randNum) + 1);
+      console.log(selectedOperator);
+      let pushNum = operators[selectedOperator].method(lastNum, thisNum);
+      data.push(pushNum);
+      console.log(data);
+      lastNum=pushNum
+    }
+  };
+  let charInfo = [];
+  let data = [];
+  random(data);
+  let data1=data[0]
+  let data2=data[data.length-1]
+  let neg;
+  data1>data2 ? neg='-': neg='';
   const series = [
     {
       name: 'Overall Performance',
-      data: leader.data
+      data: data
     }
   ];
   let options = {
@@ -47,14 +81,18 @@ export default function LeaderCard({ leader, ...rest }) {
       }
     },
     stroke: {
-      curve: 'smooth'
+      curve: 'smooth',
+      width: 2
     },
     fill: {
-      opacity: 0.1,
-      color: '#0A6D03'
+      gradient: {
+        enabled: true,
+        opacityFrom: 0.55,
+        opacityTo: 0
+      }
     },
     yaxis: {
-      min: 0
+      min: 6700
     },
     // xaxis: {
     //   type: 'datetime',
@@ -70,7 +108,7 @@ export default function LeaderCard({ leader, ...rest }) {
       }
     },
     subtitle: {
-      text: `${leader.monthlyPerformance.toFixed(2)}%   (${
+      text: `${neg}${((data[data.length - 1] / data[0]) * 10).toFixed(2)}%   (${
         leader.followers
       } followers)`,
       offsetX: 0,
@@ -79,7 +117,8 @@ export default function LeaderCard({ leader, ...rest }) {
       }
     }
   };
-
+  console.log(data[0],data[data.length-1])
+  
   return (
     <Card className={clsx(classes.root)} {...rest} onClick={switchUrl}>
       <CardContent>

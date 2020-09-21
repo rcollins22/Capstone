@@ -13,6 +13,7 @@ import PortfolioView from 'src/views/PortfolioView';
 import FollowerDashboard from './views/FollowerDashboard';
 import FollowerSocialView from './views/social/FollowerSocialView';
 import SignUpLoginForm from 'src/views/auth/SignupLoginForm';
+import NewLeaderView from './views/LeaderDashboard/NewLeaderDash';
 
  //
 // 
@@ -46,11 +47,13 @@ const setRoutes = u => {
       children: [
         { path: 'account', element: <AccountView /> },
         { path: 'social', element: <LeaderListView /> },
-        { path: 'test', element: <FollowerSocialView/> },
+        { path: 'test', element: <FollowerSocialView /> },
         { path: 'dashboard', element: <LeaderDashboard /> },
         { path: 'automations', element: <AutomationStepper /> },
         { path: 'settings', element: <SettingsView /> },
-        { path: 'portfolio', element: <PortfolioView /> },
+        { path: 'dmitchell217', element: <PortfolioView /> },
+        { path: 'home', element: <NewLeaderView /> },
+        { path: 'portfolio', element: <FollowerDashboard /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
     });

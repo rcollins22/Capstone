@@ -66,7 +66,7 @@ const data = [
     customer: {
       name: 'TWTR'
     },
-    createdAt: 1554670800000,
+    createdAt: 155470800000,
   },
   {
     id: uuid(),

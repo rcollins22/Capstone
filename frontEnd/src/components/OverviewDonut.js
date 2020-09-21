@@ -11,7 +11,9 @@ import {
   Typography,
   colors,
   makeStyles,
-  useTheme
+  Grid,
+  useTheme,
+  Button
 } from '@material-ui/core';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -24,7 +26,13 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }) => {
+const OverviewDonut = ({
+  className,
+  portNames,
+  portData,
+  totalBalance,
+  ...rest
+}) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -68,7 +76,20 @@ const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }
     }
   };
 
-  if (!portData) {return <div>loading</div>}
+  const takeAuto = () => {
+    window.location = `/user/automations`;
+  };
+
+  if (!portData) {
+    return (
+      <Grid alignItems="center">
+        <Typography variant="h3">No trades to show just yet..</Typography>
+        <Button variant="outlined" color="primary" onClick={takeAuto}>
+          Make my first trade!
+        </Button>
+      </Grid>
+    );
+  }
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -79,16 +100,18 @@ const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }
           <DonutChart data={data} options={options} height="100%" />
         </Box>
         <Box display="flex" justifyContent="center" mt={2}>
-          {portNames ? portNames.map((name, index) => (
-            <Box key={name} p={1} textAlign="center">
-              <Typography color="textPrimary" variant="body1">
-                {name}
-              </Typography>
-              <Typography variant="h2">
-                {(portData[index]/totalBalance*100).toFixed(2)}%
-              </Typography>
-            </Box>
-          )) : 'Loading'}
+          {portNames
+            ? portNames.map((name, index) => (
+                <Box key={name} p={1} textAlign="center">
+                  <Typography color="textPrimary" variant="body1">
+                    {name}
+                  </Typography>
+                  <Typography variant="h2">
+                    {((portData[index] / totalBalance) * 100).toFixed(2)}%
+                  </Typography>
+                </Box>
+              ))
+            : 'Loading'}
         </Box>
       </CardContent>
     </Card>

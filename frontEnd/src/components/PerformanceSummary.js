@@ -20,17 +20,20 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const PerformanceSummary = ({ className, chartData, ...rest }) => {
+const PerformanceSummary = ({chartData, className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  console.log("Component Chart Data", chartData)
+  const now = new Date();
+  const monthAgo = now.setDate(now.getDate() - 30);
+
+  chartData ? chartData = chartData : chartData = []
 
   const series = [
     {
-      name: "All Portfolios",
-     // data: chartData ? chartData : [[1, 34], [3.8, 43], [5, 31], [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
-      data: chartData ? chartData : []
+      data: chartData
+      // data: chartData.map((val, idx)=> [idx+1, val])
+      // data: [[1, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
     }
   ];
   const options = {
@@ -73,11 +76,13 @@ const PerformanceSummary = ({ className, chartData, ...rest }) => {
         },
       },
       title: {
-        text: "Price",
+        text: "Value",
       },
     },
     xaxis: {
-      // type: "datetime",
+      // type: 'datetime',
+      // max: now,
+      // min: monthAgo
     },
     tooltip: {
       shared: false,

@@ -33,8 +33,26 @@ router.get('/history/:portfolioId', async (req, res) => {
     let portfolio = await req.context.models.Portfolio.findById(req.params.portfolioId);
     interval = Math.min(portfolio.history.length, req.query.days)
     rv = portfolio.history.slice(0).slice(-interval)
-  return res.send(rv)
+    rv = rv.map(val => val.value)
+    console.log(rv)
+  return res.send({"rv":rv})
 })
+
+// return all histories
+router.get('/allHistory/:userId', async (req, res) => {
+  let user = await req.context.models.User.findById(req.params.userId)
+  let portfoliosIDs = user.portfolios
+    let histories = []
+    for (let i = 0; i<portfoliosIDs.length; i++) {
+      let portfolio = await req.context.models.Portfolio.findById(portfoliosIDs[i])
+      histories.push(portfolio.history.reverse())
+    }
+    let rv = histories.map((val, idx) => {
+      return {"id": portfoliosIDs[idx], "values": val}
+    })
+    console.log(rv)
+    res.send({"rv":rv})
+});
 
 //  create a new portfolio
 router.post('/name/:name/:id', async (req, res) => {
@@ -83,25 +101,23 @@ router.post('/addTickers/:id/', async (req, res) => {
 
 router.get('/portfolio-allocations/:userId', async (req, res) => {
   // returns each portfolio's name and amount of funds in the portfolio
-  try {
-   const user = await req.context.models.User.findById(req.params.userId) // get current user
-   var portfolioInfo = []
+  const user = await req.context.models.User.findById(req.params.userId) // get current user
+  var portfolioInfo = []
+  for (let i = 0; i<user.portfolios.length; i++) {
+    let portfolio = await req.context.models.Portfolio.findById(user.portfolios[i]._id);
+    portfolioInfo.push({name: portfolio.name, currentValue: portfolio.currentValue})
+    }
+  return res.send({"rv": portfolioInfo, unAllocated: user.usableFunds})
+})
 
-   user.portfolios.forEach(async port => {
-       let portfolio = await req.context.models.Portfolio.findById(port._id);
-       const pf = {name: portfolio.name, currentValue: portfolio.currentValue} //
-       portfolioInfo.push(pf)
-
-       if (port == user.portfolios.slice(-1)[0]) {
-           // last portfolio finished calculating
-           return res.send(portfolioInfo) // send all porfolio infos.
-       }
-   });
- } catch (err) {
-     // user can't be found
-     return res.send(err)
- }
-});
+router.get('/chart/:portfolioID', async (req, res) => {
+  console.log(req.params.portfolioID)
+  const portfolio = await req.context.models.Portfolio.findById(req.params.portfolioID)
+  let names = portfolio.tickers.map(ticker => ticker.symbol)
+  let values = portfolio.tickers.map(ticker => ticker.currValue)
+  let totalBalance = portfolio.currentValue
+  return res.send({"names": names, "values": values, "totalBalance": totalBalance})
+})
 
 // return new portfolio tickers based on id
 router.get('/addTickers/:id', async (req, res) => {
@@ -150,6 +166,17 @@ router.put('/update/:userId/:name', async (req, res) => {
 
     return res.send(portfolio);
 });
+
+router.get("/myPortfolios/:userId", async (req, res) => {
+    let user = await req.context.models.User.findById(req.params.userId)
+    let portfoliosIDs = user.portfolios
+    let names = []
+    for (let i = 0; i<portfoliosIDs.length; i++) {
+      let portfolio = await req.context.models.Portfolio.findById(portfoliosIDs[i])
+      names.push(portfolio.name)
+    }
+    res.send({"names": names, "ids": portfoliosIDs})
+})
 
 // do a fetch and use the method from API. have express.json
 router.delete('/delete/:portfolioId', async (req, res) => {

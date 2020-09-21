@@ -33,6 +33,12 @@ const Dashboard = () => {
   const [totalFollowers, setFollowers] = useState(-1)
   const [totalBalance, setBalance] = useState(-1)
   const [chartData, setChartData] = useState()
+  const [chart, setChart] = useState()
+  const [names, setNames] = useState()
+  const [values, setValues] = useState()
+  const [balance, setTotalBalance] = useState()
+
+  const portfolio = localStorage.getItem("onPortfolio")
 
   useEffect(() => {
    loadTodaysChange()
@@ -40,14 +46,29 @@ const Dashboard = () => {
     getFollowerCount()
     loadPortfolioAllocations()
     loadUserPerformanceGraphData()
-  //getSpecificPortfolioHistory()
+    if (portfolio && portfolio != "Dashboard") {getSpecificPortfolioHistory(portfolio)}
+    if (portfolio && portfolio != "Dashboard") {loadPortfolio(portfolio)}
+    // loadAllPortfolioPerformances()
   }, []);
+
+  const getID = () => localStorage.getItem("id")
+
+  // const loadAllPortfolioPerformances = () => {
+  //   axios
+  //   .get(`${url}/portfolios/allHistory/${getID()}`)
+  //   .then(res => {
+  //       console.log(res.data.rv)
+  //       setCharts(res.data.rv)
+  //   })
+  //   .catch(err => console.log(err));
+  // }
 
   const loadUserPerformanceGraphData = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios
     .get(`${url}/users/performance-graph/${currUid}`)
     .then(res => {
+        console.log(res.data.rv)
         setChartData(res.data.rv)
     })
     .catch(err => console.log(err));
@@ -55,8 +76,10 @@ const Dashboard = () => {
 
   const loadTodaysChange = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
-    axios.get(`${url}/users/overall-performance/${currUid}`)
+    axios.get(`${url}/users/overall-performance/${currUid}?days=2`)
     .then(res => {
+      console.log(res.data.percent)
+        // setTodaysChangeP(res.data.percent)
         setTodaysChangeP(res.data.percent)
         setTodaysChangeV(res.data.value)
     })
@@ -67,7 +90,7 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios.get(`${url}/users/followers/${currUid}`)
     .then(res => {
-      setFollowers(res.data)
+      setFollowers(res.data.rv)
     })
     .catch(err => console.log(err));
   }
@@ -76,7 +99,7 @@ const Dashboard = () => {
     var currUid = localStorage.getItem("id")
     axios.get(`${url}/users/total-balance/${currUid}`)
     .then(res => {
-      setBalance(res.data) // returns at Number that represents a percent.
+      setBalance(res.data.rv) // returns at Number that represents a percent.
     })
     .catch(err => console.log(err));
   }
@@ -86,10 +109,14 @@ const Dashboard = () => {
     var pNames = []; var pData = [];
     axios.get(`${url}/portfolios/portfolio-allocations/${currUid}`)
     .then(res => {
-        res.data.forEach((port) => {
-          pNames.push(port.name)
-          pData.push(port.currentValue)
-        });
+      let allPorts = res.data.rv
+      for (let i = 0; i<allPorts.length; i++) {
+          pNames.push(allPorts[i].name)
+          pData.push(allPorts[i].currentValue.toFixed(2))
+      };
+      pNames.push("unAllocated")
+      pData.push(res.data.unAllocated.toFixed(2))
+      // push the unallocated value with name unallocated
         setPortData(pData)
         setPortNames(pNames)
     })
@@ -98,25 +125,34 @@ const Dashboard = () => {
 
   const getSpecificPortfolioHistory = (portId) => {
     var currUid = localStorage.getItem("id")
-    axios.get(`${url}/portfolios/5f67cb818bbc8b2ea82d306e?days=5`)
+    axios.get(`${url}/portfolios/history/${portId}?days=20`)
     .then(res => {
-        console.log("Specific portfolio data", res.data.history)
-        const portHistory = res.data.history
-
-        var dataPoints = [] // [[1, 432], [2, 313]]
-        var inc = 0 // increment...
-        for (inc; inc<portHistory.length-1; inc++) {
-            let arry = [inc+1, portHistory[inc].value]
-            dataPoints.push(arry)
-        }
-        setChartData(dataPoints)
+        console.log("Specific portfolio data", res.data.rv)
+        setChart(res.data.rv)
     })
     .catch(err => console.log(err));
   }
 
 
   //5f64f5c4d47886242c72ea6c
+  const loadPortfolio = (portId) => {
+    axios.get(`${url}/portfolios/chart/${portId}`)
+    .then(res => {
+        console.log("Specific portfolio data", res.data.names, res.data.values, res.data.totalBalance)
+        setNames(res.data.names)
+        setValues(res.data.values)
+        setTotalBalance(res.data.totalBalance)
+    })
+    .catch(err => console.log(err));
+  }
 
+  let sendChart = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? chartData : chart
+  let sendNames = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portNames : names
+  let sendData = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portData : values
+  let sendBalance = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? totalBalance : balance
+  console.log(sendNames)
+  console.log(sendData)
+  console.log(sendBalance)
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
@@ -137,10 +173,10 @@ const Dashboard = () => {
             <PortfolioDropdown portNames={portNames} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <PerformanceSummary chartData={chartData} />
+            <PerformanceSummary chartData={sendChart} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />
+            <OverviewDonut portNames={sendNames} portData={sendData} totalBalance={sendBalance} />
           </Grid>
           {/* <Grid item lg={4} md={6} xl={3} xs={12}>
             <CardHeader title="Followers Gained/Lost" />

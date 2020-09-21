@@ -25,19 +25,15 @@ const [sliderValue, setSliderValue] = useState(0)
 const loadAvailableBalance = () => {
   axios.get(`${url}/users/balance/${getID()}`)
   .then(res => {
-    console.log("Available", res.data.returnValue)
     setAvailableBalance(res.data.returnValue) // returns at Number that represents a percent.
   })
   .catch(err => console.log(err));
 }
 const addFunds = () => {
   let fundsPercent = sliderValue
-  console.log(fundsPercent)
   let fundAmount = fundsPercent*0.01*availableBalance
-  console.log(fundAmount)
   axios.post(`${url}/portfolios/addFunds/${getID()}/${fundAmount}`)
   .then(res => {
-    console.log("Adding funds", res.data)
     onComplete()
   })
   .catch(err => console.log(err));

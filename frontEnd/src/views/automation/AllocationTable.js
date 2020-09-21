@@ -34,7 +34,6 @@ export default function AllocationTable({onComplete}) {
     axios
       .get(`${url}/portfolios/addTickers/${getID()}`)
       .then(res => {
-        console.log('Current Assets', res.data.tickerData);
         const r = res.data.tickerData;
         setRows(r.sort((a,b)=> a.symbol < b.symbol ? -1:1));
         // setAllValues(r)
@@ -43,12 +42,10 @@ export default function AllocationTable({onComplete}) {
   };
   const postAllocations = (event) => {
     event.preventDefault();
-    console.log(rows)
     let symbols = rows.map(r => r.symbol)
     let allocations = rows.map(r => r.allocation)
     axios.get(`${url}/portfolios/addAllocations/${getID()}/?symbols=${symbols.toString()}&allocations=${allocations.toString()}`)
     .then(res => {
-        console.log(res.data.rv)
         onComplete()
     })
     .catch(err => console.log(err));
@@ -56,10 +53,8 @@ export default function AllocationTable({onComplete}) {
   const classes = useStyles();
 
   const calculateValuesMax = (updatedItem) => {
-    console.log(rows)
     let othersValue = rows.filter(v => v.symbol != updatedItem.symbol)
     .reduce((a, c) => c.allocation+a, 0)
-    console.log(othersValue)
     updatedItem.allocation = othersValue + updatedItem.allocation > 100 ? 100-othersValue : updatedItem.allocation
     setRows([...rows.filter(v => v.symbol != updatedItem.symbol), updatedItem].sort((a,b)=> a.symbol < b.symbol ? -1:1))
   }

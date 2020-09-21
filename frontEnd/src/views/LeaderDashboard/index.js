@@ -80,7 +80,7 @@ const Dashboard = () => {
     .then(res => {
       console.log(res.data.percent)
         // setTodaysChangeP(res.data.percent)
-        setTodaysChangeP(res.data.percent)
+        setTodaysChangeP(res.data.percent/100)
         setTodaysChangeV(res.data.value)
     })
     .catch(err => console.log(err));
@@ -150,9 +150,7 @@ const Dashboard = () => {
   let sendNames = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portNames : names
   let sendData = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portData : values
   let sendBalance = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? totalBalance : balance
-  console.log(sendNames)
-  console.log(sendData)
-  console.log(sendBalance)
+console.log(todaysChangeP)
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>

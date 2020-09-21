@@ -222,6 +222,6 @@ const createUser = async () => {
 // passport-jwt: passport strategy for authenticating with a JSON Web Token (JWT); lets you authenticate endpoints using a JWT
 // validator: used to validate inputs (e.g. check for valid email format, confirming passwords match)
 
-createPortfoliosAndUsers()
-scheduledUpdate()
+// createPortfoliosAndUsers()
+// scheduledUpdate()
 // test()

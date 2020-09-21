@@ -16,10 +16,8 @@ const NamePortfolio = ({onComplete}) => {
 
     const postName = (event) => {
         event.preventDefault();
-        console.log(name)
         axios.post(`${url}/portfolios/name/${name}/${getID()}`)
         .then(res => {
-            console.log(res.data.rv)
             onComplete() // 
         })
         .catch(err => console.log(err));

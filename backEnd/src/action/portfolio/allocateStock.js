@@ -43,8 +43,6 @@ const buyStock = async (portfolioId, allocation, symbol) => {
 }
 // await allocate(p._id, ticker.desiredAllocation, ticker.symbol)
 const allocate = async (portfolioId, allocation, symbol) => {
-    console.log("allocating stock")
-    console.log(portfolioId, allocation, symbol)
     // determine if stock price is seeded, if not seeded
     const prices = await models.Prices.find()
     let p = await models.Portfolio.findById(portfolioId);
@@ -56,14 +54,11 @@ const allocate = async (portfolioId, allocation, symbol) => {
     let newUnits = newCurrValue / price //fine with splitting units
     let currentPortfolioAllocation = sum(p.tickers.map(t=>t.allocation)) // another way of writing this is (p.currentValue - p.usableFunds) / p.currentValue
     // if stock is in portfolio
-    console.log(p.tickers.filter(t => t.symbol === symbol).length, "line 64")
     if (p.tickers.filter(t => t.symbol === symbol).length) {
         let ticker = p.tickers.find(t=>t.symbol==symbol)
         let allocationDiff = (allocation - ticker.allocation)*.01
         let fundResult = p.usableFunds - (allocationDiff * p.currentValue)
         if (fundResult < 0) {console.log("not possible")}
-        
-        console.log("line 76", symbol, allocation, newCurrValue, newUnits)
     //     // reallocate
         await models.Portfolio.updateOne({ _id: p._id },
             { tickers: [...p.tickers.filter(t=>t.symbol!=symbol),
@@ -71,22 +66,17 @@ const allocate = async (portfolioId, allocation, symbol) => {
             // update usableFunds
         await models.Portfolio.updateOne({ _id: portfolioId },
             { usableFunds: fundResult})
-            console.log("stock allocated")
     }  
     else { // else add it to portfolio
         // check if value of the allocation is less than total usable funds
         let fundResult = p.usableFunds - allocation*.01*p.currentValue
         if (fundResult < 0) {console.log("not possible")}
-        console.log("line 87")
         await models.Portfolio.updateOne({ _id: portfolioId },
             { tickers: [...p.tickers, 
                 {symbol: symbol, allocation: allocation, desiredAllocation: allocation, currValue: newCurrValue, units: newUnits}]})
-        console.log(p.tickers)
             // update usableFunds
-        console.log("line 93", fundResult)
         await models.Portfolio.updateOne({ _id: portfolioId },
             { usableFunds: fundResult})
-            console.log("stock allocated")
         }
 }
     

@@ -5,6 +5,8 @@ const copyLeader = async (uPortfolioID, lPortfolioID) => {
     // pull the portfolios
     let uPortfolio = await models.Portfolio.findById(uPortfolioID)
     let lPortfolio = await models.Portfolio.findById(lPortfolioID)
+    console.log(uPortfolio)
+    console.log(lPortfolio)
     // de allocate all stock in portfolio
     // uPortfolio.tickers.forEach( async (ticker) => {
     //     await allocate(uPortfolio._id, 0, ticker.symbol)

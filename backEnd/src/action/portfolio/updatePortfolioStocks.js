@@ -23,20 +23,17 @@ const updateAllPortfolios = async () => {
 const updateSpecificPortfolio = async (p, prices) => {
 // for each ticker in the portfolio:
     // p.tickers.forEach(async (ticker)=> {
-    console.log(p.tickers)
     let newTickers = p.tickers.map((ticker) => {
         let newPrice = prices.find(t=>t.ticker==ticker.symbol).currPrice //find the price in prices array
         console.log(newPrice)
         let newCurrValue = newPrice*ticker.units // calculates new current value
         return {symbol : ticker.symbol, allocation: ticker.allocation, desiredAllocation: ticker.desiredAllocation, currValue: newCurrValue, units: ticker.units}
     })
-    console.log(newTickers)
     let result = await models.Portfolio.updateOne({ _id: p._id }, 
         { tickers: newTickers})
     // Recalculate each portfolios current value and save previous to history array
     let oldHistory = p.history
     let newPortfolioValue = sum(newTickers.map(t=>t.currValue))+p.usableFunds
-    console.log(newPortfolioValue)
     await models.Portfolio.updateOne({ _id: p._id },
         { history: [...oldHistory, {date: new Date(), value: newPortfolioValue}]})
     await models.Portfolio.updateOne({ _id: p._id },

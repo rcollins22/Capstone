@@ -232,7 +232,6 @@ export default function AssetTable({onComplete}) {
     axios
       .get(`${url}/prices/assets/`)
       .then(res => {
-        console.log('Current Assets', res.data.rv);
         const r = res.data.rv;
         setRows(r);
         // returns at Number that represents a percent.

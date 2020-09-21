@@ -7,10 +7,8 @@ const allocate = require('../action/portfolio/allocateStock').allocate
 const findNewPortfolio = async (userId) => {
     const portfolios = await models.Portfolio.find(); // all portfolios
     const ports = portfolios.filter(p => p.user.toString() === userId.toString()) // all portfolios for this user
-    console.log(ports)
     const p = ports.find(p => p.history.length == 0) //only a new portfolio would have zero history
-    console.log(p)
-  return p
+  return ports[ports.length-1]
 }
  
 const router = Router();
@@ -56,8 +54,6 @@ router.get('/allHistory/:userId', async (req, res) => {
 
 //  create a new portfolio
 router.post('/name/:name/:id', async (req, res) => {
-  // needs to be updated
-  console.log(req.params.id)
   const portfolio = await req.context.models.Portfolio.create({
     name: req.params.name,
     active: false,
@@ -65,7 +61,7 @@ router.post('/name/:name/:id', async (req, res) => {
     startingValue: 0,
     currentValue: 0,
     tickers: [],
-    followers: false,
+    followers: [],
     history: [],
     user: req.params.id
   });
@@ -74,20 +70,24 @@ router.post('/name/:name/:id', async (req, res) => {
 });
 // update portfolio funds based on id
 router.post('/addFunds/:id/:funds', async (req, res) => {
-  console.log(req) // how do I grab the payload???
   let userId = req.params.id
   let data = req.params.funds
   // find portfolio by name and update funds based on post data
   let p = await findNewPortfolio(userId)
+  let u = await models.User.findById(userId)
+  console.log(p, "line 80")
+  console.log(data, "line 81")
   await models.Portfolio.updateOne({ _id: p._id },
     { usableFunds: data })
+  await models.User.updateOne({ _id: req.params.id },
+    { usableFunds: u.usableFunds-data})
   return res.send({"rv": p});
 });
 
 // add portfolio tickers based on id
 router.post('/addTickers/:id/', async (req, res) => {
   let tickers = req.query.tickers.split(',')
-  console.log(tickers)
+  console.log(tickers, "line 89")
   let userId = req.params.id
   // find portfolio by name and update funds based on post data
   let p = await findNewPortfolio(userId)
@@ -144,10 +144,11 @@ router.get('/addAllocations/:id', async (req, res) => {
   let newTickers = symbols.map((t, idx) => {
     return {symbol: t, allocation: 0, desiredAllocation: allocationNums[idx], currValue: 0, units: 0}
   })
-  console.log(newTickers)
-  console.log(p)
   await models.Portfolio.updateOne({ _id: p._id },
     { tickers: newTickers })
+  let user = await models.User.findById(req.params.id)
+  await models.User.updateOne({ _id: req.params.id },
+    { portfolios: [...user.portfolios, p._id]})
   // wait until schedule update to allocate
   // // allocate portfolio
   // for (let i = 0; i < p.tickers.length; i++) {

@@ -24,17 +24,3 @@ const rebalancePortfolio = async (p) => {
 }
 
 module.exports = rebalanceAllPortfolios;
-
-// const deAllocatePortfolio = async (p) => {
-//     let allTickers = p.tickers
-//     p.tickers.forEach( async (ticker) => {
-//        await allocateStock(p._id, -ticker.allocation, ticker.symbol)
-//     })
-// }
-
-// const reAllocatePortfolio = async (p) => {
-//     let allTickers = p.tickers
-//     p.tickers.forEach( async (ticker) => {
-//        await allocateStock(p._id, ticker.desiredAllocation, ticker.symbol)
-//     })
-// }

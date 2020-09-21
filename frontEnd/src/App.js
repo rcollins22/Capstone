@@ -1,13 +1,14 @@
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import React, {useState} from 'react';
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Rout,
   
   Route,
   useRoutes,
   Switch
 } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import { useRoutes, Router } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';

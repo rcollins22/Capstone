@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TodaysChange = ({ className, change, ...rest }) => {
+const TodaysChange = ({change, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -51,7 +51,7 @@ const TodaysChange = ({ className, change, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              {change ? `${change}%` : 'Loading'}
+              {change}%
             </Typography>
           </Grid>
           <Grid item>

@@ -13,31 +13,35 @@ import {
 } from '@material-ui/core';
 import AreaChart from '../../mixins/AreaChart';
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     maxHeight: 200,
     minWidth: '30%',
     paddingBottom: theme.spacing(3),
-    margin:7
+    margin: 7
   }
 }));
 
-export default function LeaderCard({ name, chg, data, followers, ...rest }) {
+export default function LeaderCard({ leader, ...rest }) {
   const now = new Date();
   const monthAgo = now.setDate(now.getDate() - 30);
   const classes = useStyles();
+  let charData = leader.data;
+  const switchUrl = () => {
+    window.location = `/user/${leader.id}`;
+  };
+
   const series = [
     {
-      name: "Overall Performance",
-      data: data
+      name: 'Overall Performance',
+      data: leader.data
     }
   ];
   let options = {
     chart: {
       type: 'area',
-      height: 160,
+      height: 100,
       sparkline: {
         enabled: true
       }
@@ -46,28 +50,29 @@ export default function LeaderCard({ name, chg, data, followers, ...rest }) {
       curve: 'smooth'
     },
     fill: {
-      opacity: 0.5,
+      opacity: 0.1,
       color: '#0A6D03'
     },
     yaxis: {
       min: 0
     },
-    xaxis:{
-      type: 'datetime',
-      max: now,
-      min: monthAgo
-    
-    },
+    // xaxis: {
+    //   type: 'datetime',
+    //   min: new Date('01 Mar 2012').getTime(),
+    //   tickAmount: 6
+    // },
     colors: ['#0A6D03'],
     title: {
-      text: `${name}`,
+      text: `${leader.name}`,
       offsetX: 0,
       style: {
         fontSize: '24px'
       }
     },
     subtitle: {
-      text: `${chg}%   (${followers} followers)`,
+      text: `${leader.monthlyPerformance.toFixed(2)}%   (${
+        leader.followers
+      } followers)`,
       offsetX: 0,
       style: {
         fontSize: '14px'
@@ -76,9 +81,11 @@ export default function LeaderCard({ name, chg, data, followers, ...rest }) {
   };
 
   return (
-    <Card className={clsx(classes.root)} {...rest}>
+    <Card className={clsx(classes.root)} {...rest} onClick={switchUrl}>
       <CardContent>
-        <AreaChart series={series} options={options} />
+        <Grid>
+          <AreaChart series={series} options={options} />
+        </Grid>
       </CardContent>
     </Card>
   );

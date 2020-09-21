@@ -34,10 +34,7 @@ const RegisterView = () => {
   const navigate = useNavigate();
 
   return (
-    <Page
-      className={classes.root}
-      title="Register"
-    >
+    <Page className={classes.root} title="Register">
       <Box
         display="flex"
         flexDirection="column"
@@ -53,15 +50,19 @@ const RegisterView = () => {
               password: '',
               leader: false
             }}
-            validationSchema={
-              Yup.object().shape({
-                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                name: Yup.string().max(255).required('First name is required'),
-                password: Yup.string().max(255).required('password is required'),
-                leader: Yup.boolean().oneOf([true], 'This field must be checked')
-              })
-            }
-            
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              name: Yup.string()
+                .max(255)
+                .required('First name is required'),
+              password: Yup.string()
+                .max(255)
+                .required('password is required'),
+              leader: Yup.boolean().oneOf([true], 'This field must be checked')
+            })}
           >
             {({
               errors,
@@ -74,10 +75,7 @@ const RegisterView = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+                  <Typography color="textPrimary" variant="h2">
                     Create new account
                   </Typography>
                   <Typography
@@ -127,31 +125,28 @@ const RegisterView = () => {
                   variant="outlined"
                 />
                 <FormGroup row>
-                  <FormControlLabel control={<Switch />} label="I want to be a Leader" />
+                  <FormControlLabel
+                    control={<Switch />}
+                    label="I want to be a Leader"
+                  />
                 </FormGroup>
                 <Box my={2}>
-                  <Button
-                    color="primary"
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Sign up now
-                  </Button>
+                  <Link component={RouterLink} to="/login" variant="h6">
+                    <Button
+                      color="primary"
+                      disabled={isSubmitting}
+                      fullWidth
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                    >
+                      Sign up now
+                    </Button>
+                  </Link>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/login"
-                    variant="h6"
-                  >
+                <Typography color="textSecondary" variant="body1">
+                  Have an account?{' '}
+                  <Link component={RouterLink} to="/login" variant="h6">
                     Sign in
                   </Link>
                 </Typography>

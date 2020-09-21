@@ -1,12 +1,20 @@
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import React, {useState} from 'react';
-import { useRoutes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  
+  Route,
+  useRoutes,
+  Switch
+} from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import routes from 'src/routes';
 import SignUpLoginForm from 'src/views/auth/SignupLoginForm';
+import PortfolioView from './views/PortfolioView'
 
 const App = () => {
   const userId = localStorage.getItem("id") || false
@@ -14,13 +22,13 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(userId?true:false)
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      {!loggedIn && 
-      <SignUpLoginForm onLogIn = {setLoggedIn} />
-      }
-      { loggedIn && routing}
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        {!loggedIn && <SignUpLoginForm onLogIn={setLoggedIn} />}
+        <Route exact path="/user/:userID" component={<PortfolioView user=''/>} />
+
+        {loggedIn && routing}
+      </ThemeProvider>
   );
 };
 

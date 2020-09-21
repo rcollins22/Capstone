@@ -150,6 +150,9 @@ const Dashboard = () => {
   let sendNames = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portNames : names
   let sendData = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? portData : values
   let sendBalance = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? totalBalance : balance
+  console.log(sendNames)
+  console.log(sendData)
+  console.log(sendBalance)
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>

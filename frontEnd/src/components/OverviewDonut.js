@@ -68,6 +68,8 @@ const OverviewDonut = ({ className, portNames, portData, totalBalance, ...rest }
     }
   };
 
+  if (!portData) {return <div>loading</div>}
+
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader title="Overall Allocation" />

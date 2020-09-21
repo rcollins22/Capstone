@@ -33,8 +33,26 @@ router.get('/history/:portfolioId', async (req, res) => {
     let portfolio = await req.context.models.Portfolio.findById(req.params.portfolioId);
     interval = Math.min(portfolio.history.length, req.query.days)
     rv = portfolio.history.slice(0).slice(-interval)
-  return res.send(rv)
+    rv = rv.map(val => val.value)
+    console.log(rv)
+  return res.send({"rv":rv})
 })
+
+// return all histories
+router.get('/allHistory/:userId', async (req, res) => {
+  let user = await req.context.models.User.findById(req.params.userId)
+  let portfoliosIDs = user.portfolios
+    let histories = []
+    for (let i = 0; i<portfoliosIDs.length; i++) {
+      let portfolio = await req.context.models.Portfolio.findById(portfoliosIDs[i])
+      histories.push(portfolio.history.reverse())
+    }
+    let rv = histories.map((val, idx) => {
+      return {"id": portfoliosIDs[idx], "values": val}
+    })
+    console.log(rv)
+    res.send({"rv":rv})
+});
 
 //  create a new portfolio
 router.post('/name/:name/:id', async (req, res) => {
@@ -139,6 +157,17 @@ router.put('/update/:userId/:name', async (req, res) => {
 
     return res.send(portfolio);
 });
+
+router.get("/myPortfolios/:userId", async (req, res) => {
+    let user = await req.context.models.User.findById(req.params.userId)
+    let portfoliosIDs = user.portfolios
+    let names = []
+    for (let i = 0; i<portfoliosIDs.length; i++) {
+      let portfolio = await req.context.models.Portfolio.findById(portfoliosIDs[i])
+      names.push(portfolio.name)
+    }
+    res.send({"names": names, "ids": portfoliosIDs})
+})
 
 // do a fetch and use the method from API. have express.json
 router.delete('/delete/:portfolioId', async (req, res) => {

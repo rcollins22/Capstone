@@ -27,13 +27,13 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
   const now = new Date();
   const monthAgo = now.setDate(now.getDate() - 30);
 
-  chartData ? chartData = chartData : chartData = ''
+  chartData ? chartData = chartData : chartData = []
 
   const series = [
     {
-      // data: chartData
+      data: chartData
       // data: chartData.map((val, idx)=> [idx+1, val])
-      data: [[1, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
+      // data: [[1, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
     }
   ];
   const options = {
@@ -76,13 +76,13 @@ const PerformanceSummary = ({chartData, className, ...rest }) => {
         },
       },
       title: {
-        text: "Price",
+        text: "Value",
       },
     },
     xaxis: {
-      type: 'datetime',
-      max: now,
-      min: monthAgo
+      // type: 'datetime',
+      // max: now,
+      // min: monthAgo
     },
     tooltip: {
       shared: false,

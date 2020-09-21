@@ -33,6 +33,9 @@ const Dashboard = () => {
   const [totalFollowers, setFollowers] = useState(-1)
   const [totalBalance, setBalance] = useState(-1)
   const [chartData, setChartData] = useState()
+  const [chart, setChart] = useState()
+
+  const portfolio = localStorage.getItem("onPortfolio")
 
   useEffect(() => {
    loadTodaysChange()
@@ -40,14 +43,28 @@ const Dashboard = () => {
     getFollowerCount()
     loadPortfolioAllocations()
     loadUserPerformanceGraphData()
-  //getSpecificPortfolioHistory()
+    if (portfolio && portfolio != "Dashboard") {getSpecificPortfolioHistory(portfolio)}
+    // loadAllPortfolioPerformances()
   }, []);
+
+  const getID = () => localStorage.getItem("id")
+
+  // const loadAllPortfolioPerformances = () => {
+  //   axios
+  //   .get(`${url}/portfolios/allHistory/${getID()}`)
+  //   .then(res => {
+  //       console.log(res.data.rv)
+  //       setCharts(res.data.rv)
+  //   })
+  //   .catch(err => console.log(err));
+  // }
 
   const loadUserPerformanceGraphData = () => {
     var currUid = localStorage.getItem("id") //exemplar call to local storage
     axios
     .get(`${url}/users/performance-graph/${currUid}`)
     .then(res => {
+        console.log(res.data.rv)
         setChartData(res.data.rv)
     })
     .catch(err => console.log(err));
@@ -104,24 +121,17 @@ const Dashboard = () => {
 
   const getSpecificPortfolioHistory = (portId) => {
     var currUid = localStorage.getItem("id")
-    axios.get(`${url}/portfolios/5f67cb818bbc8b2ea82d306e?days=5`)
+    axios.get(`${url}/portfolios/history/${portId}?days=20`)
     .then(res => {
-        console.log("Specific portfolio data", res.data.history)
-        const portHistory = res.data.history
-
-        var dataPoints = [] // [[1, 432], [2, 313]]
-        for (let i; i<portHistory.length-1; i++) {
-            let arry = [i+1, portHistory[i].value]
-            dataPoints.push(arry)
-        }
-        setChartData(dataPoints)
+        console.log("Specific portfolio data", res.data.rv)
+        setChart(res.data.rv)
     })
     .catch(err => console.log(err));
   }
 
 
   //5f64f5c4d47886242c72ea6c
-
+  let sendChart = localStorage.getItem("onPortfolio") == "Dashboard" || !localStorage.getItem("onPortfolio") ? chartData : chart
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
@@ -142,7 +152,7 @@ const Dashboard = () => {
             <PortfolioDropdown portNames={portNames} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <PerformanceSummary chartData={chartData} />
+            <PerformanceSummary chartData={sendChart} />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <OverviewDonut portNames={portNames} portData={portData} totalBalance={totalBalance} />

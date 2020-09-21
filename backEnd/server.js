@@ -128,7 +128,7 @@ const createPortfoliosAndUsers = async () => {
         leader: true,
         followers: 0,
         totalFunds: 4179.99,
-        usableFunds: 1000,
+        usableFunds: 500,
         portfolios: []
       });
       await user1.save();
@@ -170,8 +170,21 @@ const createPortfoliosAndUsers = async () => {
       });
     await portfolio2.save()
 
+    const portfolio3 = new models.Portfolio({
+      name: 'Davids-inActive-portfolio',
+      active: false,
+      usableFunds: 500,
+      startingValue: 500,
+      currentValue: 500,
+      tickers: [],
+      followers: [],
+      history: [],
+      user: user1.id,
+    });
+  await portfolio3.save()
+
     await models.User.updateOne({ _id: user1._id },
-        { portfolios: portfolio._id })
+        { portfolios: [portfolio._id, portfolio3._id] })
     await models.User.updateOne({ _id: user2._id },
         { portfolios: portfolio2._id })
     await models.Portfolio.updateOne({ _id: portfolio._id },
@@ -186,7 +199,6 @@ const createPortfoliosAndUsers = async () => {
 
 const createUser = async () => {
     let pswrd = await bcrypt.hash('1234', 10)
-    console.log(pswrd)
     const user2 = new models.User({
         name: 'David',
         email: 'd@gmail.com',
@@ -209,17 +221,6 @@ const createUser = async () => {
 // passport: used to authenticate requests, which it does through an extensible set of plugins known as strategies
 // passport-jwt: passport strategy for authenticating with a JSON Web Token (JWT); lets you authenticate endpoints using a JWT
 // validator: used to validate inputs (e.g. check for valid email format, confirming passwords match)
-
-
-// If you want to re-initialize your database on every Express server start, you can add a condition to your function:
-// connectDb().then(async () => {
-//     if (eraseDatabaseOnSync) {
-//       await Promise.all([
-//         models.User.deleteMany({}),
-//         models.Portfolio.deleteMany({}),
-//         models.Stock.deleteMany({}),
-//       ]);
-//     }
 
 // createPortfoliosAndUsers()
 // scheduledUpdate()
